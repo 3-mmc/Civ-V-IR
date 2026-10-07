@@ -6,6 +6,7 @@ include("FN_Core")
 include("FN_Cohesion")
 include("FN_Organisations")
 include("FN_Independence")
+include("FN_Setup")
 
 local L = FN.L
 local OVERLAY_STYLES = { "FN_Union1", "FN_Union2", "FN_Union3", "FN_Union4", "FN_Union5", "FN_Union6", "FN_Union7", "FN_Union8" }
@@ -17,12 +18,14 @@ GameEvents.PlayerDoTurn.Add(function(iPlayer)
 	if iPlayer < 0 or iPlayer >= FN.MAX_MAJOR then return end
 	local pPlayer = Players[iPlayer]
 	if not pPlayer or not pPlayer:IsAlive() then return end
+	FN.SetupHistoricalCityStates() -- once per game, at the start
 	FN.ProcessCohesion(pPlayer)
 	FN.ConsiderStages(pPlayer)
 	FN.ProcessOrganisations(pPlayer)
 	FN.ProcessProvinces(pPlayer)
 end)
 GameEvents.CityCaptureComplete.Add(FN.OnCityCaptured)
+GameEvents.PlayerCanDeclareWar.Add(FN.OrgAllowsWar) -- needs EVENTS_WAR_AND_PEACE (FN_Organisations.sql)
 
 ------------------------------------------------------------------------------
 -- Union outlines: one outer outline around leader + bound partners, in the leader's secondary colour.
@@ -226,7 +229,8 @@ local function ShowProvinces(pActive)
 end
 
 local FOUND_REASON = { ACTIVE = "TXT_KEY_FN_ORG_WHY_ACTIVE", INELIGIBLE = "TXT_KEY_FN_ORG_WHY_INELIGIBLE", ERA = "TXT_KEY_FN_ORG_WHY_ERA",
-	OBSOLETE = "TXT_KEY_FN_ORG_WHY_OBSOLETE", MEMBERS = "TXT_KEY_FN_ORG_WHY_MEMBERS" }
+	OBSOLETE = "TXT_KEY_FN_ORG_WHY_OBSOLETE", MEMBERS = "TXT_KEY_FN_ORG_WHY_MEMBERS", PREREQ = "TXT_KEY_FN_ORG_WHY_PREREQ",
+	SUPERSEDED = "TXT_KEY_FN_ORG_WHY_SUPERSEDED" }
 
 local function ShowOrganisations(pActive)
 	local iActive = pActive:GetID()
@@ -245,6 +249,21 @@ local function ShowOrganisations(pActive)
 					local iGold = FN.GetN("OG_" .. o.Type .. "_" .. iActive)
 					if iGold > 0 then table.insert(tBody, L("TXT_KEY_FN_ORG_INCOME", iGold)) end
 					tButtons[1] = { Text = L("TXT_KEY_FN_ORG_LEAVE"), Enabled = bTurn, Call = function() return FN.LeaveOrg(o, pActive) end }
+					if o.MemberCohesion then
+						local fC = FN.OrgCohesion(o, iActive)
+						local iE, tTerms = FN.OrgEquilibrium(o, pActive)
+						table.insert(tBody, L("TXT_KEY_FN_COHESION_LINE", CohesionBar(fC), iE,
+							L(iE > fC + 0.5 and "TXT_KEY_FN_TREND_UP" or (iE < fC - 0.5 and "TXT_KEY_FN_TREND_DOWN" or "TXT_KEY_FN_TREND_FLAT"))))
+						for _, t in ipairs(tTerms) do
+							table.insert(tBody, Mark({ Ok = t.Value > 0, Indent = true, Text = L("TXT_KEY_FN_TERM_" .. t.Key) .. string.format(" %+d", t.Value) }))
+						end
+						local iExit = FN.OrgExitTurn(o, iActive)
+						if iExit > 0 then
+							table.insert(tBody, L("TXT_KEY_FN_ORG_REFERENDUM", math.max(0, iExit - Game.GetGameTurn()), FN.OptOutCost(pActive)))
+							tButtons[2] = { Text = L("TXT_KEY_FN_ORG_OPTOUT"), Enabled = bTurn and pActive:GetGold() >= FN.OptOutCost(pActive),
+								Call = function() return FN.NegotiateOptOuts(o, pActive) end }
+						end
+					end
 				elseif bEligible then
 					tButtons[1] = { Text = L("TXT_KEY_FN_ORG_JOIN"), Enabled = bTurn, Call = function() return FN.JoinOrg(o, pActive) end }
 				end

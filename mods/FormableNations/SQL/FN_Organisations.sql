@@ -1,5 +1,5 @@
--- International organisations (Tier III). Depth: FUNCTIONAL (one game system) or INTERGOVERNMENTAL (multi-purpose,
--- sovereign members). SUPRANATIONAL (EU-style) is designed but not built yet.
+-- International organisations (Tier III). Depth: FUNCTIONAL (one game system), INTERGOVERNMENTAL (multi-purpose,
+-- sovereign members) or SUPRANATIONAL (EU-style: shared rules, members keep a cohesion score and may vote to leave).
 CREATE TABLE IF NOT EXISTS FormableNation_Organisations (
 	ID integer PRIMARY KEY AUTOINCREMENT,
 	Type text NOT NULL UNIQUE,
@@ -17,7 +17,10 @@ CREATE TABLE IF NOT EXISTS FormableNation_Organisations (
 	ResourceGold integer NOT NULL DEFAULT 0,      -- per turn, per unit of ResourceType a major member owns (max 10 units)
 	MinorInfluence integer NOT NULL DEFAULT 0,    -- per turn, each major member's Influence with each City-State member
 	OpenBorders boolean NOT NULL DEFAULT 0,       -- major members keep open borders with each other
-	PolicyType text REFERENCES Policies(Type)     -- optional dummy policy for major members
+	PolicyType text REFERENCES Policies(Type),    -- optional dummy policy for major members
+	PrereqOrg text,                               -- founder must belong to it; founding merges it into this one
+	MemberCohesion boolean NOT NULL DEFAULT 0,    -- major members keep a cohesion score and can vote to leave
+	NoWarBetweenMembers boolean NOT NULL DEFAULT 0 -- members cannot declare war on each other (VP war events)
 );
 
 -- Eligible peoples. No CivilizationType rows: every major civ may join. No MinorCivType rows: no City-State may join,
@@ -45,6 +48,51 @@ VALUES
 		'ERA_POSTMODERN', NULL, 3, 0, NULL, 0, 2, 0, 1, 1),
 	('ORG_MERCOSUR', 'INTERGOVERNMENTAL', 'TXT_KEY_FN_ORG_MERCOSUR_TITLE', 'TXT_KEY_FN_ORG_INTERGOV_HELP', 'TXT_KEY_FN_ORG_MERCOSUR_QUOTE',
 		'ERA_FUTURE', NULL, 2, 0, NULL, 0, 2, 0, 1, 1);
+
+-- The European chain: Coal and Steel Community (1951) -> Economic Community (1957) -> Union (1993).
+INSERT INTO Policies (Type, Description, Help, IsDummy) VALUES
+	('POLICY_FN_ORG_ECSC', 'TXT_KEY_FN_ORG_ECSC_TITLE', 'TXT_KEY_FN_ORG_ECSC_HELP', 1),
+	('POLICY_FN_ORG_EEC', 'TXT_KEY_FN_ORG_EEC_TITLE', 'TXT_KEY_FN_ORG_EEC_HELP', 1),
+	('POLICY_FN_ORG_EU', 'TXT_KEY_FN_ORG_EU_TITLE', 'TXT_KEY_FN_ORG_EU_HELP', 1);
+UPDATE Policies SET FreeWCVotes = 1 WHERE Type = 'POLICY_FN_ORG_EU';
+INSERT INTO Policy_YieldModifiers (PolicyType, YieldType, Yield) VALUES
+	('POLICY_FN_ORG_ECSC', 'YIELD_PRODUCTION', 3),
+	('POLICY_FN_ORG_EEC', 'YIELD_GOLD', 5),
+	('POLICY_FN_ORG_EU', 'YIELD_GOLD', 5),
+	('POLICY_FN_ORG_EU', 'YIELD_SCIENCE', 5);
+
+INSERT INTO FormableNation_Organisations
+	(Type, Depth, Title, Help, Quote, MinEra, MaxEra, MinMembers, RequiresCoast, ResourceType, MinResource, TradeRouteGold, ResourceGold,
+	 MinorInfluence, OpenBorders, PolicyType, PrereqOrg, MemberCohesion, NoWarBetweenMembers)
+VALUES
+	('ORG_ECSC', 'FUNCTIONAL', 'TXT_KEY_FN_ORG_ECSC_TITLE', 'TXT_KEY_FN_ORG_ECSC_HELP', 'TXT_KEY_FN_ORG_ECSC_QUOTE',
+		'ERA_MODERN', NULL, 3, 0, 'RESOURCE_COAL', 1, 0, 1, 0, 0, 'POLICY_FN_ORG_ECSC', NULL, 0, 0),
+	('ORG_EEC', 'INTERGOVERNMENTAL', 'TXT_KEY_FN_ORG_EEC_TITLE', 'TXT_KEY_FN_ORG_EEC_HELP', 'TXT_KEY_FN_ORG_EEC_QUOTE',
+		'ERA_POSTMODERN', NULL, 3, 0, NULL, 0, 3, 0, 1, 1, 'POLICY_FN_ORG_EEC', 'ORG_ECSC', 0, 0),
+	('ORG_EU', 'SUPRANATIONAL', 'TXT_KEY_FN_ORG_EU_TITLE', 'TXT_KEY_FN_ORG_EU_HELP', 'TXT_KEY_FN_ORG_EU_QUOTE',
+		'ERA_FUTURE', NULL, 4, 0, NULL, 0, 4, 0, 2, 1, 'POLICY_FN_ORG_EU', 'ORG_EEC', 1, 1);
+
+-- Peace between members of a supranational organisation uses VP's PlayerCanDeclareWar event, which is off by default.
+UPDATE CustomModOptions SET Value = 1 WHERE Name = 'EVENTS_WAR_AND_PEACE';
+
+-- European members, shared by the whole chain.
+CREATE TEMP TABLE FN_European (CivilizationType text, MinorCivType text);
+INSERT INTO FN_European VALUES
+	('CIVILIZATION_FRANCE', NULL), ('CIVILIZATION_GERMANY', NULL), ('CIVILIZATION_ROME', NULL), ('CIVILIZATION_NETHERLANDS', NULL),
+	('CIVILIZATION_ENGLAND', NULL), ('CIVILIZATION_SPAIN', NULL), ('CIVILIZATION_PORTUGAL', NULL), ('CIVILIZATION_AUSTRIA', NULL),
+	('CIVILIZATION_POLAND', NULL), ('CIVILIZATION_DENMARK', NULL), ('CIVILIZATION_SWEDEN', NULL), ('CIVILIZATION_CELTS', NULL),
+	('CIVILIZATION_GREECE', NULL), ('CIVILIZATION_VENICE', NULL),
+	(NULL, 'MINOR_CIV_BRUSSELS'), (NULL, 'MINOR_CIV_ANTWERP'), (NULL, 'MINOR_CIV_LISBON'), (NULL, 'MINOR_CIV_DUBLIN'),
+	(NULL, 'MINOR_CIV_VIENNA'), (NULL, 'MINOR_CIV_WARSAW'), (NULL, 'MINOR_CIV_COPENHAGEN'), (NULL, 'MINOR_CIV_STOCKHOLM'),
+	(NULL, 'MINOR_CIV_HELSINKI'), (NULL, 'MINOR_CIV_PRAGUE'), (NULL, 'MINOR_CIV_BRATISLAVA'), (NULL, 'MINOR_CIV_BUDAPEST'),
+	(NULL, 'MINOR_CIV_VILNIUS'), (NULL, 'MINOR_CIV_RIGA'), (NULL, 'MINOR_CIV_SOFIA'), (NULL, 'MINOR_CIV_BUCHAREST'),
+	(NULL, 'MINOR_CIV_RAGUSA'), (NULL, 'MINOR_CIV_VALLETTA'), (NULL, 'MINOR_CIV_FLORENCE'), (NULL, 'MINOR_CIV_MILAN'),
+	(NULL, 'MINOR_CIV_GENOA'), (NULL, 'MINOR_CIV_VENICE');
+INSERT INTO FormableNation_OrganisationMembers (OrganisationType, CivilizationType, MinorCivType)
+	SELECT o.Type, e.CivilizationType, e.MinorCivType FROM FN_European e, FormableNation_Organisations o
+	WHERE o.Type IN ('ORG_ECSC', 'ORG_EEC', 'ORG_EU')
+	AND (e.CivilizationType IN (SELECT Type FROM Civilizations) OR e.MinorCivType IN (SELECT Type FROM MinorCivilizations));
+DROP TABLE FN_European;
 
 INSERT INTO FormableNation_OrganisationMembers (OrganisationType, CivilizationType, MinorCivType) VALUES
 	-- Hanseatic League: member towns and Kontore (Novgorod's Peterhof, Bergen, Bruges, London's Steelyard)

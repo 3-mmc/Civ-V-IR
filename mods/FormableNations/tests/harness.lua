@@ -44,7 +44,7 @@ PreGame = setmetatable({}, { __index = function(_, k)
 end })
 
 local function Hooks() local h = {} return setmetatable(h, { __index = { Add = function(fn) table.insert(h, fn) end } }) end
-GameEvents = { PlayerDoTurn = Hooks(), CityCaptureComplete = Hooks() }
+GameEvents = { PlayerDoTurn = Hooks(), CityCaptureComplete = Hooks(), PlayerCanDeclareWar = Hooks() }
 Events = setmetatable({}, { __index = function(t, k)
 	if k == "SerialEventHexHighlight" or k == "ClearHexHighlightStyle" then return function() end end
 	local h = Hooks(); rawset(t, k, h); return h
@@ -72,6 +72,7 @@ Players, Teams = {}, {}
 Game = {
 	GetGameTurn = function() return TURN end, GetGameSpeedType = function() return GameInfoTypes.GAMESPEED_STANDARD end,
 	GetActivePlayer = function() return 0 end, GetActiveTeam = function() return 0 end,
+	GetElapsedGameTurns = function() return TURN - 1 end,
 	Rand = function(n) return 0 end,
 	ChangeMinorPlayer = function(slot, iType) Players[slot].minor = iType end,
 	-- As CvGame::CreateFreeCityPlayer: a dead City-State that once owned the city, else the first never-used slot.
@@ -81,9 +82,14 @@ Game = {
 		if not slot then for i = 22, 62 do local p = Players[i]; if p and not p.everAlive then slot = i break end end end
 		if not slot then return end
 		local p = Players[slot]
+		local old = Players[c.owner]
 		p.alive, p.everAlive = true, true
 		p:AcquireCity(c, false, false)
 		p.origCap = c
+		if old.minor then -- replacing a City-State: the engine retires it and hands out the starting Settler
+			old.alive, old.units = false, {}
+			p:AddUnit({ found = true })
+		end
 	end,
 }
 
@@ -166,7 +172,10 @@ function Player:AcquireCity(c, bConquest)
 	self.alive = true -- the engine's verifyAlive revives a dead player that owns a city
 	for _, fn in ipairs(GameEvents.CityCaptureComplete) do fn(old.id, false, c.x, c.y, self.id, 1, bConquest == true) end
 end
-function Player:InitUnit(iType) self.spawned = self.spawned or {}; table.insert(self.spawned, iType); return { FinishMoves = function() end } end
+function Player:InitUnit(iType, x, y)
+	self.spawned = self.spawned or {}; table.insert(self.spawned, iType)
+	return self:AddUnit({ type = iType, x = x, y = y, combat = true, FinishMoves = function() end })
+end
 function Player:IsCapitalConnectedToCity(c) return c.connected end
 function Player:IsEmpireVeryUnhappy() return self.veryUnhappy == true end
 function Player:IsEmpireSuperUnhappy() return false end
@@ -182,8 +191,19 @@ function Player:GetMilitaryMight() return self.might end
 function Player:GetStateReligion() return self.stateReligion or -1 end
 function Player:GetTradeRoutes() return self.routes end
 function Player:GetNumResourceTotal(r) return self.resources[r] or 0 end
-function Player:IsDenouncingPlayer() return false end
+function Player:IsDenouncingPlayer(i) return self.denouncing ~= nil and self.denouncing[i] == true end
+function Player:GetLateGamePolicyTree() return self.ideology or -1 end
 function Player:IsDoF() return false end
+function Player:GetStartingPlot() return self.origCap and self.origCap.plot end
+local Unit = {}
+Unit.__index = Unit
+function Player:AddUnit(t) t.owner = self; table.insert(self.units, setmetatable(t, Unit)); return t end
+function Unit:IsFound() return self.found == true end
+function Unit:IsCombatUnit() return self.combat == true end
+function Unit:GetUnitType() return self.type or 0 end
+function Unit:GetX() return self.x or 0 end
+function Unit:GetY() return self.y or 0 end
+function Unit:Kill() for i, u in ipairs(self.owner.units) do if u == self then table.remove(self.owner.units, i) end end end
 function Player:GetPlayerColors() return { x = 1, y = 0, z = 0, w = 1 }, { x = 1, y = 1, z = 1, w = 1 } end
 function Team:IsAtWar(t) return self.war[t] == true end
 function Team:IsVassal(t) return self.vassalOf == t end
@@ -237,6 +257,19 @@ local vilnius = NewPlayer(22, { minor = MINOR("VILNIUS") })
 vilnius.cities[1] = NewCity(22, 14, 10); vilnius.origCap = vilnius.cities[1]
 local oilRes = GameInfoTypes.RESOURCE_OIL
 
+-- Germany, whose Holy Roman Empire partners are all missing, and City-States that could make way for them.
+-- Unused City-State slots, as VP leaves them: never alive, with a placeholder type.
+local germany = NewPlayer(5, { civ = CIV("GERMANY"), name = "Otto", era = 0 })
+germany.cities[1] = NewCity(5, 200, 10, "Aachen"); germany.origCap = germany.cities[1]
+local DONORS = {}
+for i, sType in ipairs({ "KABUL", "SIDON", "BYBLOS", "TYRE", "ALMATY", "MOGADISHU" }) do
+	local d = NewPlayer(23 + i, { minor = MINOR(sType) })
+	d.cities[1] = NewCity(23 + i, 200 + i * 3, 20, "CS" .. i); d.origCap = d.cities[1]
+	d:AddUnit({ combat = true, type = 7, x = 200 + i * 3, y = 21 })
+	DONORS[i] = d
+end
+for id = 30, 40 do local p = NewPlayer(id, { minor = 0 }); p.alive, p.everAlive = false, false end
+
 dofile("UI/FormableNations.lua")
 
 local FAILS = 0
@@ -245,6 +278,17 @@ local function Check(b, sWhat)
 	if not b then FAILS = FAILS + 1 end
 end
 local function C() return FN.GetCohesion(0, 22) end
+
+print("Scenario 0: historical City-States are swapped in at game start")
+RunTurns(1)
+local function Present(sType) for i = 22, 62 do local p = Players[i] if p and p.alive and p.minor == MINOR(sType) then return p end end end
+local vatican, wittenberg, prague = Present("VATICAN_CITY"), Present("WITTENBERG"), Present("PRAGUE")
+Check(vatican and wittenberg and prague, "Vatican City, Wittenberg and Prague now exist (the HRE needs 1 + 2, the German Empire Wittenberg)")
+Check(not DONORS[1].alive and not DONORS[2].alive and not DONORS[3].alive and DONORS[4].alive,
+	"the three City-States nearest Germany made way; the rest stay")
+Check(vatican and vatican.cities[1].name == "Vatican City", "the city takes its new City-State's name")
+Check(vatican and #vatican.units == 1 and not vatican.units[1].found, "the starting Settler is removed and the garrison carried over")
+Check(Present("VILNIUS") and FN.GetN("SETUP_DONE") > 0, "Vilnius was already there; setup ran once")
 
 print("Scenario 1: Union of Krewo forms after a long alliance")
 vilnius.influence[0] = 90
@@ -320,8 +364,6 @@ Check(#commonwealth.UniqueUnits == 1 and commonwealth.UniqueUnits[1].Unit == Gam
 Check(#FN.StageByType.FN_KREWO.UniqueUnits == 0, "a Tier I union has no unique unit")
 Check(poland.goldenAge == 8, "proclaiming the Commonwealth started an 8-turn golden age (" .. tostring(poland.goldenAge) .. ")")
 
--- Unused City-State slots, as VP leaves them: never alive, with a placeholder type.
-for id = 30, 40 do local p = NewPlayer(id, { minor = 0 }); p.alive, p.everAlive = false, false end
 local function BreakawayWithin(c, n)
 	local iOwner = c.owner
 	for i = 1, n do
@@ -392,7 +434,38 @@ Check(FN.CityKind(quebec) == "COLONY", "a colony across the sea")
 RunTurns(60)
 Check(FN.CityKind(quebec) == "INTEGRATED", "integrated after holding high cohesion (" .. FN.CityKind(quebec) .. ")")
 
-print("Scenario 12: panel renders every tab without errors")
+print("Scenario 12: the European chain - Coal and Steel, Economic Community, Union, and an exit")
+local france = NewPlayer(7, { civ = CIV("FRANCE"), name = "Napoleon", era = 5, ideology = 1 })
+france.cities[1] = NewCity(7, 300, 10, "Paris"); france.origCap = france.cities[1]
+local dutch = NewPlayer(8, { civ = CIV("NETHERLANDS"), name = "William", era = 5, ideology = 1 })
+dutch.cities[1] = NewCity(8, 305, 14, "Amsterdam"); dutch.origCap = dutch.cities[1]
+local italy = NewPlayer(9, { civ = CIV("ROME"), name = "Augustus", era = 5, ideology = 1 })
+italy.cities[1] = NewCity(9, 310, 30, "Rome"); italy.origCap = italy.cities[1]
+local coal = GameInfoTypes.RESOURCE_COAL
+france.resources[coal], dutch.resources[coal], italy.resources[coal] = 3, 1, 1
+local ecsc, eec, eu = FN.OrgByType.ORG_ECSC, FN.OrgByType.ORG_EEC, FN.OrgByType.ORG_EU
+RunTurns(1)
+Check(FN.OrgActive(ecsc) and FN.IsMember(ecsc, 7) and FN.IsMember(ecsc, 8) and FN.IsMember(ecsc, 9), "the Coal and Steel Community is founded by the coal-owning Six (here three)")
+Check(not FN.IsMember(ecsc, 4), "Britain, without coal, stays out")
+france.era, dutch.era, italy.era = 6, 6, 6
+RunTurns(1)
+Check(FN.OrgActive(eec) and not FN.OrgActive(ecsc), "the Economic Community absorbs it")
+Check(FN.IsMember(eec, 8) and Teams[7].openBorders[8] == true, "its members keep open borders")
+france.era, dutch.era, italy.era = 7, 7, 7
+germany.ideology = 1
+RunTurns(1)
+Check(FN.OrgActive(eu) and not FN.OrgActive(eec), "the European Union replaces the Economic Community")
+Check(FN.IsMember(eu, 5) and FN.IsMember(eu, 8), "Germany joins for a shared ideology; EEC members come along")
+Check(france:HasPolicy(GameInfoTypes.POLICY_FN_ORG_EU), "members hold the Union's policy")
+local function CanWar(a, b) for _, fn in ipairs(GameEvents.PlayerCanDeclareWar) do if fn(a, b) == false then return false end end return true end
+Check(not CanWar(7, 8) and CanWar(7, 1), "members cannot declare war on each other, only on others")
+dutch.ideology, dutch.unhappy, dutch.denouncing = 2, true, { [9] = true }
+local tExit
+for i = 1, 50 do RunTurns(1); if not FN.IsMember(eu, 8) then tExit = i break end end
+Check(tExit ~= nil, "a disaffected member votes to leave after a referendum (turn " .. tostring(tExit) .. ")")
+Check(FN.OrgActive(eu) and CanWar(8, 7), "the Union goes on; the leaver is free again")
+
+print("Scenario 13: panel renders every tab without errors")
 for _, sTab in ipairs({ "NATIONS", "UNIONS", "ORGS", "PROVINCES", "WORLD" }) do
 	local ok, err = pcall(FN.ShowPanelTab, sTab)
 	Check(ok, "tab " .. sTab .. (ok and "" or (": " .. tostring(err))))

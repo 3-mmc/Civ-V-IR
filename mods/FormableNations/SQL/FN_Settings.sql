@@ -64,4 +64,18 @@ INSERT INTO FormableNation_Settings (Name, Value) VALUES
 	('TERM_FOREIGN_ALIVE', -10), ('TERM_FOREIGN_DEAD', -5), ('TERM_FOREIGN_MINOR', -5),
 	('TERM_NATIONALISM_PER_ERA', -5), ('TERM_NATIONALISM_MAX', -15),
 	('TERM_CITY_UNHAPPY', -10), ('TERM_CITY_VERY_UNHAPPY', -15), ('TERM_CITY_SUPER_UNHAPPY', -20),
-	('TERM_CIVIL_RESISTANCE', -10), ('TERM_REVOLUTIONARY_WAVE', -20);
+	('TERM_CIVIL_RESISTANCE', -10), ('TERM_REVOLUTIONARY_WAVE', -20),
+
+	-- Historical City-States at game start (UI/FN_Setup.lua)
+	('HISTORICAL_CITY_STATES', 1),     -- 1: swap in the City-States the civs in this game need for their formations
+	('HISTORICAL_MAX_PERCENT', 50),    -- at most this share of the game's City-States is replaced
+	('HISTORICAL_TRAIT_PREFERENCE', 8),-- prefer replacing a City-State of the same trait if it is within this many tiles
+	('HISTORICAL_WAIT_TURNS', 3),      -- wait at most this long for every City-State to found its city
+
+	-- Supranational organisations: members' cohesion with the organisation (UI/FN_Organisations.lua)
+	('ORG_COHESION_START', 60),
+	('ORG_EXIT_THRESHOLD', 25),        -- below this: an exit referendum, decided after ORG_EXIT_COUNTDOWN turns
+	('ORG_EXIT_COUNTDOWN', 5),
+	('OPTOUT_GOLD_PER_ERA', 40), ('OPTOUT_BONUS', 15), ('OPTOUT_TURNS', 20),
+	('TERM_ORG_IDEOLOGY_SHARED', 10), ('TERM_ORG_IDEOLOGY_RIVAL', -15),
+	('TERM_ORG_TRADE', 8), ('TERM_ORG_FRIENDS', 5), ('TERM_ORG_DENOUNCE', -10), ('TERM_ORG_FOUNDER', 5);

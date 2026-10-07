@@ -25,7 +25,7 @@ SQL = ["SQL/FN_Settings.sql", "SQL/FN_Schema.sql", "SQL/FN_Data.sql", "SQL/FN_Or
        "SQL/FN_Independence.sql", "SQL/FN_Perks.sql"]
 TEXT = ["Text/FN_Text_en_US.xml"]
 UI = ["UI/FormableNations.xml", "UI/FormableNations.lua", "UI/FN_Core.lua", "UI/FN_Cohesion.lua", "UI/FN_Organisations.lua",
-      "UI/FN_Independence.lua"]
+      "UI/FN_Independence.lua", "UI/FN_Setup.lua"]
 
 
 def check_lua():
@@ -98,11 +98,12 @@ def check_text_keys(db):
         "TXT_KEY_FN_TERM_": ["LEAD", "CONTESTED", "TREATMENT", "STRONGER", "RELIGION", "TRADE", "NEIGHBOURS", "TENURE",
                              "WAR", "UNHAPPY", "CONCEDE", "PRIVILEGE", "ASSERT",
                              "CONNECTED", "NOT_CONNECTED", "CITY_RELIGION", "GARRISON", "PUPPET", "CITY_TENURE", "DISTANCE",
-                             "FOREIGN", "NATIONALISM", "OPINION", "AUTONOMY", "SUPPRESS"],
+                             "FOREIGN", "NATIONALISM", "OPINION", "AUTONOMY", "SUPPRESS",
+                             "ORG_FOUNDER", "ORG_IDEOLOGY", "ORG_TRADE", "ORG_FRIENDS", "ORG_DENOUNCE", "OPTOUT"],
         "TXT_KEY_FN_KIND_": ["COLONY", "FOREIGN"],
         "TXT_KEY_FN_NOTIFY_": ["REVIVED", "RETURNED", "RELEASED", "INDEPENDENCE",
                                "REVIVED_S", "RETURNED_S", "RELEASED_S", "INDEPENDENCE_S"],
-        "TXT_KEY_FN_ORG_DEPTH_": ["FUNCTIONAL", "INTERGOVERNMENTAL"],
+        "TXT_KEY_FN_ORG_DEPTH_": ["FUNCTIONAL", "INTERGOVERNMENTAL", "SUPRANATIONAL"],
         "TXT_KEY_FN_MODE_": ["UNION", "ALLY", "ABSORB", "OWN"],
         "TXT_KEY_FN_TIER_": ["1", "2"],
     }.items():

@@ -272,5 +272,31 @@
 		<Row Tag="TXT_KEY_FN_NOTIFY_RETURNED"><Text>{1_City} has left {2_Owner} and returned to {3_New}.</Text></Row>
 		<Row Tag="TXT_KEY_FN_NOTIFY_RETURNED_S"><Text>A city returns to {1_New}</Text></Row>
 		<Row Tag="TXT_KEY_FN_NOTIFY_FOLLOWERS"><Text>Restless neighbouring cities went with it: {1_Num}.</Text></Row>
+		<!-- v0.4: supranational organisations -->
+		<Row Tag="TXT_KEY_FN_ORG_DEPTH_SUPRANATIONAL"><Text>[COLOR_YELLOW]Supranational:[ENDCOLOR] shared rules bind the members. Each member's commitment is measured by its cohesion with the organisation; a member that loses faith holds an exit referendum.</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_WHY_SUPERSEDED"><Text>It has merged into its successor.</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_WHY_PREREQ"><Text>Only a member of the organisation it grows out of can found it.</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_REFERENDUM"><Text>[COLOR_NEGATIVE_TEXT]An exit referendum will be held in {1_Num} turns.[ENDCOLOR] Negotiating opt-outs ({2_Cost} [ICON_GOLD] Gold) calls it off and adds +15 cohesion for 20 turns.</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_OPTOUT"><Text>Negotiate opt-outs</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_ORG_FOUNDER"><Text>Leading member</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_ORG_IDEOLOGY"><Text>Ideology compared with the leading member</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_ORG_TRADE"><Text>Trade with other members</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_ORG_FRIENDS"><Text>Declaration of friendship with a member</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_ORG_DENOUNCE"><Text>Denunciations between members</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_OPTOUT"><Text>Opt-outs negotiated</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_ORG_MERGED"><Text>The {1_Org} has been merged into the {2_Org}.</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_ORG_REFERENDUM"><Text>{1_Member} will hold a referendum on leaving the {2_Org} in {3_Num} turns.</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_ORG_REFERENDUM_S"><Text>Exit referendum in {1_Member}</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_ORG_EXIT"><Text>{1_Member} has voted to leave the {2_Org}.</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_ORG_EXIT_S"><Text>{1_Member} votes to leave</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_ECSC_TITLE"><Text>European Coal and Steel Community</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_ECSC_HELP"><Text>+1 [ICON_GOLD] Gold per turn for each [ICON_RES_COAL] Coal you own (up to 10). +3% [ICON_PRODUCTION] Production. European nations owning Coal may join. Merges into the European Economic Community.</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_ECSC_QUOTE"><Text>Proposed by Robert Schuman in 1950 to make war between France and Germany "not merely unthinkable, but materially impossible", the Treaty of Paris (1951) pooled the coal and steel of France, West Germany, Italy and the Benelux countries.</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_EEC_TITLE"><Text>European Economic Community</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_EEC_HELP"><Text>Open borders between member civilizations. +3 [ICON_GOLD] Gold per turn for each of your trade routes to another member. +5% [ICON_GOLD] Gold. +1 Influence per turn with each member City-State. Founded by a member of the Coal and Steel Community, which merges into it.</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_EEC_QUOTE"><Text>The Treaties of Rome (1957) created a customs union and common market among the six members of the Coal and Steel Community.</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_EU_TITLE"><Text>European Union</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_EU_HELP"><Text>Open borders between member civilizations. Members cannot declare war on each other (leave first). +4 [ICON_GOLD] Gold per turn for each of your trade routes to another member. +5% [ICON_GOLD] Gold and +5% [ICON_RESEARCH] Science. +1 Delegate in the World Congress. +2 Influence per turn with each member City-State. Founded by a member of the Economic Community, which merges into it.</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_EU_QUOTE"><Text>The Maastricht Treaty (1993) founded the European Union, adding a common foreign and security policy, cooperation in justice and home affairs, and the path to a single currency. In 2020 the United Kingdom became the first member state to leave.</Text></Row>
 	</Language_en_US>
 </GameData>

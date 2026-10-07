@@ -195,15 +195,25 @@ function FN.BreakawayDestination(pOwner, pCity, sKind)
 			return { Mode = "FREE", Slot = i, MinorType = p:GetMinorCivType() }
 		end
 	end
+	local iSlot = FN.NextFreeMinorSlot()
+	if not iSlot then return nil end
+	local iType, bRename = FN.PickBreakawayType(pCity, sKind)
+	if not iType then return nil end
+	return { Mode = "FREE", Slot = iSlot, MinorType = iType, NewSlot = true, Rename = bRename }
+end
+
+-- The slot the engine opens for a new City-State that no dead City-State has a claim on: the first never-used one.
+function FN.NextFreeMinorSlot()
 	for i = FN.MAX_MAJOR, FN.MAX_CIV - 1 do
 		local p = Players[i]
-		if p and not p:IsEverAlive() and not p:IsObserver() then
-			local iType, bRename = FN.PickBreakawayType(pCity, sKind)
-			if not iType then return nil end
-			return { Mode = "FREE", Slot = i, MinorType = iType, NewSlot = true, Rename = bRename }
-		end
+		if p and not p:IsEverAlive() and not p:IsObserver() then return i end
 	end
-	return nil
+end
+
+-- Sets the type of a never-used slot and checks it took; false if the slot kept another type.
+function FN.PrepareMinorSlot(iSlot, iType)
+	Game.ChangeMinorPlayer(iSlot, iType)
+	return Players[iSlot]:GetMinorCivType() == iType
 end
 
 function FN.CanBreakAway(pOwner, pCity, sKind)
@@ -270,17 +280,14 @@ function FN.BreakAway(pOwner, pCity, sKind, bReleased)
 
 	local iNew
 	if d.Mode == "FREE" then
-		if d.NewSlot then
-			Game.ChangeMinorPlayer(d.Slot, d.MinorType)
+		if d.NewSlot and not FN.PrepareMinorSlot(d.Slot, d.MinorType) then
 			-- Never risk a duplicate City-State: if the slot did not take the type, keep its own only if that is unused.
 			local iActual = Players[d.Slot]:GetMinorCivType()
-			if iActual ~= d.MinorType then
-				if not FN.MinorTypeFree(iActual) then
-					FN.Log("breakaway of %s: slot %d kept type %d, which is in use; skipped", sOldName, d.Slot, iActual)
-					return false
-				end
-				d.MinorType, d.Rename = iActual, (S.RENAME_BREAKAWAY == 1)
+			if not FN.MinorTypeFree(iActual) then
+				FN.Log("breakaway of %s: slot %d kept type %d, which is in use; skipped", sOldName, d.Slot, iActual)
+				return false
 			end
+			d.MinorType, d.Rename = iActual, (S.RENAME_BREAKAWAY == 1)
 		end
 		Game.DoSpawnFreeCity(pCity, true) -- "as if founded by the City-State": it becomes its original capital
 		iNew = d.Slot
