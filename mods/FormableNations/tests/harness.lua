@@ -272,7 +272,7 @@ local oilRes = GameInfoTypes.RESOURCE_OIL
 
 -- Germany, whose Holy Roman Empire partners are all missing, and City-States that could make way for them.
 -- Unused City-State slots, as VP leaves them: never alive, with a placeholder type.
-local germany = NewPlayer(5, { civ = CIV("GERMANY"), name = "Otto", era = 0 })
+local germany = NewPlayer(5, { civ = CIV("GERMANY"), name = "Otto", era = 0, human = true }) -- human for setup: served first
 germany.cities[1] = NewCity(5, 200, 10, "Aachen"); germany.origCap = germany.cities[1]
 local DONORS = {}
 for i, sType in ipairs({ "KABUL", "ALMATY", "MOGADISHU", "KYZYL", "ANTANANARIVO", "LA_VENTA" }) do
@@ -302,6 +302,13 @@ Check(not DONORS[1].alive and not DONORS[2].alive and not DONORS[3].alive and DO
 Check(vatican and vatican.cities[1].name == "Vatican City", "the city takes its new City-State's name")
 Check(vatican and #vatican.units == 1 and not vatican.units[1].found, "the starting Settler is removed and the garrison carried over")
 Check(Present("VILNIUS") and FN.GetN("SETUP_DONE") > 0, "Vilnius was already there; setup ran once")
+germany.human = false
+-- Among AI civs the cap is shared round-robin: each civ's first need before anyone's second.
+local tNeeds = FN.HistoricalNeeds()
+local tFirstCivs = {}
+for i = 1, math.min(3, #tNeeds) do tFirstCivs[tNeeds[i].For:GetID()] = true end
+local iDistinct = 0 for _ in pairs(tFirstCivs) do iDistinct = iDistinct + 1 end
+Check(#tNeeds < 3 or iDistinct == 3, "AI needs are served round-robin across civs (" .. iDistinct .. " civs in the first 3)")
 local savedTurn = TURN
 TURN = 20; FN.Set("SETUP_DONE", 0); FN.SetupHistoricalCityStates()
 Check(DONORS[4].alive and FN.GetN("SETUP_DONE") == 1, "a game already under way (or an older save) is left alone")

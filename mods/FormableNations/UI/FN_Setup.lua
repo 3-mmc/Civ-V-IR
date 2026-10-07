@@ -49,7 +49,31 @@ function FN.HistoricalNeeds()
 			end
 		end
 	end
-	return tNeeds, tClaimed
+	-- Priority under the cap: human players' formations first, then one need per civ per round, so no AI civ
+	-- takes several swaps before every other civ has had its first.
+	local tByCiv, tOrder = {}, {}
+	for _, need in ipairs(tNeeds) do
+		local iP = need.For:GetID()
+		if not tByCiv[iP] then
+			tByCiv[iP] = {}
+			table.insert(tOrder, need.For)
+		end
+		table.insert(tByCiv[iP], need)
+	end
+	local tSorted = {}
+	for _, pMajor in ipairs(tOrder) do
+		if pMajor:IsHuman() then for _, need in ipairs(tByCiv[pMajor:GetID()]) do table.insert(tSorted, need) end end
+	end
+	local bMore, iRound = true, 1
+	while bMore do
+		bMore = false
+		for _, pMajor in ipairs(tOrder) do
+			local need = not pMajor:IsHuman() and tByCiv[pMajor:GetID()][iRound]
+			if need then table.insert(tSorted, need); bMore = true end
+		end
+		iRound = iRound + 1
+	end
+	return tSorted, tClaimed
 end
 
 local function Swap(pDonor, iType)
