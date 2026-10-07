@@ -648,5 +648,25 @@
 		<Row Tag="TXT_KEY_FN_NEW_KINGDOM_TITLE"><Text>Neues Reich</Text></Row>
 		<Row Tag="TXT_KEY_FN_NEW_KINGDOM_HELP"><Text>+5% [ICON_CULTURE] Kultur. +2 [ICON_PEACE] Glauben und +2 [ICON_GOLD] Gold in der [ICON_CAPITAL] Hauptstadt.</Text></Row>
 		<Row Tag="TXT_KEY_FN_NEW_KINGDOM_QUOTE"><Text>Unter Thutmosis III. reichte die Herrschaft Ägyptens um 1450 v. Chr. bis Napata und zum heiligen Berg Dschebel Barkal, und Kusch wurde von einem Vizekönig für den Pharao verwaltet.</Text></Row>
+		<!-- v0.7: Huns, Shoshone, Zulu; achievements -->
+		<Row Tag="TXT_KEY_FN_REQ_ACHIEVEMENT"><Text>{1_Desc}: {2_Have} von {3_Need}</Text></Row>
+		<Row Tag="TXT_KEY_FN_ACH_HORSES"><Text>[ICON_RES_HORSE] Pferde im Besitz</Text></Row>
+		<Row Tag="TXT_KEY_FN_ACH_PASTURES"><Text>Weiden</Text></Row>
+		<Row Tag="TXT_KEY_FN_ACH_RIDERS"><Text>Berittene Einheiten</Text></Row>
+		<Row Tag="TXT_KEY_FN_CS_OYENGWENI"><Text>oYengweni</Text></Row>
+		<Row Tag="TXT_KEY_FN_CS_OYENGWENI_ADJ"><Text>oYengweni|oYengweni|oYengweni-</Text></Row>
+		<Row Tag="TXT_KEY_FN_CS_OYENGWENI_PEDIA"><Text>Königlicher Kraal Dingiswayos, des Oberhaupts der Mthethwa, der seine Krieger zu Beginn des 19. Jahrhunderts in Altersregimenter gliederte.</Text></Row>
+		<Row Tag="TXT_KEY_FN_GROUP_MTHETHWA"><Text>Mthethwa</Text></Row>
+		<Row Tag="TXT_KEY_FN_MTHETHWA_TITLE"><Text>Mthethwa-Oberherrschaft</Text></Row>
+		<Row Tag="TXT_KEY_FN_MTHETHWA_HELP"><Text>+2 [ICON_PRODUCTION] Produktion und +2 [ICON_CULTURE] Kultur in der [ICON_CAPITAL] Hauptstadt.</Text></Row>
+		<Row Tag="TXT_KEY_FN_MTHETHWA_QUOTE"><Text>Shaka stieg als Befehlshaber in den Regimentern Dingiswayos auf, dessen Mthethwa-Oberherrschaft viele Häuptlingstümer zwischen den Flüssen Tugela und Mfolozi verband.</Text></Row>
+		<Row Tag="TXT_KEY_FN_ZULU_KINGDOM_TITLE"><Text>Zulukönigreich</Text></Row>
+		<Row Tag="TXT_KEY_FN_ZULU_KINGDOM_HELP"><Text>+10% [ICON_PRODUCTION] Produktion von Militäreinheiten. Nahkampfeinheiten beginnen mit 15 Erfahrung. +3 [ICON_CULTURE] Kultur in der [ICON_CAPITAL] Hauptstadt.</Text></Row>
+		<Row Tag="TXT_KEY_FN_ZULU_KINGDOM_QUOTE"><Text>Nach Dingiswayos Tod um 1817 übernahm Shaka die Führung der Mthethwa und baute ein zentralisiertes Zulukönigreich auf. 1823 löste sich sein General Mzilikazi und führte seine Anhänger nach Norden, wo sie das Reich der Ndebele gründeten.</Text></Row>
+		<Row Tag="TXT_KEY_FN_HORSE_REVOLUTION_TITLE"><Text>Pferderevolution</Text></Row>
+		<Row Tag="TXT_KEY_FN_HORSE_REVOLUTION_HELP"><Text>Berittene Einheiten: +25% [ICON_PRODUCTION] Produktion und 15 Erfahrung zu Beginn. Weiden: +1 [ICON_PRODUCTION] Produktion und +1 [ICON_CULTURE] Kultur.</Text></Row>
+		<Row Tag="TXT_KEY_FN_HORSE_REVOLUTION_QUOTE"><Text>Pferde erreichten die Shoshone um 1700 über den Handel und veränderten ihre Welt: Ganze Gruppen folgten nun den Bisons in die Prärie. 1805 stellte Sacagaweas Bruder Cameahwait die Pferde, die Lewis und Clark über die Rocky Mountains trugen.</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_HUNNIC_TRIBUTE_TITLE"><Text>Hunnischer Tribut</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_HUNNIC_TRIBUTE_QUOTE"><Text>Im Vertrag von Margus 435 sagte das Oströmische Reich den Hunnen jährlich 700 Pfund Gold zu; bis 447 stieg der Tribut auf 2.100 Pfund. Nur die Hunnen können ihn begründen: Nachbarn, denen sie deutlich überlegen sind, treten bei, um sich Frieden zu erkaufen.</Text></Row>
 	</Language_DE_DE>
 </GameData>

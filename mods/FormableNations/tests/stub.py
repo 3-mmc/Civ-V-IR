@@ -26,6 +26,9 @@ POLICY_TABLES = """
     CREATE TABLE Policy_ResourceYieldChanges (PolicyType text, ResourceType text, YieldType text, Yield integer);
     CREATE TABLE Policy_BuildingClassYieldChanges (PolicyType text, BuildingClassType text, YieldType text, YieldChange integer);
     CREATE TABLE Policy_UnitClassReplacements (PolicyType text, ReplacedUnitClassType text, ReplacementUnitClassType text);
+    CREATE TABLE Policy_UnitCombatFreeExperiences (PolicyType text, UnitCombatType text, FreeExperience integer);
+    CREATE TABLE Policy_UnitCombatProductionModifiers (PolicyType text, UnitCombatType text, ProductionModifier integer);
+    CREATE TABLE Policy_ImprovementYieldChanges (PolicyType text, ImprovementType text, YieldType text, Yield integer);
     CREATE TABLE CustomModOptions (Class integer, Name text, Value integer);
     INSERT INTO CustomModOptions VALUES (3, 'EVENTS_WAR_AND_PEACE', 0);
 """

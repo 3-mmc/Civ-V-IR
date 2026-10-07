@@ -27,6 +27,8 @@ for row in GameInfo.FormableNation_Organisations() do
 		Hegemonic = (row.Hegemonic == true or row.Hegemonic == 1),
 		Custom = (row.Custom == true or row.Custom == 1),
 		FounderCiv = row.FounderCivilization and GameInfoTypes[row.FounderCivilization],
+		OpenToAll = (row.OpenToAll == true or row.OpenToAll == 1),
+		JoinRule = row.JoinRule,
 		Civs = {}, Minors = {}, HasCivList = false, HasMinorList = false,
 	}
 	table.insert(FN.Orgs, o)
@@ -62,7 +64,7 @@ function FN.OrgEligible(o, p)
 	if p:IsMinorCiv() then
 		if o.HasMinorList then
 			if not o.Minors[p:GetMinorCivType()] then return false end
-		elseif not o.ResourceID and not o.Custom then
+		elseif not o.ResourceID and not o.Custom and not o.OpenToAll then
 			return false
 		end
 	else
@@ -92,6 +94,12 @@ end
 -- Would p (City-State or AI major) join an organisation led by pLeader?
 function FN.OrgWilling(o, p, pLeader)
 	if Hostile(p, pLeader) then return false end
+	-- FEAR: those the leader clearly outmatches nearby pay for peace (the Huns' tribute).
+	if o.JoinRule == "FEAR" then
+		local a, b = p:GetCapitalCity(), pLeader:GetCapitalCity()
+		if not a or not b or Map.PlotDistance(a:GetX(), a:GetY(), b:GetX(), b:GetY()) > S.THREAT_TILES then return false end
+		return pLeader:GetMilitaryMight() * 100 >= p:GetMilitaryMight() * S.FEAR_RATIO
+	end
 	-- Members of the organisation this one grows out of come along.
 	if o.PrereqType and FN.IsMember(FN.OrgByType[o.PrereqType], p:GetID()) then return true end
 	if p:IsMinorCiv() then return p:IsFriends(pLeader:GetID()) end

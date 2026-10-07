@@ -158,7 +158,25 @@ Their colours and art styles follow VP's own homeland City-States (`PLAYERCOLOR_
 
 **Japan.** The Empire of Japan is reached through its own unification: the Satsuma–Choshu alliance (1866), then the Meiji state, which abolished the domains in 1871. The alternative, via Taiwan and the Korean City-States, was considered and set aside: it would reward Japan's colonial annexations (Taiwan 1895, Korea 1910) as a formation, and the content rules exclude formations built on the conquest of a living people. For the same reason, Korea's City-States are claimed only by Goryeo.
 
-**Still without a formation:** the Huns, Shoshone and Zulu (undecided).
+**Huns, Shoshone and Zulu:** see v0.7 below.
+
+## Achievements, breakaway preferences, and the Huns, Shoshone and Zulu (built, v0.7)
+
+**Achievement requirements** (`FormableNation_Achievements`). A stage can require game-state conditions as well as claims, or instead of them:
+- `RESOURCE`: Horses owned (`GetNumResourceTotal`).
+- `IMPROVEMENT`: Pastures (`GetImprovementCount`).
+- `UNITCOMBAT`: mounted units.
+
+Each condition appears as a requirement line ("Horses owned: 2 of 4"). This lets civs without fitting partners form nations through what they build.
+
+**Breakaway preferences** (`FormableNation_BreakawayPreferences`). They name the City-State that a civ's breakaway cities become. The preference comes after a name match and before the colonial pool. It overrides VP's `MajorBlocksMinor`, because that block keeps a City-State out of the starting pool, not out of history. Core cities still never break away; this applies to colonies and conquered cities.
+
+| Civ | What | How |
+|---|---|---|
+| Shoshone | Horse Revolution (II, Renaissance–Industrial) | An achievement formation: 4 Horses, 3 Pastures, 3 mounted units. Mounted units get +25% production and 15 starting experience; Pastures +1 Production, +1 Culture; plus a golden age. The civ keeps its own name, because the Comanche are a separate nation. |
+| Zulu | Mthethwa Paramountcy (I) → Zulu Kingdom (II), Renaissance–Industrial | A new formation-only City-State, oYengweni (Dingiswayo's seat): `UNION`, then `ABSORB` after 10 integrated turns. The Kingdom gives +10% military production, 15 experience for melee units and capital Culture. The Mfecane conquests are deliberately not modelled. |
+| Zulu | Ndebele breakaway | Zulu breakaways become Kwa Bulawayo, as Mzilikazi's followers founded the Ndebele kingdom in 1823. |
+| Huns | Hunnic Tribute (alliance, Classical–Medieval) | Only the Huns found it (`FounderCivilization`); any civ or City-State is eligible (`OpenToAll`). Members join out of fear (`JoinRule = FEAR`: the Huns' military might is at least 150% of theirs and their capitals are within 25 tiles). Members pay tribute, the Huns cannot attack them, the Huns' wars call them in, and they leave only by referendum (leading power). |
 
 ## Alliances and defence pacts (built, v0.5)
 

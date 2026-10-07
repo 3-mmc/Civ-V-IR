@@ -24,7 +24,7 @@ VP_SOUNDS = GAME / "Assets/DLC/Expansion2/Sounds/XML/MinorCivSounds_VoxPopuli.xm
 SOUND_BEGIN, SOUND_END = "<!-- Formable Nations City-States BEGIN -->", "<!-- Formable Nations City-States END -->"
 BACKUPS = HERE.parents[1] / "backups"
 
-SQL = ["SQL/FN_Settings.sql", "SQL/FN_Schema.sql", "SQL/FN_CityStates.sql", "SQL/FN_Data.sql", "SQL/FN_Nations.sql", "SQL/FN_Organisations.sql", "SQL/FN_Alliances.sql",
+SQL = ["SQL/FN_Settings.sql", "SQL/FN_Schema.sql", "SQL/FN_CityStates.sql", "SQL/FN_Data.sql", "SQL/FN_Nations.sql", "SQL/FN_Organisations.sql", "SQL/FN_Alliances.sql", "SQL/FN_Steppe.sql",
        "SQL/FN_Independence.sql", "SQL/FN_Perks.sql"]
 TEXT = ["Text/FN_Text_en_US.xml", "Text/FN_Text_de_DE.xml"]
 UI = ["UI/FormableNations.xml", "UI/FormableNations.lua", "UI/FN_Core.lua", "UI/FN_Cohesion.lua", "UI/FN_Organisations.lua",
@@ -71,6 +71,11 @@ def check_sql():
         UNION SELECT MinorCivType FROM FormableNation_OrganisationMembers WHERE MinorCivType IS NOT NULL
             AND MinorCivType NOT IN (SELECT Type FROM MinorCivilizations)
         UNION SELECT EraType FROM FormableNation_EraSettings WHERE EraType NOT IN (SELECT Type FROM Eras)
+        UNION SELECT Kind || ':' || Target FROM FormableNation_Achievements WHERE NOT (
+            (Kind = 'RESOURCE' AND Target IN (SELECT Type FROM Resources))
+            OR (Kind = 'IMPROVEMENT' AND Target IN (SELECT Type FROM Improvements))
+            OR (Kind = 'UNITCOMBAT' AND Target IN (SELECT Type FROM UnitCombatInfos)))
+        UNION SELECT MinorCivType FROM FormableNation_BreakawayPreferences WHERE MinorCivType NOT IN (SELECT Type FROM MinorCivilizations)
         UNION SELECT PromotionType FROM Unit_FreePromotions WHERE UnitType LIKE 'UNIT_FN_%'
             AND PromotionType NOT IN (SELECT Type FROM UnitPromotions)""").fetchall()
     if unknown:
@@ -97,6 +102,7 @@ def check_text_keys(db):
     for row in db.execute("SELECT Description, ShortDescription, Adjective, Civilopedia, NULL, NULL FROM MinorCivilizations WHERE Type LIKE 'MINOR_CIV_FN_%' "
                           "UNION ALL SELECT Title, Description, ShortDescription, Adjective, Help, Quote FROM FormableNations "
                           "UNION ALL SELECT Description, NULL, NULL, NULL, NULL, NULL FROM FormableNation_ClaimGroups "
+                          "UNION ALL SELECT Description, NULL, NULL, NULL, NULL, NULL FROM FormableNation_Achievements "
                           "UNION ALL SELECT Title, Help, Quote, NULL, NULL, NULL FROM FormableNation_Organisations"):
         used.update(v for v in row if v)
     for f in UI:

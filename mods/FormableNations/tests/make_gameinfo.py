@@ -9,7 +9,7 @@ MOD = HERE.parent
 sys.path.insert(0, str(HERE))
 from stub import build_stub  # noqa: E402
 
-SQL = ["SQL/FN_Settings.sql", "SQL/FN_Schema.sql", "SQL/FN_CityStates.sql", "SQL/FN_Data.sql", "SQL/FN_Nations.sql", "SQL/FN_Organisations.sql", "SQL/FN_Alliances.sql",
+SQL = ["SQL/FN_Settings.sql", "SQL/FN_Schema.sql", "SQL/FN_CityStates.sql", "SQL/FN_Data.sql", "SQL/FN_Nations.sql", "SQL/FN_Organisations.sql", "SQL/FN_Alliances.sql", "SQL/FN_Steppe.sql",
        "SQL/FN_Independence.sql", "SQL/FN_Perks.sql"]
 
 # Table -> columns to export (None = all). The DLL-shaped tables are wide, so only what the Lua reads is kept.
@@ -21,6 +21,8 @@ EXPORT = {
     "FormableNation_Settings": None, "FormableNation_EraSettings": None, "FormableNation_ColonialStates": None,
     "FormableNations": None, "FormableNation_ClaimGroups": None, "FormableNation_Claims": None,
     "FormableNation_Organisations": None, "FormableNation_OrganisationMembers": None,
+    "FormableNation_Achievements": None, "FormableNation_BreakawayPreferences": None,
+    "Improvements": None, "UnitCombatInfos": None,
 }
 
 

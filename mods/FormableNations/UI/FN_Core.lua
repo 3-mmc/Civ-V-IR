@@ -51,6 +51,7 @@ for row in GameInfo.FormableNations() do
 		PolicyID = GameInfoTypes[row.PolicyType],
 		GoldenAgeTurns = row.GoldenAgeTurns or 0,
 		UniqueUnits = {}, -- { Unit = unit ID, Replaces = unit ID }, from Policy_UnitClassReplacements (FN_Perks.sql)
+		Achievements = {}, -- { Kind, ID, Amount, Desc }, from FormableNation_Achievements
 		Groups = {}, GroupByID = {},
 	}
 	table.insert(FN.Stages, s)
@@ -63,6 +64,12 @@ for row in GameInfo.Policy_UnitClassReplacements() do
 	local new, old = GameInfo.UnitClasses[row.ReplacementUnitClassType], GameInfo.UnitClasses[row.ReplacedUnitClassType]
 	if s and new and old then
 		table.insert(s.UniqueUnits, { Unit = GameInfoTypes[new.DefaultUnit], Replaces = GameInfoTypes[old.DefaultUnit] })
+	end
+end
+for row in GameInfo.FormableNation_Achievements() do
+	local s = FN.StageByType[row.FormableType]
+	if s and GameInfoTypes[row.Target] then
+		table.insert(s.Achievements, { Kind = row.Kind, ID = GameInfoTypes[row.Target], Amount = row.Amount, Desc = row.Description })
 	end
 end
 for row in GameInfo.FormableNation_ClaimGroups() do
@@ -172,6 +179,18 @@ function FN.TurnsHeld(pPlayer, s)
 	return Game.GetGameTurn() - iTurn
 end
 
+-- How far a player has got with an achievement requirement.
+function FN.AchievementCount(pPlayer, a)
+	if a.Kind == "RESOURCE" then return pPlayer:GetNumResourceTotal(a.ID, false) end
+	if a.Kind == "IMPROVEMENT" then return pPlayer:GetImprovementCount(a.ID) end
+	if a.Kind == "UNITCOMBAT" then
+		local n = 0
+		for pUnit in pPlayer:Units() do if pUnit:GetUnitCombatType() == a.ID then n = n + 1 end end
+		return n
+	end
+	return 0
+end
+
 -- r.Possible: can still happen in this game. r.Ready: can be proclaimed now. r.Lines: requirement report.
 function FN.EvaluateStage(pPlayer, s)
 	local r = { Possible = true, Ready = true, Lines = {}, Annex = {}, Cost = 0 }
@@ -208,6 +227,13 @@ function FN.EvaluateStage(pPlayer, s)
 	local bHappy = not pPlayer:IsEmpireUnhappy()
 	table.insert(r.Lines, { Ok = bHappy, Text = L("TXT_KEY_FN_REQ_HAPPY") })
 	if not bHappy then r.Ready = false end
+
+	for _, a in ipairs(s.Achievements) do
+		local iHave = FN.AchievementCount(pPlayer, a)
+		local bOk = iHave >= a.Amount
+		table.insert(r.Lines, { Ok = bOk, Text = L("TXT_KEY_FN_REQ_ACHIEVEMENT", a.Desc, iHave, a.Amount) })
+		if not bOk then r.Ready = false end
+	end
 
 	for _, g in ipairs(s.Groups) do
 		local tFree, tAnnex, iPresent, tClaimLines = {}, {}, 0, {}

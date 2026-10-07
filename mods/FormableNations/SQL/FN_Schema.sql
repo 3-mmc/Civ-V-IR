@@ -59,3 +59,22 @@ CREATE TABLE IF NOT EXISTS FormableNation_CityStateSounds (
 	MinorCivType text NOT NULL REFERENCES MinorCivilizations(Type),
 	AudioScript text NOT NULL
 );
+
+-- Achievement requirements (v0.7): game-state conditions a stage needs besides (or instead of) claims.
+-- Kind: RESOURCE (owns at least Amount of Target), UNITCOMBAT (at least Amount units of that combat class),
+-- IMPROVEMENT (at least Amount of that improvement).
+CREATE TABLE IF NOT EXISTS FormableNation_Achievements (
+	FormableType text NOT NULL REFERENCES FormableNations(Type),
+	Kind text NOT NULL,
+	Target text NOT NULL,
+	Amount integer NOT NULL DEFAULT 1,
+	Description text NOT NULL
+);
+
+-- Breakaway preferences (v0.7): cities breaking away from this civ become this City-State if it is unused, even if
+-- VP keeps it out of games with that civ (e.g. Zulu breakaways become Kwa Bulawayo, as Mzilikazi's Ndebele did).
+CREATE TABLE IF NOT EXISTS FormableNation_BreakawayPreferences (
+	CivilizationType text NOT NULL REFERENCES Civilizations(Type),
+	MinorCivType text NOT NULL REFERENCES MinorCivilizations(Type),
+	Priority integer NOT NULL DEFAULT 1
+);

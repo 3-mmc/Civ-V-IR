@@ -200,6 +200,8 @@ Unit.__index = Unit
 function Player:AddUnit(t) t.owner = self; table.insert(self.units, setmetatable(t, Unit)); return t end
 function Unit:IsFound() return self.found == true end
 function Unit:IsCombatUnit() return self.combat == true end
+function Unit:GetUnitCombatType() return self.combatType or -1 end
+function Player:GetImprovementCount(i) return (self.improvements or {})[i] or 0 end
 function Unit:GetUnitType() return self.type or 0 end
 function Unit:GetX() return self.x or 0 end
 function Unit:GetY() return self.y or 0 end
@@ -537,7 +539,42 @@ local ok, err = pcall(FN.OpenCharterForTest, { Obligation = "FULL" })
 Check(ok, "the charter window opens" .. (ok and "" or (": " .. tostring(err))))
 britain.human = false
 
-print("Scenario 14: panel renders every tab without errors")
+print("Scenario 14: Shoshone Horse Revolution (achievements), Zulu breakaways (preferences), Hunnic tribute (fear)")
+local shoshone = NewPlayer(13, { civ = CIV("SHOSHONE"), name = "Pocatello", era = 3 })
+shoshone.cities[1] = NewCity(13, 400, 300, "Moson Kahni"); shoshone.origCap = shoshone.cities[1]
+shoshone.resources[GameInfoTypes.RESOURCE_HORSE] = 2
+shoshone.improvements = { [GameInfoTypes.IMPROVEMENT_PASTURE] = 3 }
+for _ = 1, 3 do shoshone:AddUnit({ combat = true, combatType = GameInfoTypes.UNITCOMBAT_MOUNTED }) end
+RunTurns(1)
+local horse = FN.StageByType.FN_HORSE_REVOLUTION
+Check(not FN.HasStage(shoshone, horse), "two Horses are not enough")
+shoshone.resources[GameInfoTypes.RESOURCE_HORSE] = 4
+RunTurns(1)
+Check(FN.HasStage(shoshone, horse) and shoshone.goldenAge == 8, "with 4 Horses, 3 Pastures and 3 riders the Horse Revolution is proclaimed")
+
+local zulu = NewPlayer(14, { civ = CIV("ZULU"), name = "Shaka", era = 5, stateReligion = 1, unhappy = true })
+zulu.cities[1] = NewCity(14, 450, 450, "Ulundi"); zulu.origCap = zulu.cities[1]
+local zuluColony = NewCity(14, 490, 490, "Inyati"); zuluColony.area, zuluColony.connected, zuluColony.religion = 7, false, 2
+table.insert(zulu.cities, zuluColony)
+local tZ = BreakawayWithin(zuluColony, 60)
+Check(tZ and Players[zuluColony.owner].minor == MINOR("KWA_BULAWAYO"),
+	"a Zulu breakaway becomes Kwa Bulawayo, the Ndebele, despite VP's block (turn " .. tostring(tZ) .. ")")
+
+local huns = NewPlayer(15, { civ = CIV("HUNS"), name = "Attila", era = 1, might = 100, gold = 0 })
+huns.cities[1] = NewCity(15, 600, 600, "Atilla's Court"); huns.origCap = huns.cities[1]
+local goths = NewPlayer(16, { civ = CIV("BYZANTIUM"), name = "Theodosius", era = 1, might = 20, gold = 500 })
+goths.cities[1] = NewCity(16, 610, 605, "Constantinople"); goths.origCap = goths.cities[1]
+local farAway = NewPlayer(17, { civ = CIV("INCA"), name = "Pachacuti", era = 1, might = 5 })
+farAway.cities[1] = NewCity(17, 900, 900, "Cusco"); farAway.origCap = farAway.cities[1]
+RunTurns(2)
+local tribute = FN.OrgByType.ORG_HUNNIC_TRIBUTE
+Check(FN.OrgActive(tribute) and FN.OrgLeader(tribute) == 15 and FN.IsMember(tribute, 16), "the Huns found the tribute; their outmatched neighbour joins")
+Check(not FN.IsMember(tribute, 17), "a weak civ far away does not")
+Check(huns.gold > 0 and goths.gold < 500, "tribute flows to the Huns (" .. huns.gold .. " gold)")
+Check(not Teams[15]:CanDeclareWar(16), "the Huns cannot attack a tributary")
+Check(not FN.CanLeaveOrg(tribute, goths), "tributaries leave only by referendum")
+
+print("Scenario 15: panel renders every tab without errors")
 for _, sTab in ipairs({ "NATIONS", "UNIONS", "ORGS", "PROVINCES", "WORLD" }) do
 	local ok, err = pcall(FN.ShowPanelTab, sTab)
 	Check(ok, "tab " .. sTab .. (ok and "" or (": " .. tostring(err))))

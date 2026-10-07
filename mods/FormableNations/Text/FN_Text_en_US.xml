@@ -646,5 +646,25 @@
 		<Row Tag="TXT_KEY_FN_NEW_KINGDOM_TITLE"><Text>New Kingdom</Text></Row>
 		<Row Tag="TXT_KEY_FN_NEW_KINGDOM_HELP"><Text>+5% [ICON_CULTURE] Culture. +2 [ICON_PEACE] Faith and +2 [ICON_GOLD] Gold in the [ICON_CAPITAL] Capital.</Text></Row>
 		<Row Tag="TXT_KEY_FN_NEW_KINGDOM_QUOTE"><Text>Under Thutmose III, around 1450 BC, Egypt's rule reached Napata and the holy mountain of Jebel Barkal, and Kush was governed by a viceroy for the pharaoh.</Text></Row>
+		<!-- v0.7: Huns, Shoshone, Zulu; achievements -->
+		<Row Tag="TXT_KEY_FN_REQ_ACHIEVEMENT"><Text>{1_Desc}: {2_Have} of {3_Need}</Text></Row>
+		<Row Tag="TXT_KEY_FN_ACH_HORSES"><Text>[ICON_RES_HORSE] Horses owned</Text></Row>
+		<Row Tag="TXT_KEY_FN_ACH_PASTURES"><Text>Pastures</Text></Row>
+		<Row Tag="TXT_KEY_FN_ACH_RIDERS"><Text>Mounted units</Text></Row>
+		<Row Tag="TXT_KEY_FN_CS_OYENGWENI"><Text>oYengweni</Text></Row>
+		<Row Tag="TXT_KEY_FN_CS_OYENGWENI_ADJ"><Text>oYengweni</Text></Row>
+		<Row Tag="TXT_KEY_FN_CS_OYENGWENI_PEDIA"><Text>Royal homestead of Dingiswayo, paramount chief of the Mthethwa, who reorganised his warriors into age-grade regiments in the early 19th century.</Text></Row>
+		<Row Tag="TXT_KEY_FN_GROUP_MTHETHWA"><Text>Mthethwa</Text></Row>
+		<Row Tag="TXT_KEY_FN_MTHETHWA_TITLE"><Text>Mthethwa Paramountcy</Text></Row>
+		<Row Tag="TXT_KEY_FN_MTHETHWA_HELP"><Text>+2 [ICON_PRODUCTION] Production and +2 [ICON_CULTURE] Culture in the [ICON_CAPITAL] Capital.</Text></Row>
+		<Row Tag="TXT_KEY_FN_MTHETHWA_QUOTE"><Text>Shaka rose as a commander in the regiments of Dingiswayo, whose Mthethwa paramountcy bound many of the chiefdoms between the Tugela and Mfolozi rivers.</Text></Row>
+		<Row Tag="TXT_KEY_FN_ZULU_KINGDOM_TITLE"><Text>Zulu Kingdom</Text></Row>
+		<Row Tag="TXT_KEY_FN_ZULU_KINGDOM_HELP"><Text>+10% [ICON_PRODUCTION] Production of military units. Melee units start with 15 experience. +3 [ICON_CULTURE] Culture in the [ICON_CAPITAL] Capital.</Text></Row>
+		<Row Tag="TXT_KEY_FN_ZULU_KINGDOM_QUOTE"><Text>After Dingiswayo's death around 1817, Shaka took up the leadership of the Mthethwa and built a centralised Zulu kingdom. In 1823 his general Mzilikazi broke away and led his followers north, where they founded the Ndebele kingdom.</Text></Row>
+		<Row Tag="TXT_KEY_FN_HORSE_REVOLUTION_TITLE"><Text>Horse Revolution</Text></Row>
+		<Row Tag="TXT_KEY_FN_HORSE_REVOLUTION_HELP"><Text>Mounted units: +25% [ICON_PRODUCTION] Production and 15 starting experience. Pastures: +1 [ICON_PRODUCTION] Production and +1 [ICON_CULTURE] Culture.</Text></Row>
+		<Row Tag="TXT_KEY_FN_HORSE_REVOLUTION_QUOTE"><Text>Horses reached the Shoshone through trade around 1700 and changed their world: whole bands now followed the bison onto the plains. In 1805 Sacagawea's brother Cameahwait supplied the horses that carried Lewis and Clark across the Rockies.</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_HUNNIC_TRIBUTE_TITLE"><Text>Hunnic Tribute</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_HUNNIC_TRIBUTE_QUOTE"><Text>By the Treaty of Margus in 435 the Eastern Roman Empire agreed to pay the Huns 700 pounds of gold a year; by 447 the tribute had risen to 2,100 pounds. Only the Huns can found it: neighbours they clearly outmatch join to buy peace.</Text></Row>
 	</Language_en_US>
 </GameData>

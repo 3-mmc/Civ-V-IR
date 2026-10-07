@@ -89,4 +89,5 @@ INSERT INTO FormableNation_Settings (Name, Value) VALUES
 	('THREAT_TILES', 25), ('TERM_THREAT', 10), -- a stronger outside power this close to a member binds the alliance together
 	('BURDEN_TARGET_PERCENT', 50),     -- TARGET: military might at least this share of the members' average
 	('TERM_TARGET_MET', 5), ('TERM_TARGET_MISSED', -10),
-	('TRIBUTE_GOLD_PER_ERA', 1), ('TERM_TRIBUTE', -5); -- TRIBUTE: per turn per member, x (era + 1), paid to the leader
+	('TRIBUTE_GOLD_PER_ERA', 1), ('TERM_TRIBUTE', -5), -- TRIBUTE: per turn per member, x (era + 1), paid to the leader
+	('FEAR_RATIO', 150);               -- JoinRule FEAR: the leader's military might at least this % of the member's, within THREAT_TILES

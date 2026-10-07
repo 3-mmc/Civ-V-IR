@@ -155,7 +155,20 @@ function FN.MinorTypeFree(iType)
 	return iType ~= nil and iType >= 0 and not BlockedTypes()[iType] and not TypeTaken(iType)
 end
 
-function FN.PickBreakawayType(pCity, sKind)
+-- City-States a civ's breakaways should become, best first (FormableNation_BreakawayPreferences).
+local tPreferences = {}
+for row in GameInfo.FormableNation_BreakawayPreferences() do
+	local iCiv, iType = GameInfoTypes[row.CivilizationType], GameInfoTypes[row.MinorCivType]
+	if iCiv and iType then
+		tPreferences[iCiv] = tPreferences[iCiv] or {}
+		table.insert(tPreferences[iCiv], { Type = iType, Priority = row.Priority })
+	end
+end
+for _, t in pairs(tPreferences) do table.sort(t, function(a, b) return a.Priority < b.Priority end) end
+
+-- pOwner (optional): the civ the city breaks away from; its breakaway preferences come right after a name match and
+-- override VP's MajorBlocksMinor (that block keeps the City-State out of the starting pool, not out of history).
+function FN.PickBreakawayType(pCity, sKind, pOwner)
 	local tBlocked = BlockedTypes()
 	local function Free(iType) return iType and not tBlocked[iType] and not TypeTaken(iType) end
 	local sName = string.lower(pCity:GetName())
@@ -168,6 +181,9 @@ function FN.PickBreakawayType(pCity, sKind)
 		end
 	end
 	local bRename = (S.RENAME_BREAKAWAY == 1)
+	for _, pref in ipairs(pOwner and tPreferences[pOwner:GetCivilizationType()] or {}) do
+		if not TypeTaken(pref.Type) then return pref.Type, bRename end
+	end
 	if sKind == "COLONY" then
 		local tColonial = {}
 		for row in GameInfo.FormableNation_ColonialStates() do
@@ -198,7 +214,7 @@ function FN.BreakawayDestination(pOwner, pCity, sKind)
 	end
 	local iSlot = FN.NextFreeMinorSlot()
 	if not iSlot then return nil end
-	local iType, bRename = FN.PickBreakawayType(pCity, sKind)
+	local iType, bRename = FN.PickBreakawayType(pCity, sKind, pOwner)
 	if not iType then return nil end
 	return { Mode = "FREE", Slot = iSlot, MinorType = iType, NewSlot = true, Rename = bRename }
 end

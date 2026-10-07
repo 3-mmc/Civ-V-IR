@@ -28,7 +28,9 @@ CREATE TABLE IF NOT EXISTS FormableNation_Organisations (
 	Burden text,                                  -- NONE, TARGET (members keep their military near the alliance average), TRIBUTE (members pay the leader)
 	Hegemonic boolean NOT NULL DEFAULT 0,         -- the leader's own wars call members in; members leave only by referendum
 	Custom boolean NOT NULL DEFAULT 0,            -- a slot for a player-drafted pact: name and terms chosen at founding
-	FounderCivilization text REFERENCES Civilizations(Type) -- only this civilization may found it (e.g. China's tributary system)
+	FounderCivilization text REFERENCES Civilizations(Type), -- only this civilization may found it (e.g. China's tributary system)
+	OpenToAll boolean NOT NULL DEFAULT 0,         -- any civilization or City-State may join (no member list)
+	JoinRule text                                 -- FEAR: members join because the leader outmatches them nearby
 );
 
 -- Eligible peoples. No CivilizationType rows: every major civ may join. No MinorCivType rows: no City-State may join,
