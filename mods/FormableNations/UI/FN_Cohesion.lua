@@ -238,6 +238,7 @@ function FN.RespondCrisis(pLeader, pPartner, sChoice)
 	end
 	FN.Set(K("BCR", iL, iP), 0)
 	FN.Set(K("BCD", iL, iP), iTurn + FN.Turns(S.CRISIS_COOLDOWN))
+	FN.Set("BUCD_" .. iL, iTurn + FN.Turns(S.CRISIS_COOLDOWN))
 	FN.Log("crisis %d -> %d answered: %s", iL, iP, sChoice)
 	return true
 end
@@ -269,7 +270,12 @@ end
 function FN.IntegrationReport(pLeader, sUnion, iTurnsNeeded)
 	local iL, iTurn, bAll, tLines = pLeader:GetID(), Game.GetGameTurn(), true, {}
 	local tBonds = FN.BondsOf(pLeader, sUnion)
-	if #tBonds == 0 then bAll = false end
+	if #tBonds == 0 then
+		-- Claims already owned need no partner integration, but still require time under the union.
+		local iHeld = FN.TurnsHeld(pLeader, sUnion)
+		bAll = FN.UnionStillHolds(pLeader, sUnion) and iHeld >= iTurnsNeeded
+		table.insert(tLines, { Ok = bAll, Text = L("TXT_KEY_FN_REQ_PREREQ", sUnion.Title, iTurnsNeeded, iHeld) })
+	end
 	for _, b in ipairs(tBonds) do
 		local iP = b.Partner:GetID()
 		local iSince = FN.GetN(K("BI", iL, iP))
@@ -289,6 +295,10 @@ function FN.ProcessCohesion(pLeader)
 	local iL, iTurn = pLeader:GetID(), Game.GetGameTurn()
 	for _, s in ipairs(FN.Stages) do
 		if s.IsUnion and FN.HasStage(pLeader, s) then
+			local bCrisisActive = false
+			for _, b in ipairs(FN.BondsOf(pLeader, s)) do
+				if FN.InCrisis(iL, b.Partner:GetID()) then bCrisisActive = true end
+			end
 			-- New partners who qualify join automatically (e.g. a third imperial estate).
 			for _, pPartner in ipairs(EligiblePartners(pLeader, s)) do
 				if not FN.IsBound(iL, pPartner:GetID()) then
@@ -329,10 +339,12 @@ function FN.ProcessCohesion(pLeader)
 					if iCrisis > 0 and iTurn - iCrisis >= FN.Turns(S.CRISIS_EXPIRES) then
 						FN.Set(K("BCR", iL, iP), 0)
 						FN.Set(K("BCD", iL, iP), iTurn + FN.Turns(S.CRISIS_COOLDOWN))
+						FN.Set("BUCD_" .. iL, iTurn + FN.Turns(S.CRISIS_COOLDOWN))
 						iCrisis = 0
 					end
-					if iCrisis == 0 and fC < S.COHESION_CRISIS and fC >= S.COHESION_SECESSION and FN.GetN(K("BCD", iL, iP)) <= iTurn then
+					if not bCrisisActive and FN.GetN("BUCD_" .. iL) <= iTurn and iCrisis == 0 and fC < S.COHESION_CRISIS and fC >= S.COHESION_SECESSION and FN.GetN(K("BCD", iL, iP)) <= iTurn then
 						FN.Set(K("BCR", iL, iP), iTurn)
+						bCrisisActive = true
 						FN.Log("crisis %d -> %d at cohesion %.1f", iL, iP, fC)
 						if pLeader:IsHuman() then
 							FN.Notify(pLeader, L("TXT_KEY_FN_NOTIFY_CRISIS", FN.PlayerName(pPartner), s.Title), L("TXT_KEY_FN_NOTIFY_CRISIS_S", FN.PlayerName(pPartner)))

@@ -463,10 +463,11 @@ end
 function FN.ProcessProvinces(pOwner)
 	local iOwner = pOwner:GetID()
 	local tCities = {}
-	for pCity in pOwner:Cities() do table.insert(tCities, pCity) end
-	for _, pCity in ipairs(tCities) do
-		-- A breakaway earlier in this loop may have taken followers with it.
-		if pCity:GetOwner() == iOwner then
+	for pCity in pOwner:Cities() do table.insert(tCities, pCity:Plot()) end
+	for _, pPlot in ipairs(tCities) do
+		-- AcquireCity destroys the old CvCity, including followers transferred by an earlier breakaway.
+		local pCity = pPlot:GetPlotCity()
+		if pCity and pCity:GetOwner() == iOwner then
 			local sKind = FN.CityKind(pCity)
 			if sKind == "COLONY" or sKind == "FOREIGN" then ProcessCity(pOwner, pCity, sKind) end
 		end

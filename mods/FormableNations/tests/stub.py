@@ -6,12 +6,14 @@ misspelt or non-existent column fails here instead of only in the game's Databas
 source checkout, a small fallback column list is used and that guarantee is lost (a warning is printed).
 """
 import re
+import os
 import sqlite3
 import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-DLL = HERE.parents[2] / "upstream/Community-Patch-DLL/CvGameCoreDLL_Expansion2"
+REFERENCES = Path(os.environ.get("CIVVNEO_REFERENCE_ROOT", str(HERE.parents[3])))
+DLL = REFERENCES / "upstream/Community-Patch-DLL/CvGameCoreDLL_Expansion2"
 BASE_INFO = ["Type", "Description", "Civilopedia", "Strategy", "Help", "DisabledHelp", "Text"]  # CvBaseInfo::CacheResults
 FALLBACK = {
     "CvPolicyClasses.cpp": ["PolicyBranchType", "IsDummy", "FreeWCVotes", "MilitaryProductionModifier", "EmbarkedExtraMoves",

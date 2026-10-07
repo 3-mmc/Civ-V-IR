@@ -205,6 +205,10 @@ function Player:GetImprovementCount(i) return (self.improvements or {})[i] or 0 
 function Unit:GetUnitType() return self.type or 0 end
 function Unit:GetX() return self.x or 0 end
 function Unit:GetY() return self.y or 0 end
+function Unit:Convert(old)
+	self.experience, self.promotions, self.damage = old.experience, old.promotions, old.damage
+	old:Kill()
+end
 function Unit:Kill() for i, u in ipairs(self.owner.units) do if u == self then table.remove(self.owner.units, i) end end end
 function Player:GetPlayerColors() return { x = 1, y = 0, z = 0, w = 1 }, { x = 1, y = 1, z = 1, w = 1 } end
 function Team:IsAtWar(t) return self.war[t] == true end
@@ -580,5 +584,14 @@ for _, sTab in ipairs({ "NATIONS", "UNIONS", "ORGS", "PROVINCES", "WORLD" }) do
 	Check(ok, "tab " .. sTab .. (ok and "" or (": " .. tostring(err))))
 end
 
+dofile("tests/regressions.lua")({
+	Check = Check, NewPlayer = NewPlayer, NewCity = NewCity, CIV = CIV, MINOR = MINOR, Player = Player,
+	SetTurn = function(n) TURN = n end,
+	Reset = function()
+		for k in pairs(SAVE) do SAVE[k] = nil end
+		Players, Teams, PLOTS, NOTES = {}, {}, {}, {}
+		TURN = 100
+	end,
+})
 print(FAILS == 0 and "ALL PASSED" or (FAILS .. " FAILED"))
 os.exit(FAILS == 0 and 0 or 1)

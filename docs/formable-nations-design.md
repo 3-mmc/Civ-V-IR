@@ -1,6 +1,6 @@
 # Formable Nations — design
 
-Status (2026-10-07): v0.2 built: nations, union cohesion and secession, and functional and intergovernmental organisations. Built for Vox Populi 5.4.6 + EUI. Every build runs an offline harness: the real Lua modules against a mock of the game API, with scripted scenarios in `mods/FormableNations/tests/`. **Not yet verified in the real game.**
+Status (2026-10-07): implementation through v0.7, with review fixes for formation, organisations, alliances and city transfers. See [review and remaining gaps](review-2026-10-07.md). Built for Vox Populi 5.4.6 + EUI. Every build runs an offline harness: the real Lua modules against a mock of the game API, with scripted scenarios in `mods/FormableNations/tests/`. **Not yet verified in the real game.**
 
 ## Goal
 
@@ -18,7 +18,7 @@ The same people can produce different outcomes in different eras, because each s
 
 - **Germany**: Holy Roman Empire (Medieval–Renaissance; an elective union of estates crowned by the Pope), *or* the German Empire (Industrial–Modern; unification under Prussia). The HRE is not a prerequisite for 1871, so either route can happen.
 - **Austria**: Habsburg Monarchy (Renaissance–Industrial; the 1526 personal union with Hungary) can become **Austria-Hungary** (Industrial–Modern; the 1867 Dual Monarchy).
-- **Poland**: Union of Krewo (Medieval–Renaissance; the 1385 personal union) is *required* before the **Polish–Lithuanian Commonwealth** (Renaissance–Industrial; the 1569 Union of Lublin). The Commonwealth did not come from conquest.
+- **Poland**: Union of Krewo (Medieval–Renaissance; the 1385 personal union) is *required* before the **Polish–Lithuanian Commonwealth** (Renaissance–Industrial; the 1569 Union of Lublin). The prerequisite union is mandatory even when a claimed capital is already owned; owned-only unions use the prerequisite tenure instead of an absent partner cohesion meter.
 
 Missing an era window is a real outcome. A Poland that reaches the Industrial era without the Commonwealth stays Poland.
 
@@ -28,7 +28,7 @@ A stage lists *claim groups*. Each group names candidate cities and how many of 
 
 | Mode | Satisfied by | On formation | Maintained? |
 |---|---|---|---|
-| `UNION` | City-state allied with you for at least *N* turns (or married, for Austria); a major civ whose team is your vassal; or you own the city | City-state is bound into the union: its Influence with you is topped up each turn so ordinary decay can't end it | Yes. If a rival out-influences you, or war breaks out, the union dissolves |
+| `UNION` | City-state allied with you for at least *N* turns (or married, for Austria); a major civ whose team is your vassal; or you own the city | City-state is bound into the union: its Influence with you is topped up each turn so ordinary decay can't end it | Yes. A rival winning the alliance lowers cohesion; war breaks the bond immediately |
 | `ALLY` | City-state is currently your ally, or you own the city | Nothing. This is recognition, e.g. papal coronation | No |
 | `ABSORB` | Same as `UNION` for city-states; owning the city for majors | City-state's cities and military units pass to you as a peaceful buyout (`AcquireCity(city, false, true)`, the engine's own city-state buyout path) at VP's buyout price | — |
 | `OWN` | You own the city | Nothing | No |
@@ -64,7 +64,7 @@ Each civ keeps its own border colours. A **second, outer outline** traces the co
 
 ## Cohesion and secession (built, v0.2)
 
-Every bond that is **not** an absorption has a cohesion score from 0 to 100. Bonds are union partners, vassal members of a union, players in a shared union, and bloc members. Absorbed cities have no cohesion: once a partner is integrated, VP's own city unrest and rebellion rules apply instead.
+Union partners and vassal members have cohesion from 0 to 100; supranational organisations and alliances track member cohesion separately. Consensual shared-player unions are still planned. Absorbed cities have no cohesion: once a partner is integrated, VP's own city unrest and rebellion rules apply instead.
 
 **Drift, not dice.** Each turn, cohesion moves about 2 points (Standard speed) toward an *equilibrium* value computed from the current situation. Trends are slow and visible; there are no random collapses.
 
@@ -79,10 +79,10 @@ Every bond that is **not** an absorption has a cohesion score from 0 to 100. Bon
 **Thresholds.**
 - **75+, Integrated.** The only way to deepen to the State stage. It replaces the flat "held for N turns" rule: you need cohesion ≥ 75 for N turns. This is the Lublin path: decades of shared rule *made* the merger.
 - **40–75, Stable.** Nothing happens.
-- **20–40, Autonomy crisis.** An event with choices. **Concede**: pay Gold or Influence for an equilibrium bonus over 20 turns. **Grant privileges**: give up part of the union bonus, which the partner then receives. **Assert control**: costs Influence with every *other* city-state, which see it as a warning.
+- **20–40, Autonomy crisis.** An event with choices. **Concede**: pay Gold for an equilibrium bonus over 20 turns. **Grant privileges**: pay a per-turn Gold cost for a temporary equilibrium bonus. Policy-bonus sharing with the partner is not implemented. **Assert control**: costs Influence with every *other* city-state, which see it as a warning.
 - **Below 20, Secession countdown.** 5 turns, announced to every player, unless cohesion rises above 20 again. Then the union dissolves. A city-state goes free with its Influence reset to neutral; a vassal ends its vassalage.
 
-**The partner has agency too.** An AI partner (or a human in multiplayer, below) can **petition for autonomy**: deliberately pull equilibrium down to win concessions. Or it can **pledge loyalty**: speed up integration in return for a share of the union bonus.
+**Planned partner agency (not implemented).** An AI partner (or a human in multiplayer, below) can **petition for autonomy**: deliberately pull equilibrium down to win concessions. Or it can **pledge loyalty**: speed up integration in return for a share of the union bonus.
 
 ### Keeping unions from becoming too hard
 
@@ -92,7 +92,7 @@ Every bond that is **not** an absorption has a cohesion score from 0 to 100. Bon
 - At 2 points per turn, falling from 60 to 20 takes about 20 turns, so the panel's trend arrow and forecast ("secession risk in ~12 turns") give plenty of warning.
 - **The flat Influence top-up from v0.1 is gone.** Instead, a bound city-state's Influence *resting point* with its leader is raised to the alliance threshold + 10 (`ChangeRestingPointChange`), so Influence settles there naturally. When the bond ends, the change is reverted.
 - **What the harness shows:** three wars, unhappiness and a religious split together leave a union with a strong Influence lead at about 40, so it never reaches a crisis. A rival winning the partner over is decisive: a crisis follows, and after about 29 turns, secession, even with a concession. That matches the intent: rivals break unions, neglect alone doesn't.
-- Deepening uses cohesion: Commonwealth, Austria-Hungary and Great Britain need every partner of their union at 75+ for 10 turns. The German Empire has no union predecessor and uses the alliance path.
+- Deepening uses cohesion: Commonwealth, Austria-Hungary and Great Britain need every remaining partner of their union at 75+ for 10 turns. With no remaining partners, all union claim groups must still be owned and the union must have lasted at least 10 turns. A Celtic-major claim for Great Britain requires ownership of its original capital; vassalage alone cannot satisfy the State stage. The German Empire has no union predecessor and uses the alliance path.
 - All tuning lives in the `FormableNation_Settings` table.
 - Every value goes to `Lua.log` each turn. Tuning comes from AI autoplay runs, as the CivVNeo blueprint requires, not from guesswork.
 
@@ -118,10 +118,10 @@ Three depths, mirroring union → state at international scale. All of them use 
 
 - **Membership criteria** come per organisation from data. Culture and region use civilization and city-state lists (ASEAN: Siam, Indonesia + Hanoi, Manila, Kuala Lumpur, Singapore, Malacca). Function uses game state (OPEC: owns Oil; Hanseatic: coastal cities with trade routes to members).
 - **Functional organisations give the early and mid game an "international" layer**, and some feed national formation. Example: **German Empire via the Zollverein**, where sustained cohesion with the German city-states replaces annexation by force.
-- **OPEC-style cartels** work as written. GCC-scale regional bodies are thin, because only one Gulf city-state exists (Ormus).
+- **OPEC currently pays Gold per Oil only; pooled monopolies and output quotas are not implemented.** GCC-scale regional bodies are thin, because only one Gulf city-state exists (Ormus).
 - **As built (v0.2):** the Hanseatic League and OPEC (functional), plus the Arab League, African Union, ASEAN, Nordic Council and Mercosur (intergovernmental). Effects are applied each turn in the lead member's turn: Gold per trade route between members, Gold per Oil (OPEC, capped at 10), Influence with member city-states, and real open borders via `Team:SetOpenBorders`.
-- **Who joins:** city-states join when they're Friends with the leader. AI majors join functional organisations unless hostile (at war or denouncing); intergovernmental ones need a Declaration of Friendship or a shared majority religion. Humans are invited and accept in the panel. Members leave when they stop qualifying or turn hostile. The Hanseatic League dissolves after the Renaissance.
-- **Known simplification:** leaving an organisation removes the open borders it granted, even if the same two civs also signed an open-borders deal. Separate tracking needs DLL work.
+- **Who joins:** city-states join when they're Friends with the leader. AI majors join functional organisations unless hostile (at war or denouncing); intergovernmental ones need a Declaration of Friendship or a shared majority religion. Humans are invited and accept in the panel. Members leave when they stop qualifying or turn hostile. Joining is blocked while at war with any member or hostile to the leader, and leaving starts a 30-turn rejoin cooldown (scaled by game speed). An organisation dissolves if its last major member leaves. The Hanseatic League dissolves after the Renaissance.
+- **Known simplification:** leaving an organisation preserves borders granted by other active organisations (including a successor), but can remove borders from an independent open-borders deal. Separate tracking needs DLL work.
 - **Supranational, as built (v0.4): the European chain.**
   - **Coal and Steel Community** (functional, Modern era). European nations owning Coal can join. It pays Gold per Coal and +3% Production.
   - **Economic Community** (intergovernmental, Atomic era). It can only be founded by a Coal and Steel Community member. It gives open borders, +3 Gold per trade route between members and +5% Gold.
@@ -194,9 +194,9 @@ The game's own defensive pact is a binary switch with no terms. Alliances here a
 Members can never declare war on each other.
 
 **Calls to arms.**
-- **Queue:** `GameEvents.DeclareWar` fires inside the engine's declaration, before the war state is set. The mod therefore queues the declaration and resolves obligations in the next player's turn processing.
+- **Queue:** `GameEvents.DeclareWar` fires inside the engine's declaration, before the war state is set. The mod therefore saves each queued declaration and resolves obligations in the next player's turn processing.
 - **AI members:** an AI answers if its cohesion with the alliance is at least 40, and joins as a defensive-pact war (`Team:DeclareWar(team, true, player)`).
-- **Human members:** you get a call on the Organisations tab and have 5 turns to honour or decline it; silence counts as refusal.
+- **Human members:** you get a call on the Organisations tab and have 5 turns to honour or decline it; silence counts as refusal. Concurrent calls against different teams are retained separately, and a call lapses without penalty if its caller has already made peace.
 - **City-State members:** they always answer binding calls.
 - **Credibility:** honouring a binding call gives +10 credibility and refusing gives -15. Credibility fades by 1 a turn, and enters cohesion as a term between -20 and +10.
 

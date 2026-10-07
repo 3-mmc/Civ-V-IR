@@ -176,6 +176,7 @@
 		<Row Tag="TXT_KEY_FN_ORG_INCOME"><Text>Eure Einnahmen aus der Mitgliedschaft in der letzten Runde: {1_Num} [ICON_GOLD] Gold</Text></Row>
 		<Row Tag="TXT_KEY_FN_ORG_CANDIDATES"><Text>Bereitwillige Gründungsmitglieder derzeit: {1_Num} (benötigt {2_Need}, Euch eingeschlossen). Andere menschliche Spieler werden nach der Gründung eingeladen.</Text></Row>
 		<Row Tag="TXT_KEY_FN_ORG_FOUND"><Text>Gründen</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_JOIN_BLOCKED"><Text>Ein Beitritt erfordert Frieden mit allen Mitgliedern, keine gegenseitigen Denunziationen mit dem führenden Mitglied und den Ablauf der Wartezeit nach einem Austritt.</Text></Row>
 		<Row Tag="TXT_KEY_FN_ORG_JOIN"><Text>Beitreten</Text></Row>
 		<Row Tag="TXT_KEY_FN_ORG_LEAVE"><Text>Austreten</Text></Row>
 		<Row Tag="TXT_KEY_FN_ORG_WHY_ACTIVE"><Text>Existiert bereits</Text></Row>

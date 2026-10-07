@@ -86,6 +86,21 @@ local function Hostile(pA, pB)
 	return false
 end
 
+-- A departure must survive the automatic recruitment pass. This also applies to founders.
+local function RejoinReady(o, p)
+	return FN.GetN("OJ_" .. o.Type .. "_" .. p:GetID()) <= Game.GetGameTurn()
+end
+
+function FN.CanJoinOrg(o, p)
+	if not FN.OrgActive(o) or FN.IsMember(o, p:GetID()) or not FN.OrgEligible(o, p) or not RejoinReady(o, p) then return false end
+	local pLeader = Players[FN.OrgLeader(o)]
+	if not pLeader or not pLeader:IsAlive() or Hostile(p, pLeader) then return false end
+	for _, q in ipairs(FN.Members(o)) do
+		if Teams[p:GetTeam()]:IsAtWar(q:GetTeam()) then return false end
+	end
+	return true
+end
+
 local function ReligionOf(p)
 	local pCapital = p:GetCapitalCity()
 	return pCapital and pCapital:GetReligiousMajority() or -1
@@ -123,8 +138,10 @@ function FN.OrgCandidates(o, pLeader)
 	local t = { pLeader }
 	for i = 0, FN.MAX_CIV - 1 do
 		local p = Players[i]
-		if p and i ~= pLeader:GetID() and FN.OrgEligible(o, p) and not (not p:IsMinorCiv() and p:IsHuman()) and FN.OrgWilling(o, p, pLeader) then
-			table.insert(t, p)
+		if p and i ~= pLeader:GetID() and FN.OrgEligible(o, p) and RejoinReady(o, p) and not (not p:IsMinorCiv() and p:IsHuman()) and FN.OrgWilling(o, p, pLeader) then
+			local bPeace = true
+			for _, q in ipairs(t) do if Teams[p:GetTeam()]:IsAtWar(q:GetTeam()) then bPeace = false; break end end
+			if bPeace then table.insert(t, p) end
 		end
 	end
 	return t
@@ -133,7 +150,7 @@ end
 function FN.CanFound(o, pLeader)
 	if FN.OrgActive(o) then return false, "ACTIVE" end
 	if FN.GetN("OSUP_" .. o.Type) > 0 then return false, "SUPERSEDED" end -- merged into its successor for good
-	if pLeader:IsMinorCiv() or not FN.OrgEligible(o, pLeader) then return false, "INELIGIBLE" end
+	if pLeader:IsMinorCiv() or not FN.OrgEligible(o, pLeader) or not RejoinReady(o, pLeader) then return false, "INELIGIBLE" end
 	if o.FounderCiv and pLeader:GetCivilizationType() ~= o.FounderCiv then return false, "INELIGIBLE" end
 	if pLeader:GetCurrentEra() < o.MinEra then return false, "ERA" end
 	if o.MaxEra and pLeader:GetCurrentEra() > o.MaxEra then return false, "OBSOLETE" end
@@ -145,6 +162,23 @@ end
 ------------------------------------------------------------------------------
 -- Membership changes
 ------------------------------------------------------------------------------
+-- Removing one grant must not close borders still supplied by another organisation (including a successor).
+local function OtherBorderGrant(iTeam, iOther)
+	for _, org in ipairs(FN.Orgs) do
+		if org.OpenBorders and FN.OrgActive(org) then
+			local a, b = false, false
+			for _, member in ipairs(FN.Members(org)) do
+				if not member:IsMinorCiv() then
+					if member:GetTeam() == iTeam then a = true end
+					if member:GetTeam() == iOther then b = true end
+				end
+			end
+			if a and b then return true end
+		end
+	end
+	return false
+end
+
 local function SetMember(o, p, bMember)
 	local iP = p:GetID()
 	FN.Set("OM_" .. o.Type .. "_" .. iP, bMember and 1 or 0)
@@ -159,8 +193,9 @@ local function SetMember(o, p, bMember)
 		if o.OpenBorders then
 			for _, q in ipairs(FN.Members(o)) do
 				if q:GetID() ~= iP and not q:IsMinorCiv() then
-					Teams[p:GetTeam()]:SetOpenBorders(q:GetTeam(), bMember)
-					Teams[q:GetTeam()]:SetOpenBorders(p:GetTeam(), bMember)
+					local bOpen = bMember or OtherBorderGrant(p:GetTeam(), q:GetTeam())
+					Teams[p:GetTeam()]:SetOpenBorders(q:GetTeam(), bOpen)
+					Teams[q:GetTeam()]:SetOpenBorders(p:GetTeam(), bOpen)
 				end
 			end
 		end
@@ -175,7 +210,7 @@ end
 
 function FN.FoundOrg(o, pLeader)
 	if not FN.CanFound(o, pLeader) then return false end
-	FN.Set("OF_" .. o.Type, Game.GetGameTurn())
+	FN.Set("OF_" .. o.Type, Game.GetGameTurn() + 1) -- turn zero is a valid founding turn
 	FN.Set("OL_" .. o.Type, pLeader:GetID())
 	local tJoined = {}
 	for _, p in ipairs(FN.OrgCandidates(o, pLeader)) do
@@ -188,7 +223,7 @@ function FN.FoundOrg(o, pLeader)
 	-- The organisation it grows out of merges into it; its human members are invited (InviteHumans).
 	local pPrereq = o.PrereqType and FN.OrgByType[o.PrereqType]
 	if pPrereq then
-		FN.Set("OSUP_" .. pPrereq.Type, Game.GetGameTurn())
+		FN.Set("OSUP_" .. pPrereq.Type, Game.GetGameTurn() + 1)
 		if FN.OrgActive(pPrereq) then FN.DissolveOrg(pPrereq, "merged into " .. o.Type, o.Title) end
 	end
 	FN.InviteHumans(o)
@@ -196,7 +231,7 @@ function FN.FoundOrg(o, pLeader)
 end
 
 function FN.JoinOrg(o, p)
-	if not FN.OrgActive(o) or FN.IsMember(o, p:GetID()) or not FN.OrgEligible(o, p) then return false end
+	if not FN.CanJoinOrg(o, p) then return false end
 	SetMember(o, p, true)
 	FN.Set("OI_" .. o.Type .. "_" .. p:GetID(), 0)
 	NotifyMembers(o, L("TXT_KEY_FN_NOTIFY_ORG_JOINED", FN.PlayerName(p), o.Title), L("TXT_KEY_FN_NOTIFY_ORG_JOINED_S", o.Title))
@@ -225,6 +260,7 @@ end
 function FN.LeaveOrg(o, p)
 	if not FN.IsMember(o, p:GetID()) then return false end
 	SetMember(o, p, false)
+	FN.Set("OJ_" .. o.Type .. "_" .. p:GetID(), Game.GetGameTurn() + FN.Turns(S.ORG_REJOIN_COOLDOWN))
 	NotifyMembers(o, L("TXT_KEY_FN_NOTIFY_ORG_LEFT", FN.PlayerName(p), o.Title), L("TXT_KEY_FN_NOTIFY_ORG_LEFT_S", o.Title))
 	FN.Log("%d left %s", p:GetID(), o.Type)
 	local tMembers = FN.Members(o)
@@ -232,9 +268,11 @@ function FN.LeaveOrg(o, p)
 		FN.DissolveOrg(o, "too few members")
 	elseif FN.OrgLeader(o) == p:GetID() then
 		-- Leadership passes to the next major member.
+		local pNext
 		for _, q in ipairs(tMembers) do
-			if not q:IsMinorCiv() then FN.Set("OL_" .. o.Type, q:GetID()); break end
+			if not q:IsMinorCiv() then pNext = q; break end
 		end
+		if pNext then FN.Set("OL_" .. o.Type, pNext:GetID()) else FN.DissolveOrg(o, "no major member") end
 	end
 	return true
 end
@@ -244,9 +282,9 @@ function FN.InviteHumans(o)
 	if not pLeader then return end
 	for i = 0, FN.MAX_MAJOR - 1 do
 		local p = Players[i]
-		if p and p:IsAlive() and p:IsHuman() and not FN.IsMember(o, i) and FN.OrgEligible(o, p)
+		if p and p:IsAlive() and p:IsHuman() and FN.CanJoinOrg(o, p)
 			and FN.GetN("OI_" .. o.Type .. "_" .. i) == 0 and not Hostile(p, pLeader) then
-			FN.Set("OI_" .. o.Type .. "_" .. i, Game.GetGameTurn())
+			FN.Set("OI_" .. o.Type .. "_" .. i, Game.GetGameTurn() + 1)
 			FN.Notify(p, L("TXT_KEY_FN_NOTIFY_ORG_INVITED", o.Title), L("TXT_KEY_FN_NOTIFY_ORG_INVITED_S", o.Title))
 		end
 	end
@@ -385,7 +423,7 @@ local function ProcessOrg(o)
 	if not FN.OrgActive(o) then return end
 	for i = 0, FN.MAX_CIV - 1 do
 		local p = Players[i]
-		if p and not FN.IsMember(o, i) and FN.OrgEligible(o, p) and not (not p:IsMinorCiv() and p:IsHuman()) and FN.OrgWilling(o, p, pLeader) then
+		if p and FN.CanJoinOrg(o, p) and not (not p:IsMinorCiv() and p:IsHuman()) and FN.OrgWilling(o, p, pLeader) then
 			FN.JoinOrg(o, p)
 		end
 	end

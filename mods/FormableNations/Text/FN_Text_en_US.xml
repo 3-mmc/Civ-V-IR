@@ -174,6 +174,7 @@
 		<Row Tag="TXT_KEY_FN_ORG_INCOME"><Text>Your income from membership last turn: {1_Num} [ICON_GOLD] Gold</Text></Row>
 		<Row Tag="TXT_KEY_FN_ORG_CANDIDATES"><Text>Willing founding members now: {1_Num} (needs {2_Need}, including you). Other human players are invited after founding.</Text></Row>
 		<Row Tag="TXT_KEY_FN_ORG_FOUND"><Text>Found</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_JOIN_BLOCKED"><Text>Joining requires peace with every member, no denunciations between you and the leader, and completion of the rejoining cooldown after a departure.</Text></Row>
 		<Row Tag="TXT_KEY_FN_ORG_JOIN"><Text>Join</Text></Row>
 		<Row Tag="TXT_KEY_FN_ORG_LEAVE"><Text>Leave</Text></Row>
 		<Row Tag="TXT_KEY_FN_ORG_WHY_ACTIVE"><Text>Already exists</Text></Row>

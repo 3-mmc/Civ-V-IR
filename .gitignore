@@ -3,6 +3,7 @@
 /downloads/
 /upstream/
 /backups/
+/engine/
 # Build output and generated test data
 build/
 mods/FormableNations/tests/gameinfo_data.lua

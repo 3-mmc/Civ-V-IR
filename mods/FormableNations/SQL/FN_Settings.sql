@@ -76,6 +76,7 @@ INSERT INTO FormableNation_Settings (Name, Value) VALUES
 	('ORG_COHESION_START', 60),
 	('ORG_EXIT_THRESHOLD', 25),        -- below this: an exit referendum, decided after ORG_EXIT_COUNTDOWN turns
 	('ORG_EXIT_COUNTDOWN', 5),
+	('ORG_REJOIN_COOLDOWN', 30),       -- prevent automatic recruitment undoing a departure or referendum
 	('OPTOUT_GOLD_PER_ERA', 40), ('OPTOUT_BONUS', 15), ('OPTOUT_TURNS', 20),
 	('TERM_ORG_IDEOLOGY_SHARED', 10), ('TERM_ORG_IDEOLOGY_RIVAL', -15),
 	('TERM_ORG_TRADE', 8), ('TERM_ORG_FRIENDS', 5), ('TERM_ORG_DENOUNCE', -10), ('TERM_ORG_FOUNDER', 5),

@@ -150,7 +150,7 @@ function FN.EvaluateClaim(pPlayer, claim)
 		if Teams[pPlayer:GetTeam()]:IsAtWar(pTarget:GetTeam()) then return false, "AT_WAR", false, pTarget end
 		local bBound = FN.IsBound and FN.IsBound(iPlayer, pTarget:GetID())
 		if bBound then return true, "BOUND", claim.Mode == "ABSORB", pTarget end
-		if pTarget:IsMarried(iPlayer) then return true, "MARRIED", false, pTarget end
+		if pTarget:IsMarried(iPlayer) then return true, "MARRIED", claim.Mode == "ABSORB", pTarget end
 		if not pTarget:IsAllies(iPlayer) then return false, "NOT_ALLIED", false, pTarget end
 		if claim.Mode == "ALLY" then return true, "ALLIED", false, pTarget end
 		local iTurns = pTarget:GetAlliedTurns()
@@ -341,22 +341,23 @@ end
 ------------------------------------------------------------------------------
 local function AnnexMinor(pPlayer, pMinor)
 	-- Military units change sides; the rest disband (as in the engine's own City-State buyout).
-	local tUnits, tRespawn = {}, {}
+	local tUnits = {}
 	for pUnit in pMinor:Units() do table.insert(tUnits, pUnit) end
 	for _, pUnit in ipairs(tUnits) do
 		if pUnit:IsCombatUnit() then
-			table.insert(tRespawn, { Type = pUnit:GetUnitType(), X = pUnit:GetX(), Y = pUnit:GetY() })
+			local pNew = pPlayer:InitUnit(pUnit:GetUnitType(), pUnit:GetX(), pUnit:GetY())
+			if pNew then
+				pNew:Convert(pUnit, false, true) -- preserves experience, promotions and damage; kills the old unit
+				pNew:FinishMoves()
+			end
+		else
+			pUnit:Kill(false, -1)
 		end
-		pUnit:Kill(false, -1)
 	end
 	local tCities = {}
 	for pCity in pMinor:Cities() do table.insert(tCities, pCity) end
 	for _, pCity in ipairs(tCities) do
 		pPlayer:AcquireCity(pCity, false, true) -- a gift, not conquest: the engine's peaceful buyout path
-	end
-	for _, u in ipairs(tRespawn) do
-		local pNew = pPlayer:InitUnit(u.Type, u.X, u.Y)
-		if pNew then pNew:FinishMoves() end
 	end
 end
 

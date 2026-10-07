@@ -7,6 +7,7 @@ only one Highlights.xml, so ours must carry VP's styles too; rebuild after every
 """
 import argparse
 import hashlib
+import os
 import re
 import shutil
 import subprocess
@@ -22,7 +23,9 @@ USER = Path("/mnt/c/Users/aaron/Documents/My Games/Sid Meier's Civilization 5")
 VP_HIGHLIGHTS = GAME / "Assets/DLC/VPUI/Core/Highlights.xml"
 VP_SOUNDS = GAME / "Assets/DLC/Expansion2/Sounds/XML/MinorCivSounds_VoxPopuli.xml"
 SOUND_BEGIN, SOUND_END = "<!-- Formable Nations City-States BEGIN -->", "<!-- Formable Nations City-States END -->"
-BACKUPS = HERE.parents[1] / "backups"
+# Civ-V-IR is one project inside the shared CivVNeo workspace. Reference assets stay beside the repo.
+REFERENCES = Path(os.environ.get("CIVVNEO_REFERENCE_ROOT", str(HERE.parents[2])))
+BACKUPS = REFERENCES / "backups"
 
 SQL = ["SQL/FN_Settings.sql", "SQL/FN_Schema.sql", "SQL/FN_CityStates.sql", "SQL/FN_Data.sql", "SQL/FN_Nations.sql", "SQL/FN_Organisations.sql", "SQL/FN_Alliances.sql", "SQL/FN_Steppe.sql",
        "SQL/FN_Independence.sql", "SQL/FN_Perks.sql"]

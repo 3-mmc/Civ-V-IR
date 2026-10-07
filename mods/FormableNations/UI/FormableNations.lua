@@ -293,7 +293,9 @@ local function ShowOrganisations(pActive)
 							Call = function() return FN.NegotiateOptOuts(o, pActive) end }
 					end
 				elseif bEligible then
-					tButtons[1] = { Text = L("TXT_KEY_FN_ORG_JOIN"), Enabled = bTurn, Call = function() return FN.JoinOrg(o, pActive) end }
+					local bCanJoin = FN.CanJoinOrg(o, pActive)
+					if not bCanJoin then table.insert(tBody, L("TXT_KEY_FN_ORG_JOIN_BLOCKED")) end
+					tButtons[1] = { Text = L("TXT_KEY_FN_ORG_JOIN"), Enabled = bTurn and bCanJoin, Call = function() return FN.JoinOrg(o, pActive) end }
 				end
 			else
 				local bCan, sWhy = FN.CanFound(o, pActive)

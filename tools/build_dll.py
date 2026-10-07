@@ -7,7 +7,7 @@ Toolchain on D:\\Toolchains (see README, "Engine builds"):
 
 It runs upstream's build_vp_clang_sdk.py unchanged except for its hard-coded C:\\Program Files paths and the commit-id
 step, which is done here (Windows git may refuse a checkout made from WSL). Output:
-upstream\\Community-Patch-DLL\\clang-output\\<Config>\\CvGameCore_Expansion2.dll and build.log.
+engine\\Community-Patch-DLL\\clang-output\\<Config>\\CvGameCore_Expansion2.dll and build.log.
 
 Usage: D:\\Toolchains\\Python312\\python.exe tools\\build_dll.py --config release [--version TEXT]
 """
@@ -19,10 +19,19 @@ TOOLS = Path(os.environ.get("CIVVNEO_TOOLCHAINS", r"D:\Toolchains"))
 SDK = TOOLS / "SDK70" / "Program Files" / "Microsoft SDKs" / "Windows" / "v7.0"
 VC = TOOLS / "SDK70" / "Program Files" / "Microsoft Visual Studio 9.0" / "Vc7"
 LLVM = TOOLS / "LLVM-20.1.8" / "bin"
-UPSTREAM = Path(__file__).resolve().parents[1] / "upstream" / "Community-Patch-DLL"
+PROJECT = Path(__file__).resolve().parents[1]
+# Build a project-owned checkout, never the shared pristine reference tree.
+UPSTREAM = Path(os.environ.get("CIVVNEO_DLL_SOURCE", str(PROJECT / "engine" / "Community-Patch-DLL"))).resolve()
+REFERENCES = Path(os.environ.get("CIVVNEO_REFERENCE_ROOT", str(PROJECT.parent))).resolve()
 
 
 def main():
+    if UPSTREAM == (REFERENCES / "upstream" / "Community-Patch-DLL").resolve():
+        sys.exit("Refusing to build in the shared reference checkout; select a project development checkout.")
+    if not (UPSTREAM / "build_vp_clang_sdk.py").is_file():
+        sys.exit(f"missing project engine checkout: {UPSTREAM}\n"
+                 "Create engine/Community-Patch-DLL as a worktree of ../upstream/Community-Patch-DLL, "
+                 "or set CIVVNEO_DLL_SOURCE to a development checkout. See README.md.")
     version = "CivVNeo"
     if "--version" in sys.argv:
         i = sys.argv.index("--version")

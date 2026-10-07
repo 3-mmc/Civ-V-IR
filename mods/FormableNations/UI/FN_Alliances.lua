@@ -202,12 +202,28 @@ end
 ------------------------------------------------------------------------------
 -- Calls to arms
 ------------------------------------------------------------------------------
-local g_tWars = {} -- declarations queued this turn: { Aggressor = player, Target = team }
-
 function FN.OnDeclareWar(iOriginatingPlayer, iTeam, bAggressor)
 	if iOriginatingPlayer and iOriginatingPlayer >= 0 then
-		table.insert(g_tWars, { Aggressor = iOriginatingPlayer, Target = iTeam })
+		-- Save before the next turn: reloading must not erase an unprocessed declaration.
+		local n = FN.GetN("WQ_COUNT") + 1
+		FN.Set("WQ_A_" .. n, iOriginatingPlayer)
+		FN.Set("WQ_T_" .. n, iTeam)
+		FN.Set("WQ_COUNT", n)
 	end
+end
+
+local function CallKey(sPrefix, o, iPlayer, iTeam)
+	return K(sPrefix, o, iPlayer) .. "_" .. iTeam
+end
+
+-- Upgrade a pending call saved by the original single-call implementation.
+local function MigrateCall(o, iPlayer)
+	local iEnemy = FN.GetN(K("CA", o, iPlayer)) - 1
+	if iEnemy < 0 then return end
+	FN.Set(CallKey("CQ", o, iPlayer, iEnemy), FN.GetN(K("CAT", o, iPlayer)) + 1)
+	FN.Set(CallKey("CQB", o, iPlayer, iEnemy), FN.GetN(K("CAB", o, iPlayer)))
+	FN.Set(CallKey("CQC", o, iPlayer, iEnemy), FN.OrgLeader(o))
+	FN.Set(K("CA", o, iPlayer), 0)
 end
 
 local function TeamMembers(o, iTeam)
@@ -243,11 +259,15 @@ local function CallToArms(o, pCaller, iEnemyTeam, bBinding)
 			if p:IsMinorCiv() then
 				if bBinding then JoinWar(o, p, iEnemyTeam) end
 			elseif p:IsHuman() then
-				FN.Set(K("CA", o, p:GetID()), iEnemyTeam + 1)
-				FN.Set(K("CAT", o, p:GetID()), Game.GetGameTurn())
-				FN.Set(K("CAB", o, p:GetID()), bBinding and 1 or 0)
-				FN.Notify(p, L("TXT_KEY_FN_NOTIFY_CALL_TO_ARMS", FN.PlayerName(pCaller), FN.OrgName(o), pEnemyLead and FN.PlayerName(pEnemyLead) or "?"),
-					L("TXT_KEY_FN_NOTIFY_CALL_TO_ARMS_S", FN.OrgName(o)))
+				local iP = p:GetID()
+				MigrateCall(o, iP)
+				if FN.GetN(CallKey("CQ", o, iP, iEnemyTeam)) == 0 then
+					FN.Set(CallKey("CQ", o, iP, iEnemyTeam), Game.GetGameTurn() + 1)
+					FN.Set(CallKey("CQB", o, iP, iEnemyTeam), bBinding and 1 or 0)
+					FN.Set(CallKey("CQC", o, iP, iEnemyTeam), pCaller:GetID())
+					FN.Notify(p, L("TXT_KEY_FN_NOTIFY_CALL_TO_ARMS", FN.PlayerName(pCaller), FN.OrgName(o), pEnemyLead and FN.PlayerName(pEnemyLead) or "?"),
+						L("TXT_KEY_FN_NOTIFY_CALL_TO_ARMS_S", FN.OrgName(o)))
+				end
 			else
 				local bHonour = FN.OrgCohesion(o, p:GetID()) >= S.ALLIANCE_AI_HONOUR and (bBinding or p:IsDoF(pCaller:GetID()))
 				if bHonour and JoinWar(o, p, iEnemyTeam) then
@@ -271,12 +291,16 @@ end
 
 -- Resolve queued declarations. Joining a war may queue more (alliances answering alliances); they wait for the next pass.
 function FN.ProcessAllianceWars()
-	if #g_tWars == 0 then return end
-	local tWars = g_tWars
-	g_tWars = {}
+	local n = FN.GetN("WQ_COUNT")
+	if n == 0 then return end
+	local tWars = {}
+	for i = 1, n do
+		table.insert(tWars, { Aggressor = FN.GetN("WQ_A_" .. i), Target = FN.GetN("WQ_T_" .. i) })
+	end
+	FN.Set("WQ_COUNT", 0)
 	for _, w in ipairs(tWars) do
 		local pAggressor = Players[w.Aggressor]
-		if pAggressor then
+		if pAggressor and pAggressor:GetTeam() ~= w.Target and AtWar(pAggressor, w.Target) then
 			local iAggTeam = pAggressor:GetTeam()
 			for _, o in ipairs(FN.Alliances()) do
 				if FN.OrgActive(o) then
@@ -304,34 +328,50 @@ function FN.ProcessAllianceWars()
 end
 
 -- A human's answer. bHonour: join the war; otherwise decline (costs credibility if the call was binding).
-function FN.AnswerCall(o, p, bHonour)
+function FN.AnswerCall(o, p, bHonour, iEnemy)
 	local iP = p:GetID()
-	local iEnemy = FN.GetN(K("CA", o, iP)) - 1
-	if iEnemy < 0 then return false end
-	local bBinding = FN.GetN(K("CAB", o, iP)) == 1
-	FN.Set(K("CA", o, iP), 0)
+	iEnemy = iEnemy or FN.PendingCall(o, iP)
+	if not iEnemy or FN.GetN(CallKey("CQ", o, iP, iEnemy)) == 0 then return false end
+	local bBinding = FN.GetN(CallKey("CQB", o, iP, iEnemy)) == 1
+	local pCaller = Players[FN.GetN(CallKey("CQC", o, iP, iEnemy))]
+	if not FN.IsMember(o, iP) or not pCaller or not FN.IsMember(o, pCaller:GetID()) or not AtWar(pCaller, iEnemy) then
+		FN.Set(CallKey("CQ", o, iP, iEnemy), 0)
+		return false -- a lapsed obligation is not a refusal and cannot start a new war
+	end
 	if bHonour then
 		if not JoinWar(o, p, iEnemy) then return false end
 		if bBinding then Credit(o, p, S.CREDIT_HONOUR) end
 	elseif bBinding then
 		Credit(o, p, S.CREDIT_DECLINE)
 	end
+	FN.Set(CallKey("CQ", o, iP, iEnemy), 0)
 	FN.Log("%s: %d %s a call against team %d", o.Type, iP, bHonour and "honours" or "declines", iEnemy)
 	return true
 end
 
 function FN.PendingCall(o, iP)
-	local iEnemy = FN.GetN(K("CA", o, iP)) - 1
-	if iEnemy < 0 then return nil end
-	return iEnemy, FN.GetN(K("CAT", o, iP)) + FN.Turns(S.ALLIANCE_CALL_TURNS) - Game.GetGameTurn()
+	MigrateCall(o, iP)
+	local iEnemy, iFirst
+	for t = 0, FN.MAX_CIV - 1 do
+		local iSince = FN.GetN(CallKey("CQ", o, iP, t))
+		if iSince > 0 and (not iFirst or iSince < iFirst) then iEnemy, iFirst = t, iSince end
+	end
+	if iEnemy then return iEnemy, iFirst - 1 + FN.Turns(S.ALLIANCE_CALL_TURNS) - Game.GetGameTurn() end
 end
 
 -- Unanswered calls lapse as declined; called in each human's turn.
 function FN.ExpireCalls(p)
 	for _, o in ipairs(FN.Alliances()) do
-		local iEnemy, iLeft = FN.PendingCall(o, p:GetID())
-		if iEnemy and (iLeft <= 0 or not FN.IsMember(o, p:GetID()) or AtWar(p, iEnemy)) then
-			FN.AnswerCall(o, p, AtWar(p, iEnemy))
+		MigrateCall(o, p:GetID())
+		for iEnemy = 0, FN.MAX_CIV - 1 do
+			local iSince = FN.GetN(CallKey("CQ", o, p:GetID(), iEnemy))
+			if iSince > 0 then
+				local pCaller = Players[FN.GetN(CallKey("CQC", o, p:GetID(), iEnemy))]
+				if Game.GetGameTurn() >= iSince - 1 + FN.Turns(S.ALLIANCE_CALL_TURNS) or not FN.IsMember(o, p:GetID())
+					or AtWar(p, iEnemy) or not pCaller or not AtWar(pCaller, iEnemy) then
+					FN.AnswerCall(o, p, AtWar(p, iEnemy), iEnemy)
+				end
+			end
 		end
 	end
 end
