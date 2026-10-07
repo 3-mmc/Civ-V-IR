@@ -52,3 +52,10 @@ CREATE TABLE IF NOT EXISTS FormableNation_EraSettings (
 	Name text NOT NULL UNIQUE,
 	EraType text NOT NULL REFERENCES Eras(Type)
 );
+
+-- Sound clip for each City-State this mod adds (FN_CityStates.sql). build.py --install writes them into VP's
+-- MinorCivSounds_VoxPopuli.xml in the game folder, which VP's Expansion2.Civ5Pkg loads.
+CREATE TABLE IF NOT EXISTS FormableNation_CityStateSounds (
+	MinorCivType text NOT NULL REFERENCES MinorCivilizations(Type),
+	AudioScript text NOT NULL
+);

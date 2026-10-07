@@ -281,6 +281,8 @@ for i, sType in ipairs({ "KABUL", "ALMATY", "MOGADISHU", "KYZYL", "ANTANANARIVO"
 	d:AddUnit({ combat = true, type = 7, x = 200 + i * 3, y = 21 })
 	DONORS[i] = d
 end
+local hawaii = NewPlayer(12, { civ = CIV("POLYNESIA"), name = "Kamehameha", era = 0 })
+hawaii.cities[1] = NewCity(12, 250, 120, "Kailua"); hawaii.origCap = hawaii.cities[1]
 for id = 30, 40 do local p = NewPlayer(id, { minor = 0 }); p.alive, p.everAlive = false, false end
 
 dofile("UI/FormableNations.lua")
@@ -309,6 +311,9 @@ local tFirstCivs = {}
 for i = 1, math.min(3, #tNeeds) do tFirstCivs[tNeeds[i].For:GetID()] = true end
 local iDistinct = 0 for _ in pairs(tFirstCivs) do iDistinct = iDistinct + 1 end
 Check(#tNeeds < 3 or iDistinct == 3, "AI needs are served round-robin across civs (" .. iDistinct .. " civs in the first 3)")
+local bLahaina = false
+for _, need in ipairs(tNeeds) do if need.Type == MINOR("FN_LAHAINA") then bLahaina = true end end
+Check(bLahaina, "a formation-only City-State (Lahaina) is among the needs of Polynesia's Kingdom of Hawaii")
 local savedTurn = TURN
 TURN = 20; FN.Set("SETUP_DONE", 0); FN.SetupHistoricalCityStates()
 Check(DONORS[4].alive and FN.GetN("SETUP_DONE") == 1, "a game already under way (or an older save) is left alone")
@@ -420,6 +425,12 @@ Check(kingston.owner == portRoyal.owner, "Kingston went with it")
 local iNewType, bColonial = Players[portRoyal.owner].minor, false
 for row in GameInfo.FormableNation_ColonialStates() do if GameInfoTypes[row.MinorCivType] == iNewType then bColonial = true end end
 Check(bColonial, "as a colonial City-State type (" .. Locale.ConvertTextKey(GameInfo.MinorCivilizations[iNewType].Description) .. ")")
+local bOnlyPlayable = true
+for _ = 1, 3 do
+	local iPick = FN.PickBreakawayType({ GetName = function() return "Nowhere" end }, "FOREIGN")
+	if iPick and GameInfo.MinorCivilizations[iPick].Playable == 0 then bOnlyPlayable = false end
+end
+Check(bOnlyPlayable, "random breakaways never take a formation-only City-State")
 Check(portRoyal.name == "Port Royal" and kingston.name == "Kingston", "the cities keep their own names")
 
 print("Scenario 9: national revival - a conquered people restores its fallen nation")

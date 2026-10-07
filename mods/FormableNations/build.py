@@ -20,8 +20,11 @@ MOD_VERSION = 1
 GAME = Path("/mnt/e/SteamLibrary/steamapps/common/Sid Meier's Civilization V")
 USER = Path("/mnt/c/Users/aaron/Documents/My Games/Sid Meier's Civilization 5")
 VP_HIGHLIGHTS = GAME / "Assets/DLC/VPUI/Core/Highlights.xml"
+VP_SOUNDS = GAME / "Assets/DLC/Expansion2/Sounds/XML/MinorCivSounds_VoxPopuli.xml"
+SOUND_BEGIN, SOUND_END = "<!-- Formable Nations City-States BEGIN -->", "<!-- Formable Nations City-States END -->"
+BACKUPS = HERE.parents[1] / "backups"
 
-SQL = ["SQL/FN_Settings.sql", "SQL/FN_Schema.sql", "SQL/FN_Data.sql", "SQL/FN_Nations.sql", "SQL/FN_Organisations.sql", "SQL/FN_Alliances.sql",
+SQL = ["SQL/FN_Settings.sql", "SQL/FN_Schema.sql", "SQL/FN_CityStates.sql", "SQL/FN_Data.sql", "SQL/FN_Nations.sql", "SQL/FN_Organisations.sql", "SQL/FN_Alliances.sql",
        "SQL/FN_Independence.sql", "SQL/FN_Perks.sql"]
 TEXT = ["Text/FN_Text_en_US.xml", "Text/FN_Text_de_DE.xml"]
 UI = ["UI/FormableNations.xml", "UI/FormableNations.lua", "UI/FN_Core.lua", "UI/FN_Cohesion.lua", "UI/FN_Organisations.lua",
@@ -72,6 +75,14 @@ def check_sql():
             AND PromotionType NOT IN (SELECT Type FROM UnitPromotions)""").fetchall()
     if unknown:
         sys.exit(f"Names not in the base/VP database: {unknown}")
+    bad_cs = db.execute("""SELECT Type FROM MinorCivilizations WHERE Type LIKE 'MINOR_CIV_FN_%' AND (
+            Playable <> 0 OR DefaultPlayerColor NOT IN (SELECT Type FROM PlayerColors)
+            OR ArtStyleType || ArtStylePrefix || ArtStyleSuffix NOT IN
+                (SELECT DISTINCT ArtStyleType || ArtStylePrefix || ArtStyleSuffix FROM MinorCivilizations WHERE Type NOT LIKE 'MINOR_CIV_FN_%')
+            OR Type NOT IN (SELECT MinorCivType FROM MinorCivilization_CityNames)
+            OR Type NOT IN (SELECT MinorCivType FROM FormableNation_CityStateSounds))""").fetchall()
+    if bad_cs:
+        sys.exit(f"New City-States need Playable 0, a known colour and art style, a city name and a sound: {bad_cs}")
     perks = db.execute("SELECT COUNT(*) FROM Units WHERE Type LIKE 'UNIT_FN_%'").fetchone()[0]
     replacements = db.execute("SELECT COUNT(*) FROM Policy_UnitClassReplacements WHERE PolicyType LIKE 'POLICY_FN_%'").fetchone()[0]
     if perks == 0 or perks != replacements:
@@ -83,7 +94,8 @@ def check_text_keys(db):
     """Every TXT_KEY used by SQL and Lua must exist in the text file."""
     defined = set(re.findall(r'Tag="(TXT_KEY_[A-Z0-9_]+)"', (HERE / TEXT[0]).read_text(encoding="utf-8")))
     used = set()
-    for row in db.execute("SELECT Title, Description, ShortDescription, Adjective, Help, Quote FROM FormableNations "
+    for row in db.execute("SELECT Description, ShortDescription, Adjective, Civilopedia, NULL, NULL FROM MinorCivilizations WHERE Type LIKE 'MINOR_CIV_FN_%' "
+                          "UNION ALL SELECT Title, Description, ShortDescription, Adjective, Help, Quote FROM FormableNations "
                           "UNION ALL SELECT Description, NULL, NULL, NULL, NULL, NULL FROM FormableNation_ClaimGroups "
                           "UNION ALL SELECT Title, Help, Quote, NULL, NULL, NULL FROM FormableNation_Organisations"):
         used.update(v for v in row if v)
@@ -130,6 +142,8 @@ def check_translations(db):
     forms = {}
     for desc, adj in db.execute("SELECT Description, Adjective FROM FormableNations WHERE Description IS NOT NULL"):
         forms[desc], forms[adj] = 3, 5
+    for (adj,) in db.execute("SELECT Adjective FROM MinorCivilizations WHERE Adjective LIKE 'TXT_KEY_FN_%'"):
+        forms[adj] = 3  # City-State adjectives: "Genf|Genf|Genfer"
     placeholders = lambda t: sorted(set(re.findall(r"\{\d_[A-Za-z]+\}", t)))
     for path in TEXT[1:]:
         tr = rows(path)
@@ -234,6 +248,31 @@ def package():
     return out
 
 
+def install_sounds(db):
+    """New City-States need a first-contact clip. The game reads them from VP's MinorCivSounds_VoxPopuli.xml (loaded by
+    VP's Expansion2.Civ5Pkg), so our entries go into that file between markers, replaced on every install. The
+    original is kept in backups/. Steam's "verify" or a VP reinstall resets the file; install again afterwards."""
+    if not VP_SOUNDS.exists():
+        print(f"warning: {VP_SOUNDS} not found; new City-States will have no first-contact sound")
+        return
+    text = VP_SOUNDS.read_text(encoding="utf-8")
+    backup = BACKUPS / "vp" / VP_SOUNDS.name
+    if not backup.exists():
+        backup.parent.mkdir(parents=True, exist_ok=True)
+        backup.write_text(text, encoding="utf-8")
+    if SOUND_BEGIN in text:
+        text = text[:text.index(SOUND_BEGIN)].rstrip() + "\n" + text[text.index(SOUND_END) + len(SOUND_END):].lstrip()
+    entries = "".join(f"\t<MinorCivSound>\n\t\t<ID>{t}</ID>\n\t\t<AudioScript>{a}</AudioScript>\n\t</MinorCivSound>\n"
+                      for t, a in db.execute("SELECT MinorCivType, AudioScript FROM FormableNation_CityStateSounds"))
+    block = f"\t{SOUND_BEGIN}\n{entries}\t{SOUND_END}\n"
+    if "</MinorCivsSounds>" not in text:
+        sys.exit(f"Unexpected format: {VP_SOUNDS}")
+    text = text.replace("</MinorCivsSounds>", block + "</MinorCivsSounds>")
+    VP_SOUNDS.write_text(text, encoding="utf-8")
+    subprocess.run(["xmllint", "--noout", str(VP_SOUNDS)], check=True)
+    print(f"Sound entries for {entries.count('<ID>')} City-States written to {VP_SOUNDS}")
+
+
 def install(out):
     dest = USER / "MODS" / MOD_NAME
     if dest.exists():
@@ -259,6 +298,7 @@ def main():
     print(f"Packaged {out}")
     if args.install:
         install(out)
+        install_sounds(db)
 
 
 if __name__ == "__main__":

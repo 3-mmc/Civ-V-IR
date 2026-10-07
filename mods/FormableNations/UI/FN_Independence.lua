@@ -163,7 +163,8 @@ function FN.PickBreakawayType(pCity, sKind)
 	for row in GameInfo.MinorCivilizations() do
 		if Free(row.ID) then
 			if string.lower(L(row.Description)) == sName then return row.ID, false end
-			table.insert(tAll, row.ID)
+			-- Formation-only City-States (Playable = 0) are kept for their formations, not handed out at random.
+			if row.Playable ~= 0 and row.Playable ~= false then table.insert(tAll, row.ID) end
 		end
 	end
 	local bRename = (S.RENAME_BREAKAWAY == 1)

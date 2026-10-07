@@ -19,7 +19,7 @@ The upstream repository is a shallow, sparse source checkout in `upstream/Commun
 
 **Stock VP 5.4.6 (with EUI) was installed on 2026-10-06** into the real Steam game (`E:\SteamLibrary`) and `Documents\My Games\Sid Meier's Civilization 5`. It replays the official installer's "Vox Populi (with EUI)" component by hand, because that installer only detects Civ V under `C:\Program Files`. Files and hashes are in `install-manifest-vp-5.4.6.sha256` (`./docs/` = Documents, `./game/` = game folder). The only stock file overwritten is `Assets\DLC\Expansion2\Expansion2.Civ5Pkg`; the original is in `backups/stock/`. To roll back, restore that file and delete `Assets\DLC\UI_bc1`, `Assets\DLC\VPUI`, `Assets\DLC\Expansion2\Sounds\XML\MinorCivSounds_VoxPopuli.xml`, the five `MODS\(n) …` folders and `Text\VPUI_tips_en_us.xml`. Steam "Verify integrity" would also restore the stock `.Civ5Pkg` and break VP's UI.
 
-No CivVNeo DLL has been compiled and no optional mod has been added. The `Game Files/` copy here is still unmodified.
+Formable Nations' `build.py --install` also writes first-contact sound entries for its 24 added City-States into the game's `Assets\DLC\Expansion2\Sounds\XML\MinorCivSounds_VoxPopuli.xml`, between marker comments. That file therefore no longer matches `install-manifest-vp-5.4.6.sha256`; VP's original is in `backups/vp/`. No CivVNeo DLL has been compiled and no optional mod has been added. The `Game Files/` copy here is still unmodified.
 
 Full Vox Populi is the selected gameplay foundation. Matching VP/EUI components are the proposed interface baseline. Optional mods remain candidates pending review and testing. Multiplayer and preservation of existing saves are not yet specified; neither is currently promised.
 

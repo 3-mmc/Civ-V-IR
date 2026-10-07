@@ -131,6 +131,35 @@ Three depths, mirroring union → state at international scale. All of them use 
   - **Member cohesion:** each major member has a cohesion score with the Union. It is raised by being the leading member (+5), sharing the leader's ideology (+10), trade with members (+8), a Declaration of Friendship with a member (+5) and years of membership. It is lowered by a rival ideology (-15), denunciations between members (-10) and unhappiness (-10). Below 25 an **exit referendum** is called and decided after 5 turns. Negotiated **opt-outs** (40 Gold x (era + 1)) call it off and add +15 for 20 turns; an AI negotiates them if it can afford twice the price. A member that votes to leave loses the benefits and may declare war again.
   - **Not yet built:** the cohesion budget (transfers to poorer members) and a common World Congress vote.
 
+## Formation-only City-States (built, v0.6)
+
+Some civs had no formation because the City-States their history needs don't exist. The mod adds 24 City-States, all with `Playable = 0`:
+- They are never drawn at random, so the normal pool and trait ratios are untouched.
+- They are never handed out to a random breakaway; a city literally named "Austin" may still become Austin.
+- They appear only when the historical City-State setup swaps one in for a civ in the game that needs it.
+
+Their colours and art styles follow VP's own homeland City-States (`PLAYERCOLOR_MINOR_<civ>`). Each needs a first-contact clip. The game reads these from VP's `MinorCivSounds_VoxPopuli.xml` in the game folder, which VP's `Expansion2.Civ5Pkg` loads, so `build.py --install` writes the mod's entries there between markers (`FormableNation_CityStateSounds`; original in `backups/vp/`). Like VP's own changes, a Steam "verify" or a VP reinstall resets it, so install again afterwards.
+
+| Civ | City-States | Formation |
+|---|---|---|
+| Aztec | Texcoco, Tlacopan | Aztec Triple Alliance (I, Medieval–Renaissance): `UNION` both |
+| Inca | Chan Chan, Quito | Tawantinsuyu (II, Medieval–Renaissance): `ABSORB` both |
+| Maya | Chichen Itza, Uxmal | League of Mayapan (I, Classical–Medieval): `UNION` both |
+| Korea | Gyeongju, Jeonju | Goryeo (II, Classical–Medieval): `ABSORB` both |
+| Japan | Kagoshima, Hagi | Satcho Alliance (I, Renaissance–Industrial: `UNION` both) → Empire of Japan (II, Industrial–Modern: partners integrated 10 turns, then `ABSORB`) |
+| Polynesia | Lahaina, Waimea | Kingdom of Hawaii (II, Renaissance–Industrial): `ABSORB` both |
+| India | Gwalior, Baroda, Indore | Maratha Confederacy (I, Renaissance–Industrial): `UNION` 2 of 3 |
+| Ethiopia | Lalibela, Harar | Solomonic Restoration (II, Medieval–Renaissance: `ABSORB` Lalibela); Ethiopian Empire (II, Industrial–Modern: `ABSORB` Harar) |
+| Songhai | Timbuktu | Askia Dynasty (II, Medieval–Renaissance): `ABSORB` Timbuktu |
+| Celts | Aberffraw, Quimper | Alliance of the Celtic Nations (I, Medieval–Renaissance): `UNION` both |
+| Greece | Corinth, Megara | League of Corinth (I, Classical): `UNION` 2 of Corinth, Megara, Argos |
+| America | Austin | Annexation of Texas (II, Industrial): `ABSORB` Austin |
+| Egypt | Napata | New Kingdom (II, Ancient–Classical): `ABSORB` Napata |
+
+**Japan.** The Empire of Japan is reached through its own unification: the Satsuma–Choshu alliance (1866), then the Meiji state, which abolished the domains in 1871. The alternative, via Taiwan and the Korean City-States, was considered and set aside: it would reward Japan's colonial annexations (Taiwan 1895, Korea 1910) as a formation, and the content rules exclude formations built on the conquest of a living people. For the same reason, Korea's City-States are claimed only by Goryeo.
+
+**Still without a formation:** the Huns, Shoshone and Zulu (undecided).
+
 ## Alliances and defence pacts (built, v0.5)
 
 The game's own defensive pact is a binary switch with no terms. Alliances here are organisations of Depth `ALLIANCE`, each with a written **charter**:
