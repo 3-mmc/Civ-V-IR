@@ -31,7 +31,8 @@ SELECT 'POLICY_FN_GREAT_BRITAIN', 'BUILDINGCLASS_HARBOR', 'YIELD_GOLD', 1 WHERE 
 -- Unique units. VP's own pattern for policy units (B-17, T-34): a unit class of its own, gated by Units.PolicyType,
 -- and Policy_UnitClassReplacements so it replaces the generic unit for that player only (a civ's own unique unit
 -- for the same class is kept). Each unit is a copy of its base unit as VP leaves it (stats, art, AI, upgrades),
--- plus CombatBonus and one free promotion. A missing base unit or promotion skips that unit instead of failing.
+-- plus CombatBonus on its main strength (ranged strength for ranged units: VP's Musketman and Cavalry are ranged) and
+-- one free promotion. A missing base unit or promotion skips that unit instead of failing.
 -- BaseUnit must be unique within this table: the copy is matched back to its spec by the base unit's Type.
 ------------------------------------------------------------------------------
 CREATE TEMP TABLE FN_UniqueUnits (
@@ -47,7 +48,7 @@ INSERT INTO FN_UniqueUnits VALUES
 		'TXT_KEY_FN_UNIT_HIGHLANDER', 'TXT_KEY_FN_UNIT_HIGHLANDER_HELP', 'TXT_KEY_FN_UNIT_HIGHLANDER_HELP', 'TXT_KEY_FN_UNIT_HIGHLANDER_PEDIA'),
 	('UNIT_FN_KAISERSCHUETZE', 'UNITCLASS_FN_KAISERSCHUETZE', 'UNIT_GREAT_WAR_INFANTRY', 'POLICY_FN_AUSTRIA_HUNGARY', 3, 'PROMOTION_DRILL_1',
 		'TXT_KEY_FN_UNIT_KAISERSCHUETZE', 'TXT_KEY_FN_UNIT_KAISERSCHUETZE_HELP', 'TXT_KEY_FN_UNIT_KAISERSCHUETZE_HELP', 'TXT_KEY_FN_UNIT_KAISERSCHUETZE_PEDIA'),
-	('UNIT_FN_UHLAN', 'UNITCLASS_FN_UHLAN', 'UNIT_CAVALRY', 'POLICY_FN_GERMAN_EMPIRE', 2, 'PROMOTION_SENTRY',
+	('UNIT_FN_UHLAN', 'UNITCLASS_FN_UHLAN', 'UNIT_LANCER', 'POLICY_FN_GERMAN_EMPIRE', 2, 'PROMOTION_SENTRY',
 		'TXT_KEY_FN_UNIT_UHLAN', 'TXT_KEY_FN_UNIT_UHLAN_HELP', 'TXT_KEY_FN_UNIT_UHLAN_HELP', 'TXT_KEY_FN_UNIT_UHLAN_PEDIA');
 
 -- Copy every column of the base units, then rewrite identity and stats. In one UPDATE all right-hand sides see the
@@ -58,7 +59,8 @@ UPDATE FN_UnitCopy SET
 	ID = NULL,
 	Class = (SELECT UnitClassType FROM FN_UniqueUnits WHERE BaseUnit = FN_UnitCopy.Type),
 	PolicyType = (SELECT PolicyType FROM FN_UniqueUnits WHERE BaseUnit = FN_UnitCopy.Type),
-	Combat = Combat + (SELECT CombatBonus FROM FN_UniqueUnits WHERE BaseUnit = FN_UnitCopy.Type),
+	Combat = Combat + CASE WHEN RangedCombat > 0 THEN 0 ELSE (SELECT CombatBonus FROM FN_UniqueUnits WHERE BaseUnit = FN_UnitCopy.Type) END,
+	RangedCombat = RangedCombat + CASE WHEN RangedCombat > 0 THEN (SELECT CombatBonus FROM FN_UniqueUnits WHERE BaseUnit = FN_UnitCopy.Type) ELSE 0 END,
 	Description = (SELECT Description FROM FN_UniqueUnits WHERE BaseUnit = FN_UnitCopy.Type),
 	Help = (SELECT Help FROM FN_UniqueUnits WHERE BaseUnit = FN_UnitCopy.Type),
 	Strategy = (SELECT Strategy FROM FN_UniqueUnits WHERE BaseUnit = FN_UnitCopy.Type),

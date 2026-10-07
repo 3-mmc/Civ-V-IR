@@ -200,10 +200,10 @@ Each formed nation has three kinds of perk:
 | Nation | Unique unit (replaces) | Unit perk | Economic perks (added in v0.3) |
 |---|---|---|---|
 | Holy Roman Empire | Imperial Knight (Knight) | +2 Strength, Charge | - |
-| Polish-Lithuanian Commonwealth | Haiduk (Musketman) | +2, Cover I | Wheat +1 Food +1 Gold ("granary of Europe") |
+| Polish-Lithuanian Commonwealth | Haiduk (Musketman, a ranged unit in VP) | +2 Ranged Strength, Cover I | Wheat +1 Food +1 Gold ("granary of Europe") |
 | Habsburg Monarchy | - | - | +25% Influence from Gold gifts ("Tu felix Austria nube") |
 | Austria-Hungary | Kaiserschuetze (Great War Infantry) | +3, Drill I | Opera Houses +2 Culture |
-| German Empire | Uhlan (Cavalry) | +2, Sentry | +15% internal trade route yields (Zollverein) |
+| German Empire | Uhlan (Lancer; VP's Cavalry is a ranged skirmisher) | +2, Sentry | +15% internal trade route yields (Zollverein) |
 | Kingdom of Great Britain | Highland Regiment (Rifleman) | +2, Charge | Harbors +1 Gold |
 
 Tier II proclamations also start an **8-turn golden age**. Bases were chosen so as not to collide with the civs' own VP unique units: Poland's Winged Hussar and Pancerny, Austria's Hussar, Germany's Landsknecht, and England's Longbowman and Ship of the Line.

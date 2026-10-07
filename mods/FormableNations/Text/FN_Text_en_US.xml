@@ -217,7 +217,7 @@
 		<Row Tag="TXT_KEY_FN_UNIT_REICHSRITTER_HELP"><Text>Stronger than the Knight (+2 [ICON_STRENGTH]) and starts with Charge. Available while you hold the Holy Roman Empire.</Text></Row>
 		<Row Tag="TXT_KEY_FN_UNIT_REICHSRITTER_PEDIA"><Text>The Imperial Knights (Reichsritter) were free nobles who held their lands directly from the emperor rather than from any prince, and owed him service in the saddle. Their independence lasted until the Empire itself ended in 1806.</Text></Row>
 		<Row Tag="TXT_KEY_FN_UNIT_HAIDUK"><Text>Haiduk</Text></Row>
-		<Row Tag="TXT_KEY_FN_UNIT_HAIDUK_HELP"><Text>Stronger than the Musketman (+2 [ICON_STRENGTH]) and starts with Cover I. Available while you hold the Polish-Lithuanian Commonwealth.</Text></Row>
+		<Row Tag="TXT_KEY_FN_UNIT_HAIDUK_HELP"><Text>Stronger than the Musketman (+2 [ICON_RANGE_STRENGTH] Ranged Strength) and starts with Cover I. Available while you hold the Polish-Lithuanian Commonwealth.</Text></Row>
 		<Row Tag="TXT_KEY_FN_UNIT_HAIDUK_PEDIA"><Text>Hungarian-style infantry with matchlocks and sabres, the haiduks became the core of the Commonwealth's foot soldiers under Stefan Batory in the 1570s and later served as guards of the king and the great magnates.</Text></Row>
 		<Row Tag="TXT_KEY_FN_UNIT_HIGHLANDER"><Text>Highland Regiment</Text></Row>
 		<Row Tag="TXT_KEY_FN_UNIT_HIGHLANDER_HELP"><Text>Stronger than the Rifleman (+2 [ICON_STRENGTH]) and starts with Charge. Available while you hold the Kingdom of Great Britain.</Text></Row>
@@ -226,7 +226,7 @@
 		<Row Tag="TXT_KEY_FN_UNIT_KAISERSCHUETZE_HELP"><Text>Stronger than the Great War Infantry (+3 [ICON_STRENGTH]) and starts with Drill I. Available while you hold Austria-Hungary.</Text></Row>
 		<Row Tag="TXT_KEY_FN_UNIT_KAISERSCHUETZE_PEDIA"><Text>The Imperial Rifles (Kaiserschuetzen) were the Austro-Hungarian mountain infantry of Tyrol and Vorarlberg. In the First World War they held the high Alpine front against Italy, fighting at altitudes of over 3,000 metres.</Text></Row>
 		<Row Tag="TXT_KEY_FN_UNIT_UHLAN"><Text>Uhlan</Text></Row>
-		<Row Tag="TXT_KEY_FN_UNIT_UHLAN_HELP"><Text>Stronger than Cavalry (+2 [ICON_STRENGTH]) and starts with Sentry (+1 Sight). Available while you hold the German Empire.</Text></Row>
+		<Row Tag="TXT_KEY_FN_UNIT_UHLAN_HELP"><Text>Stronger than the Lancer (+2 [ICON_STRENGTH]) and starts with Sentry (+1 Sight). Available while you hold the German Empire.</Text></Row>
 		<Row Tag="TXT_KEY_FN_UNIT_UHLAN_PEDIA"><Text>Lancer regiments of Polish-Lithuanian origin, uhlans were adopted across Europe. In the German Empire's wars they were used above all for scouting and screening ahead of the main army.</Text></Row>
 
 		<!-- v0.3: independence and fragmentation -->
