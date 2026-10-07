@@ -20,7 +20,14 @@ CREATE TABLE IF NOT EXISTS FormableNation_Organisations (
 	PolicyType text REFERENCES Policies(Type),    -- optional dummy policy for major members
 	PrereqOrg text,                               -- founder must belong to it; founding merges it into this one
 	MemberCohesion boolean NOT NULL DEFAULT 0,    -- major members keep a cohesion score and can vote to leave
-	NoWarBetweenMembers boolean NOT NULL DEFAULT 0 -- members cannot declare war on each other (VP war events)
+	NoWarBetweenMembers boolean NOT NULL DEFAULT 0, -- members cannot declare war on each other (VP war events)
+	-- Alliances (Depth ALLIANCE, FN_Alliances.sql): the charter's terms.
+	Obligation text,                              -- DEFENCE (attack on one = on all), FULL (also members' wars of aggression), CONSULT (a call members may refuse)
+	Scope text,                                   -- GLOBAL, or REGIONAL (only aggressors within ALLIANCE_REGION_TILES of the attacked member)
+	NoSeparatePeace boolean NOT NULL DEFAULT 0,   -- no peace with the enemy while the member who was attacked still fights
+	Burden text,                                  -- NONE, TARGET (members keep their military near the alliance average), TRIBUTE (members pay the leader)
+	Hegemonic boolean NOT NULL DEFAULT 0,         -- the leader's own wars call members in; members leave only by referendum
+	Custom boolean NOT NULL DEFAULT 0             -- a slot for a player-drafted pact: name and terms chosen at founding
 );
 
 -- Eligible peoples. No CivilizationType rows: every major civ may join. No MinorCivType rows: no City-State may join,

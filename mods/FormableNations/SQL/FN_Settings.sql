@@ -78,4 +78,15 @@ INSERT INTO FormableNation_Settings (Name, Value) VALUES
 	('ORG_EXIT_COUNTDOWN', 5),
 	('OPTOUT_GOLD_PER_ERA', 40), ('OPTOUT_BONUS', 15), ('OPTOUT_TURNS', 20),
 	('TERM_ORG_IDEOLOGY_SHARED', 10), ('TERM_ORG_IDEOLOGY_RIVAL', -15),
-	('TERM_ORG_TRADE', 8), ('TERM_ORG_FRIENDS', 5), ('TERM_ORG_DENOUNCE', -10), ('TERM_ORG_FOUNDER', 5);
+	('TERM_ORG_TRADE', 8), ('TERM_ORG_FRIENDS', 5), ('TERM_ORG_DENOUNCE', -10), ('TERM_ORG_FOUNDER', 5),
+
+	-- Alliances (UI/FN_Alliances.lua)
+	('ALLIANCE_REGION_TILES', 30),     -- REGIONAL scope: the aggressor's capital within this many tiles of the attacked member's
+	('ALLIANCE_CALL_TURNS', 5),        -- a human's unanswered call to arms counts as declined after this long
+	('ALLIANCE_AI_HONOUR', 40),        -- an AI member honours a call to arms at this cohesion or above
+	('CREDIT_HONOUR', 10), ('CREDIT_DECLINE', -15), -- credibility for answering a binding call; it fades by 1 a turn
+	('TERM_CREDIT_MAX', 10), ('TERM_CREDIT_MIN', -20),
+	('THREAT_TILES', 25), ('TERM_THREAT', 10), -- a stronger outside power this close to a member binds the alliance together
+	('BURDEN_TARGET_PERCENT', 50),     -- TARGET: military might at least this share of the members' average
+	('TERM_TARGET_MET', 5), ('TERM_TARGET_MISSED', -10),
+	('TRIBUTE_GOLD_PER_ERA', 1), ('TERM_TRIBUTE', -5); -- TRIBUTE: per turn per member, x (era + 1), paid to the leader

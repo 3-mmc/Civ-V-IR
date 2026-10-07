@@ -39,6 +39,32 @@
 		</GridButton>
 	</Grid>
 
+	<!-- Charter for a player-drafted alliance: name, six terms (each button cycles its options), found / cancel. -->
+	<Box ID="CharterBox" Anchor="C,C" Offset="0,36" Size="860,700" Color="0,0,0,160" ConsumeMouse="1" Hidden="1">
+		<Grid Size="640,560" Anchor="C,C" Padding="0,0" Style="Grid9DetailFive140" ConsumeMouse="1">
+			<Label Anchor="C,T" Offset="0,24" Font="TwCenMT24" FontStyle="Shadow" ColorSet="Beige_Black_Alpha" String="TXT_KEY_FN_CHARTER_TITLE"/>
+			<Label Anchor="L,T" Offset="40,72" Font="TwCenMT18" FontStyle="Shadow" ColorSet="Beige_Black_Alpha" String="TXT_KEY_FN_CHARTER_NAME"/>
+			<Box Anchor="L,T" Offset="140,68" Size="440,28" Color="20,20,20,255">
+				<EditBox ID="CharterName" Anchor="L,C" Offset="6,0" Size="428,24" Font="TwCenMT20" MaxLength="40" CallOnChar="1" EditMode="1"/>
+			</Box>
+			<Stack ID="CharterTerms" Anchor="C,T" Offset="0,112" StackGrowth="Bottom" Padding="6">
+				<GridButton ID="CharterTerm1" Style="BaseButton" Size="560,30"><Label ID="CharterLabel1" Anchor="C,C" ColorSet="Beige_Black" Font="TwCenMT18" FontStyle="Shadow"/></GridButton>
+				<GridButton ID="CharterTerm2" Style="BaseButton" Size="560,30"><Label ID="CharterLabel2" Anchor="C,C" ColorSet="Beige_Black" Font="TwCenMT18" FontStyle="Shadow"/></GridButton>
+				<GridButton ID="CharterTerm3" Style="BaseButton" Size="560,30"><Label ID="CharterLabel3" Anchor="C,C" ColorSet="Beige_Black" Font="TwCenMT18" FontStyle="Shadow"/></GridButton>
+				<GridButton ID="CharterTerm4" Style="BaseButton" Size="560,30"><Label ID="CharterLabel4" Anchor="C,C" ColorSet="Beige_Black" Font="TwCenMT18" FontStyle="Shadow"/></GridButton>
+				<GridButton ID="CharterTerm5" Style="BaseButton" Size="560,30"><Label ID="CharterLabel5" Anchor="C,C" ColorSet="Beige_Black" Font="TwCenMT18" FontStyle="Shadow"/></GridButton>
+				<GridButton ID="CharterTerm6" Style="BaseButton" Size="560,30"><Label ID="CharterLabel6" Anchor="C,C" ColorSet="Beige_Black" Font="TwCenMT18" FontStyle="Shadow"/></GridButton>
+			</Stack>
+			<Label ID="CharterStatus" Anchor="L,T" Offset="40,340" Font="TwCenMT18" FontStyle="Shadow" ColorSet="Beige_Black_Alpha" WrapWidth="560"/>
+			<GridButton ID="CharterFound" Style="BaseButton" Size="220,36" Anchor="L,B" Offset="60,24">
+				<Label Anchor="C,C" ColorSet="Beige_Black" Font="TwCenMT20" FontStyle="Shadow" String="TXT_KEY_FN_ORG_FOUND"/>
+			</GridButton>
+			<GridButton ID="CharterCancel" Style="BaseButton" Size="220,36" Anchor="R,B" Offset="60,24">
+				<Label Anchor="C,C" ColorSet="Beige_Black" Font="TwCenMT20" FontStyle="Shadow" String="TXT_KEY_FN_CHARTER_CANCEL"/>
+			</GridButton>
+		</Grid>
+	</Box>
+
 	<!-- One card: header, optional quote, body, up to three action buttons, separator. -->
 	<Instance Name="CardInstance">
 		<Stack ID="Root" StackGrowth="Bottom" Padding="4">

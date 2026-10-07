@@ -5,6 +5,7 @@ include("FLuaVector")
 include("FN_Core")
 include("FN_Cohesion")
 include("FN_Organisations")
+include("FN_Alliances")
 include("FN_Independence")
 include("FN_Setup")
 
@@ -19,6 +20,8 @@ GameEvents.PlayerDoTurn.Add(function(iPlayer)
 	local pPlayer = Players[iPlayer]
 	if not pPlayer or not pPlayer:IsAlive() then return end
 	FN.SetupHistoricalCityStates() -- once per game, at the start
+	FN.ProcessAllianceWars() -- calls to arms from declarations since the last player's turn
+	if pPlayer:IsHuman() then FN.ExpireCalls(pPlayer) end
 	FN.ProcessCohesion(pPlayer)
 	FN.ConsiderStages(pPlayer)
 	FN.ProcessOrganisations(pPlayer)
@@ -26,6 +29,8 @@ GameEvents.PlayerDoTurn.Add(function(iPlayer)
 end)
 GameEvents.CityCaptureComplete.Add(FN.OnCityCaptured)
 GameEvents.PlayerCanDeclareWar.Add(FN.OrgAllowsWar) -- needs EVENTS_WAR_AND_PEACE (FN_Organisations.sql)
+GameEvents.DeclareWar.Add(FN.OnDeclareWar)
+GameEvents.PlayerCanMakePeace.Add(FN.AllianceAllowsPeace)
 
 ------------------------------------------------------------------------------
 -- Union outlines: one outer outline around leader + bound partners, in the leader's secondary colour.
@@ -58,7 +63,7 @@ function FN.DrawOverlay()
 	end
 end
 
-Events.ActivePlayerTurnStart.Add(function() FN.DrawOverlay() end)
+Events.ActivePlayerTurnStart.Add(function() FN.ProcessAllianceWars(); FN.DrawOverlay() end)
 Events.LoadScreenClose.Add(function() FN.DrawOverlay() end)
 
 ------------------------------------------------------------------------------
@@ -232,15 +237,34 @@ local FOUND_REASON = { ACTIVE = "TXT_KEY_FN_ORG_WHY_ACTIVE", INELIGIBLE = "TXT_K
 	OBSOLETE = "TXT_KEY_FN_ORG_WHY_OBSOLETE", MEMBERS = "TXT_KEY_FN_ORG_WHY_MEMBERS", PREREQ = "TXT_KEY_FN_ORG_WHY_PREREQ",
 	SUPERSEDED = "TXT_KEY_FN_ORG_WHY_SUPERSEDED" }
 
+local OpenCharter
+
+local function CohesionLines(tBody, o, pActive)
+	local iActive = pActive:GetID()
+	local fC = FN.OrgCohesion(o, iActive)
+	local iE, tTerms = FN.OrgEquilibrium(o, pActive)
+	table.insert(tBody, L("TXT_KEY_FN_COHESION_LINE", CohesionBar(fC), iE,
+		L(iE > fC + 0.5 and "TXT_KEY_FN_TREND_UP" or (iE < fC - 0.5 and "TXT_KEY_FN_TREND_DOWN" or "TXT_KEY_FN_TREND_FLAT"))))
+	for _, t in ipairs(tTerms) do
+		table.insert(tBody, Mark({ Ok = t.Value > 0, Indent = true, Text = L("TXT_KEY_FN_TERM_" .. t.Key) .. string.format(" %+d", t.Value) }))
+	end
+end
+
 local function ShowOrganisations(pActive)
 	local iActive = pActive:GetID()
+	local bTurn = pActive:IsTurnActive()
+	local pSlot = FN.FreePactSlot()
+	if pSlot and pActive:GetCurrentEra() >= pSlot.MinEra then
+		AddCard(L("TXT_KEY_FN_CHARTER_CARD_TITLE"), nil, L("TXT_KEY_FN_CHARTER_CARD_BODY"),
+			{ { Text = L("TXT_KEY_FN_CHARTER_OPEN"), Enabled = bTurn, Call = function() OpenCharter(); return false end } })
+	end
 	for _, o in ipairs(FN.Orgs) do
 		local bEligible = FN.OrgEligible(o, pActive)
 		local bActive = FN.OrgActive(o)
-		if bEligible or bActive then
-			local tBody = { L("TXT_KEY_FN_ORG_DEPTH_" .. o.Depth), L("TXT_KEY_FN_BONUS", o.Help) }
+		if (bEligible or bActive) and not (o.Custom and not bActive) then
+			local tBody = { L("TXT_KEY_FN_ORG_DEPTH_" .. o.Depth) }
+			table.insert(tBody, o.Depth == "ALLIANCE" and FN.CharterText(o) or L("TXT_KEY_FN_BONUS", o.Help))
 			local tButtons = {}
-			local bTurn = pActive:IsTurnActive()
 			if bActive then
 				local tNames = {}
 				for _, p in ipairs(FN.Members(o)) do table.insert(tNames, FN.PlayerName(p)) end
@@ -248,21 +272,25 @@ local function ShowOrganisations(pActive)
 				if FN.IsMember(o, iActive) then
 					local iGold = FN.GetN("OG_" .. o.Type .. "_" .. iActive)
 					if iGold > 0 then table.insert(tBody, L("TXT_KEY_FN_ORG_INCOME", iGold)) end
-					tButtons[1] = { Text = L("TXT_KEY_FN_ORG_LEAVE"), Enabled = bTurn, Call = function() return FN.LeaveOrg(o, pActive) end }
-					if o.MemberCohesion then
-						local fC = FN.OrgCohesion(o, iActive)
-						local iE, tTerms = FN.OrgEquilibrium(o, pActive)
-						table.insert(tBody, L("TXT_KEY_FN_COHESION_LINE", CohesionBar(fC), iE,
-							L(iE > fC + 0.5 and "TXT_KEY_FN_TREND_UP" or (iE < fC - 0.5 and "TXT_KEY_FN_TREND_DOWN" or "TXT_KEY_FN_TREND_FLAT"))))
-						for _, t in ipairs(tTerms) do
-							table.insert(tBody, Mark({ Ok = t.Value > 0, Indent = true, Text = L("TXT_KEY_FN_TERM_" .. t.Key) .. string.format(" %+d", t.Value) }))
+					local bCanLeave = not FN.CanLeaveOrg or FN.CanLeaveOrg(o, pActive)
+					if not bCanLeave then table.insert(tBody, L("TXT_KEY_FN_ORG_HEGEMON_LEAVE")) end
+					tButtons[1] = { Text = L("TXT_KEY_FN_ORG_LEAVE"), Enabled = bTurn and bCanLeave, Call = function() return FN.LeaveOrg(o, pActive) end }
+					if o.MemberCohesion then CohesionLines(tBody, o, pActive) end
+					local iEnemy, iLeft = nil, nil
+					if o.Depth == "ALLIANCE" then iEnemy, iLeft = FN.PendingCall(o, iActive) end
+					if iEnemy then
+						local sEnemy = "?"
+						for i = 0, FN.MAX_CIV - 1 do
+							local q = Players[i]
+							if q and q:IsAlive() and q:GetTeam() == iEnemy then sEnemy = FN.PlayerName(q); break end
 						end
-						local iExit = FN.OrgExitTurn(o, iActive)
-						if iExit > 0 then
-							table.insert(tBody, L("TXT_KEY_FN_ORG_REFERENDUM", math.max(0, iExit - Game.GetGameTurn()), FN.OptOutCost(pActive)))
-							tButtons[2] = { Text = L("TXT_KEY_FN_ORG_OPTOUT"), Enabled = bTurn and pActive:GetGold() >= FN.OptOutCost(pActive),
-								Call = function() return FN.NegotiateOptOuts(o, pActive) end }
-						end
+						table.insert(tBody, L("TXT_KEY_FN_CALL_PROMPT", sEnemy, math.max(0, iLeft)))
+						tButtons[2] = { Text = L("TXT_KEY_FN_CALL_HONOUR"), Enabled = bTurn, Call = function() return FN.AnswerCall(o, pActive, true) end }
+						tButtons[3] = { Text = L("TXT_KEY_FN_CALL_DECLINE"), Enabled = bTurn, Call = function() return FN.AnswerCall(o, pActive, false) end }
+					elseif o.MemberCohesion and FN.OrgExitTurn(o, iActive) > 0 then
+						table.insert(tBody, L("TXT_KEY_FN_ORG_REFERENDUM", math.max(0, FN.OrgExitTurn(o, iActive) - Game.GetGameTurn()), FN.OptOutCost(pActive)))
+						tButtons[2] = { Text = L("TXT_KEY_FN_ORG_OPTOUT"), Enabled = bTurn and pActive:GetGold() >= FN.OptOutCost(pActive),
+							Call = function() return FN.NegotiateOptOuts(o, pActive) end }
 					end
 				elseif bEligible then
 					tButtons[1] = { Text = L("TXT_KEY_FN_ORG_JOIN"), Enabled = bTurn, Call = function() return FN.JoinOrg(o, pActive) end }
@@ -279,6 +307,66 @@ local function ShowOrganisations(pActive)
 		end
 	end
 end
+
+------------------------------------------------------------------------------
+-- Charter window for player-drafted alliances
+------------------------------------------------------------------------------
+local g_tCharter = {}
+
+local function CharterValueText(sTerm, v)
+	if sTerm == "NoSeparatePeace" then return L(v and "TXT_KEY_FN_CHARTER_V_PEACE_JOINT" or "TXT_KEY_FN_CHARTER_V_PEACE_FREE") end
+	if sTerm == "Hegemonic" then return L(v and "TXT_KEY_FN_CHARTER_V_HEGEMONIC" or "TXT_KEY_FN_CHARTER_V_EQUALS") end
+	if sTerm == "OpenBorders" then return L(v and "TXT_KEY_FN_CHARTER_V_BORDERS_OPEN" or "TXT_KEY_FN_CHARTER_V_BORDERS_CLOSED") end
+	return L("TXT_KEY_FN_CHARTER_V_" .. v)
+end
+
+local function RefreshCharter()
+	for i, sTerm in ipairs(FN.CHARTER_TERMS) do
+		Controls["CharterLabel" .. i]:SetText(L("TXT_KEY_FN_CHARTER_T_" .. string.upper(sTerm)) .. ": " .. CharterValueText(sTerm, g_tCharter[sTerm]))
+	end
+	local pActive = Players[Game.GetActivePlayer()]
+	local o = FN.FreePactSlot()
+	local iWilling = o and #FN.OrgCandidates(o, pActive) or 0
+	Controls.CharterStatus:SetText(L("TXT_KEY_FN_CHARTER_STATUS", iWilling, o and o.MinMembers or 2))
+	Controls.CharterFound:SetDisabled(not o or iWilling < o.MinMembers)
+end
+
+OpenCharter = function()
+	local pActive = Players[Game.GetActivePlayer()]
+	g_tCharter = {}
+	for _, sTerm in ipairs(FN.CHARTER_TERMS) do g_tCharter[sTerm] = FN.CHARTER_OPTIONS[sTerm][1] end
+	local pCapital = pActive:GetCapitalCity()
+	Controls.CharterName:SetText(L("TXT_KEY_FN_CHARTER_DEFAULT_NAME", pCapital and pCapital:GetName() or FN.PlayerName(pActive)))
+	RefreshCharter()
+	Controls.CharterBox:SetHide(false)
+end
+
+local function CloseCharter() Controls.CharterBox:SetHide(true) end
+
+for i, sTerm in ipairs(FN.CHARTER_TERMS) do
+	Controls["CharterTerm" .. i]:RegisterCallback(Mouse.eLClick, function()
+		local tOptions = FN.CHARTER_OPTIONS[sTerm]
+		local iNext = 1
+		for j, v in ipairs(tOptions) do if v == g_tCharter[sTerm] then iNext = (j % #tOptions) + 1 end end
+		g_tCharter[sTerm] = tOptions[iNext]
+		RefreshCharter()
+	end)
+end
+Controls.CharterCancel:RegisterCallback(Mouse.eLClick, CloseCharter)
+Controls.CharterFound:RegisterCallback(Mouse.eLClick, function()
+	-- Names are shown through the text system, so markup characters are removed.
+	local sName = string.gsub(Controls.CharterName:GetText() or "", "[%[%]{}|]", "")
+	sName = string.gsub(sName, "^%s+", "")
+	if sName == "" then return end
+	g_tCharter.Name = sName
+	if FN.FoundPact(Players[Game.GetActivePlayer()], g_tCharter) then
+		CloseCharter()
+		if FN.RefreshPanel then FN.RefreshPanel() end
+	else
+		RefreshCharter()
+	end
+end)
+function FN.OpenCharterForTest(t) OpenCharter(); for k, v in pairs(t or {}) do g_tCharter[k] = v end; RefreshCharter() end -- tests/harness.lua
 
 local function ShowWorld(pActive)
 	local iActiveTeam, bAny = pActive:GetTeam(), false
@@ -326,6 +414,7 @@ RefreshPanel = function()
 	FN.DrawOverlay()
 end
 
+FN.RefreshPanel = function() RefreshPanel() end
 local function SelectTab(sTab) return function() g_sTab = sTab; RefreshPanel() end end
 function FN.ShowPanelTab(sTab) SelectTab(sTab)() end -- also used by tests/harness.lua
 Controls.TabNations:RegisterCallback(Mouse.eLClick, SelectTab("NATIONS"))
@@ -346,7 +435,7 @@ end)
 
 ContextPtr:SetInputHandler(function(uiMsg, wParam)
 	if uiMsg == KeyEvents.KeyDown and wParam == Keys.VK_ESCAPE and not ContextPtr:IsHidden() then
-		ClosePanel()
+		if not Controls.CharterBox:IsHidden() then CloseCharter() else ClosePanel() end
 		return true
 	end
 end)

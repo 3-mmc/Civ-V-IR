@@ -21,11 +21,11 @@ GAME = Path("/mnt/e/SteamLibrary/steamapps/common/Sid Meier's Civilization V")
 USER = Path("/mnt/c/Users/aaron/Documents/My Games/Sid Meier's Civilization 5")
 VP_HIGHLIGHTS = GAME / "Assets/DLC/VPUI/Core/Highlights.xml"
 
-SQL = ["SQL/FN_Settings.sql", "SQL/FN_Schema.sql", "SQL/FN_Data.sql", "SQL/FN_Nations.sql", "SQL/FN_Organisations.sql",
+SQL = ["SQL/FN_Settings.sql", "SQL/FN_Schema.sql", "SQL/FN_Data.sql", "SQL/FN_Nations.sql", "SQL/FN_Organisations.sql", "SQL/FN_Alliances.sql",
        "SQL/FN_Independence.sql", "SQL/FN_Perks.sql"]
 TEXT = ["Text/FN_Text_en_US.xml", "Text/FN_Text_de_DE.xml"]
 UI = ["UI/FormableNations.xml", "UI/FormableNations.lua", "UI/FN_Core.lua", "UI/FN_Cohesion.lua", "UI/FN_Organisations.lua",
-      "UI/FN_Independence.lua", "UI/FN_Setup.lua"]
+      "UI/FN_Independence.lua", "UI/FN_Setup.lua", "UI/FN_Alliances.lua"]
 
 
 def check_lua():
@@ -99,11 +99,17 @@ def check_text_keys(db):
                              "WAR", "UNHAPPY", "CONCEDE", "PRIVILEGE", "ASSERT",
                              "CONNECTED", "NOT_CONNECTED", "CITY_RELIGION", "GARRISON", "PUPPET", "CITY_TENURE", "DISTANCE",
                              "FOREIGN", "NATIONALISM", "OPINION", "AUTONOMY", "SUPPRESS",
-                             "ORG_FOUNDER", "ORG_IDEOLOGY", "ORG_TRADE", "ORG_FRIENDS", "ORG_DENOUNCE", "OPTOUT"],
+                             "ORG_FOUNDER", "ORG_IDEOLOGY", "ORG_TRADE", "ORG_FRIENDS", "ORG_DENOUNCE", "OPTOUT",
+                             "CREDIBILITY", "THREAT", "BURDEN_TARGET", "BURDEN_TRIBUTE"],
         "TXT_KEY_FN_KIND_": ["COLONY", "FOREIGN"],
         "TXT_KEY_FN_NOTIFY_": ["REVIVED", "RETURNED", "RELEASED", "INDEPENDENCE",
                                "REVIVED_S", "RETURNED_S", "RELEASED_S", "INDEPENDENCE_S"],
-        "TXT_KEY_FN_ORG_DEPTH_": ["FUNCTIONAL", "INTERGOVERNMENTAL", "SUPRANATIONAL"],
+        "TXT_KEY_FN_ORG_DEPTH_": ["FUNCTIONAL", "INTERGOVERNMENTAL", "SUPRANATIONAL", "ALLIANCE"],
+        "TXT_KEY_FN_CHARTER_OBLIGATION_": ["DEFENCE", "FULL", "CONSULT"],
+        "TXT_KEY_FN_CHARTER_SCOPE_": ["GLOBAL", "REGIONAL"],
+        "TXT_KEY_FN_CHARTER_BURDEN_": ["NONE", "TARGET", "TRIBUTE"],
+        "TXT_KEY_FN_CHARTER_V_": ["DEFENCE", "FULL", "CONSULT", "GLOBAL", "REGIONAL", "NONE", "TARGET", "TRIBUTE"],
+        "TXT_KEY_FN_CHARTER_T_": ["OBLIGATION", "SCOPE", "NOSEPARATEPEACE", "BURDEN", "HEGEMONIC", "OPENBORDERS"],
         "TXT_KEY_FN_MODE_": ["UNION", "ALLY", "ABSORB", "OWN"],
         "TXT_KEY_FN_TIER_": ["1", "2"],
     }.items():

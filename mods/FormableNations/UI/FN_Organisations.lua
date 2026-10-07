@@ -21,6 +21,11 @@ for row in GameInfo.FormableNation_Organisations() do
 		PrereqType = row.PrereqOrg,
 		MemberCohesion = (row.MemberCohesion == true or row.MemberCohesion == 1),
 		NoWar = (row.NoWarBetweenMembers == true or row.NoWarBetweenMembers == 1),
+		-- Alliance charter (FN_Alliances.lua); a Custom slot's name and terms come from save data once founded.
+		Obligation = row.Obligation, Scope = row.Scope, Burden = row.Burden,
+		NoSeparatePeace = (row.NoSeparatePeace == true or row.NoSeparatePeace == 1),
+		Hegemonic = (row.Hegemonic == true or row.Hegemonic == 1),
+		Custom = (row.Custom == true or row.Custom == 1),
 		Civs = {}, Minors = {}, HasCivList = false, HasMinorList = false,
 	}
 	table.insert(FN.Orgs, o)
@@ -56,7 +61,7 @@ function FN.OrgEligible(o, p)
 	if p:IsMinorCiv() then
 		if o.HasMinorList then
 			if not o.Minors[p:GetMinorCivType()] then return false end
-		elseif not o.ResourceID then
+		elseif not o.ResourceID and not o.Custom then
 			return false
 		end
 	else
@@ -91,9 +96,14 @@ function FN.OrgWilling(o, p, pLeader)
 	if p:IsMinorCiv() then return p:IsFriends(pLeader:GetID()) end
 	if not Teams[p:GetTeam()]:IsHasMet(pLeader:GetTeam()) then return false end
 	if o.Depth == "FUNCTIONAL" then return true end -- interest, not affinity
-	if o.Depth == "SUPRANATIONAL" then
+	if o.Depth == "SUPRANATIONAL" or o.Depth == "ALLIANCE" then
 		local iTree = p:GetLateGamePolicyTree()
-		return p:IsDoF(pLeader:GetID()) or (iTree >= 0 and iTree == pLeader:GetLateGamePolicyTree())
+		if p:IsDoF(pLeader:GetID()) or (iTree >= 0 and iTree == pLeader:GetLateGamePolicyTree()) then return true end
+		if o.Depth == "SUPRANATIONAL" then return false end
+		-- Alliances also bind peoples of one faith (the Holy League) or with a common threat.
+		local iRel = ReligionOf(p)
+		if iRel >= 0 and iRel == ReligionOf(pLeader) then return true end
+		return FN.CommonThreat ~= nil and FN.CommonThreat(p, pLeader)
 	end
 	local iRel = ReligionOf(p)
 	return p:IsDoF(pLeader:GetID()) or (iRel >= 0 and iRel == ReligionOf(pLeader))
@@ -252,6 +262,7 @@ function FN.OrgEquilibrium(o, p)
 	for _, q in ipairs(tMembers) do tIsMember[q:GetID()] = true end
 
 	if iP == FN.OrgLeader(o) then Add("ORG_FOUNDER", S.TERM_ORG_FOUNDER) end
+	if o.Depth == "ALLIANCE" and FN.AllianceTerms then FN.AllianceTerms(o, p, Add) end
 	local iTree, iLeaderTree = p:GetLateGamePolicyTree(), pLeader and pLeader:GetLateGamePolicyTree() or -1
 	if iP ~= FN.OrgLeader(o) and iTree >= 0 and iLeaderTree >= 0 then
 		Add("ORG_IDEOLOGY", iTree == iLeaderTree and S.TERM_ORG_IDEOLOGY_SHARED or S.TERM_ORG_IDEOLOGY_RIVAL)
@@ -373,6 +384,7 @@ local function ProcessOrg(o)
 		ProcessMemberCohesion(o)
 		if not FN.OrgActive(o) then return end
 	end
+	if o.Depth == "ALLIANCE" and FN.ProcessAllianceEffects then FN.ProcessAllianceEffects(o) end
 
 	-- Effects for major members.
 	local tMembers = FN.Members(o)
@@ -419,7 +431,7 @@ function FN.ProcessOrganisations(pPlayer)
 			elseif FN.OrgLeader(o) == iPlayer then
 				ProcessOrg(o)
 			end
-		elseif not pPlayer:IsHuman() and FN.CanFound(o, pPlayer) then
+		elseif not pPlayer:IsHuman() and not o.Custom and FN.CanFound(o, pPlayer) then
 			FN.FoundOrg(o, pPlayer)
 		end
 	end

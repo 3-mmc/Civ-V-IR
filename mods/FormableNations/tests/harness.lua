@@ -44,7 +44,7 @@ PreGame = setmetatable({}, { __index = function(_, k)
 end })
 
 local function Hooks() local h = {} return setmetatable(h, { __index = { Add = function(fn) table.insert(h, fn) end } }) end
-GameEvents = { PlayerDoTurn = Hooks(), CityCaptureComplete = Hooks(), PlayerCanDeclareWar = Hooks() }
+GameEvents = { PlayerDoTurn = Hooks(), CityCaptureComplete = Hooks(), PlayerCanDeclareWar = Hooks(), DeclareWar = Hooks(), PlayerCanMakePeace = Hooks() }
 Events = setmetatable({}, { __index = function(t, k)
 	if k == "SerialEventHexHighlight" or k == "ClearHexHighlightStyle" then return function() end end
 	local h = Hooks(); rawset(t, k, h); return h
@@ -211,6 +211,19 @@ function Team:IsHasMet() return true end
 function Team:GetAtWarCount() local n = 0 for _, b in pairs(self.war) do if b then n = n + 1 end end return n end
 function Team:DoEndVassal(t) Teams[t].vassalOf = -1 end
 function Team:SetOpenBorders(t, b) self.openBorders[t] = b end
+function Team:CanDeclareWar(t)
+	for _, fn in ipairs(GameEvents.PlayerCanDeclareWar) do if fn(self.id, t) == false then return false end end
+	return true
+end
+-- As CvTeam::DoDeclareWar: the DeclareWar event fires, then both sides are at war.
+function Team:DeclareWar(t, bDefensivePact, iPlayer)
+	for _, fn in ipairs(GameEvents.DeclareWar) do fn(iPlayer or self.id, t, true) end
+	self.war[t], Teams[t].war[self.id] = true, true
+end
+local function CanMakePeace(iPlayer, iTeam)
+	for _, fn in ipairs(GameEvents.PlayerCanMakePeace) do if fn(iPlayer, iTeam) == false then return false end end
+	return true
+end
 
 -- Minor-civ simulation: influence decays toward the resting point by 1 per turn; ally = top influence >= 60.
 local function TickMinors()
@@ -467,9 +480,46 @@ dutch.ideology, dutch.unhappy, dutch.denouncing = 2, true, { [9] = true }
 local tExit
 for i = 1, 50 do RunTurns(1); if not FN.IsMember(eu, 8) then tExit = i break end end
 Check(tExit ~= nil, "a disaffected member votes to leave after a referendum (turn " .. tostring(tExit) .. ")")
-Check(FN.OrgActive(eu) and CanWar(8, 7), "the Union goes on; the leaver is free again")
+Check(FN.OrgActive(eu) and not FN.IsMember(eu, 8), "the Union goes on without the leaver")
 
-print("Scenario 13: panel renders every tab without errors")
+print("Scenario 13: alliances - collective defence, calls to arms, no separate peace, a player-drafted pact")
+local nato = FN.OrgByType.ORG_NATO
+Check(FN.OrgActive(nato) and FN.IsMember(nato, 7) and FN.IsMember(nato, 9), "NATO is founded by AI members sharing an ideology")
+local turkey = NewPlayer(10, { civ = CIV("OTTOMAN"), name = "Suleiman", era = 7, ideology = 3, might = 50 })
+turkey.cities[1] = NewCity(10, 318, 34, "Istanbul"); turkey.origCap = turkey.cities[1]
+local far = NewPlayer(11, { civ = CIV("AZTEC"), name = "Montezuma", era = 7, ideology = 3 })
+far.cities[1] = NewCity(11, 500, 200, "Tenochtitlan"); far.origCap = far.cities[1]
+Teams[11]:DeclareWar(9, false, 11)
+RunTurns(1)
+Check(not Teams[7].war[11], "an attack from outside the treaty area does not trigger it (regional scope)")
+Teams[10]:DeclareWar(9, false, 10)
+RunTurns(1)
+Check(Teams[7].war[10] and Teams[5].war[10], "an attack on Rome is an attack on all: France and Germany join")
+Check(FN.Credibility(nato, 7) > 0, "answering the call raises credibility")
+Check(not Teams[7]:CanDeclareWar(9), "members still cannot declare war on each other")
+
+britain.human, britain.cities[1].religion, dutch.cities[1].religion = true, 1, 1
+local pactOk = FN.FoundPact(britain, { Name = "Pact of London", Obligation = "DEFENCE", Scope = "GLOBAL", NoSeparatePeace = true,
+	Burden = "NONE", Hegemonic = false, OpenBorders = true })
+local pact = FN.OrgByType.ORG_PACT_1
+Check(pactOk and FN.OrgActive(pact) and FN.IsMember(pact, 8) and pact.Title == "Pact of London", "a player drafts and founds a pact; a co-religionist joins")
+Teams[10]:DeclareWar(8, false, 10)
+RunTurns(1)
+local iEnemy = FN.PendingCall(pact, 4)
+Check(iEnemy == 10, "the human member receives a call to arms")
+Check(FN.AnswerCall(pact, britain, true) and Teams[4].war[10], "honouring it declares war")
+Check(not CanMakePeace(4, 10), "no separate peace while the Netherlands still fights")
+Teams[8].war[10], Teams[10].war[8] = false, false
+RunTurns(1)
+Check(CanMakePeace(4, 10), "once the attacked member has made peace, the others may too")
+local tSave = SAVE["FN_PN_ORG_PACT_1"]
+Check(tSave == "Pact of London" and SAVE["FN_PT_ORG_PACT_1_NoSeparatePeace"] == "1", "the pact's name and terms are saved")
+Check(not FN.CanLeaveOrg(FN.OrgByType.ORG_WARSAW_PACT, britain) and FN.CanLeaveOrg(pact, britain), "only a leading-power pact forbids leaving")
+local ok, err = pcall(FN.OpenCharterForTest, { Obligation = "FULL" })
+Check(ok, "the charter window opens" .. (ok and "" or (": " .. tostring(err))))
+britain.human = false
+
+print("Scenario 14: panel renders every tab without errors")
 for _, sTab in ipairs({ "NATIONS", "UNIONS", "ORGS", "PROVINCES", "WORLD" }) do
 	local ok, err = pcall(FN.ShowPanelTab, sTab)
 	Check(ok, "tab " .. sTab .. (ok and "" or (": " .. tostring(err))))
