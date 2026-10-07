@@ -9,7 +9,7 @@ MOD = HERE.parent
 sys.path.insert(0, str(HERE))
 from stub import build_stub  # noqa: E402
 
-SQL = ["SQL/FN_Settings.sql", "SQL/FN_Schema.sql", "SQL/FN_Data.sql", "SQL/FN_Organisations.sql",
+SQL = ["SQL/FN_Settings.sql", "SQL/FN_Schema.sql", "SQL/FN_Data.sql", "SQL/FN_Nations.sql", "SQL/FN_Organisations.sql",
        "SQL/FN_Independence.sql", "SQL/FN_Perks.sql"]
 
 # Table -> columns to export (None = all). The DLL-shaped tables are wide, so only what the Lua reads is kept.

@@ -106,7 +106,7 @@ Two major civs, human or AI, can form a **dynastic union** with a senior and a j
 - **Both meters are visible to both players.** Betrayal is possible but telegraphed and costly, which is the intended strategic tension. Cooperation pays more: only a union that holds can deepen.
 - **Technical gate:** multiplayer requires every state change to travel as a synchronised network message. Lua has no generic one: the stock `Network.Send*` calls are all fixed-purpose. Options are VP's custom unit missions (synchronised, but they need a unit selected), or a small CivVNeo DLL addition that adds a generic synchronised mod message. The DLL route is cleaner and comes with building our own DLL anyway.
 
-## International organisations, by depth (Tier III; functional and intergovernmental built in v0.2)
+## International organisations, by depth (Tier III; functional and intergovernmental built in v0.2, supranational in v0.4)
 
 Three depths, mirroring union → state at international scale. All of them use the same membership and cohesion machinery.
 
@@ -122,7 +122,14 @@ Three depths, mirroring union → state at international scale. All of them use 
 - **As built (v0.2):** the Hanseatic League and OPEC (functional), plus the Arab League, African Union, ASEAN, Nordic Council and Mercosur (intergovernmental). Effects are applied each turn in the lead member's turn: Gold per trade route between members, Gold per Oil (OPEC, capped at 10), Influence with member city-states, and real open borders via `Team:SetOpenBorders`.
 - **Who joins:** city-states join when they're Friends with the leader. AI majors join functional organisations unless hostile (at war or denouncing); intergovernmental ones need a Declaration of Friendship or a shared majority religion. Humans are invited and accept in the panel. Members leave when they stop qualifying or turn hostile. The Hanseatic League dissolves after the Renaissance.
 - **Known simplification:** leaving an organisation removes the open borders it granted, even if the same two civs also signed an open-borders deal. Separate tracking needs DLL work.
-- **Supranational (EU-style)** is the next organisation step: it reuses the cohesion machinery for members' commitment and an exit notice period.
+- **Supranational, as built (v0.4): the European chain.**
+  - **Coal and Steel Community** (functional, Modern era). European nations owning Coal can join. It pays Gold per Coal and +3% Production.
+  - **Economic Community** (intergovernmental, Atomic era). It can only be founded by a Coal and Steel Community member. It gives open borders, +3 Gold per trade route between members and +5% Gold.
+  - **European Union** (supranational, Information era). It can only be founded by an Economic Community member. It gives open borders, +4 Gold per trade route between members, +5% Gold, +5% Science, +1 World Congress delegate and +2 Influence a turn with member City-States.
+  - **Growing out of a predecessor:** `PrereqOrg` means a new organisation can only be founded by a member of its predecessor. Founding it merges the predecessor in for good (`OSUP_` save key), and the predecessor's members come along.
+  - **No war between members:** handled through VP's `GameEvents.PlayerCanDeclareWar`. The mod switches on `EVENTS_WAR_AND_PEACE` in `CustomModOptions`, which is off by default.
+  - **Member cohesion:** each major member has a cohesion score with the Union. It is raised by being the leading member (+5), sharing the leader's ideology (+10), trade with members (+8), a Declaration of Friendship with a member (+5) and years of membership. It is lowered by a rival ideology (-15), denunciations between members (-10) and unhappiness (-10). Below 25 an **exit referendum** is called and decided after 5 turns. Negotiated **opt-outs** (40 Gold x (era + 1)) call it off and add +15 for 20 turns; an AI negotiates them if it can afford twice the price. A member that votes to leave loses the benefits and may declare war again.
+  - **Not yet built:** the cohesion budget (transfers to poorer members) and a common World Congress vote.
 
 ## City-state pool and civ : city-state ratios
 
@@ -132,14 +139,15 @@ Three depths, mirroring union → state at international scale. All of them use 
 - **Peoples, not cities, in claim data.** Use homeland pairs wherever VP provides them (Scotland: Edinburgh or the Celtic capital).
 - **Absorption budget.** At most about 25% of the starting city-states can be absorbed peacefully per game; past that, unions stay unions. Independence (below) works the other way and creates city-states, so over a long game the two effects balance.
 
-## City-state placement near related civs (planned)
+## Historical City-States at game start (built, v0.4)
 
-To avoid "map spaghetti", formation partners should start near the civ that would claim them: Vilnius beside Poland, not on another continent.
+City-States are drawn at random from about 120, so a formation's partners are often missing: Vilnius is in roughly one game in seven. Partners also often start far from the civ that would claim them ("map spaghetti"). `UI/FN_Setup.lua` fixes both without DLL or map-script work:
 
-- VP's `AssignStartingPlots.lua` assigns city-states to civ regions by index. Its region helpers are explicitly *"extracted … for easy override"*.
-- A map-generation component swaps assignments, so a partner city-state takes the place of one already assigned to its related civ's region (or a neighbouring region). Counts per region don't change, and all other placement stays VP's.
-- **Technical caveat:** the game loads one `AssignStartingPlots.lua`, which is VP's override. Ours must be generated as VP's file plus a hook, like `Highlights.xml`, and rebuilt on every VP update.
-- City-states spawned mid-game appear where their city already is, so the problem doesn't arise for them.
+- **When:** once per game, as soon as every City-State has founded its city (at most `HISTORICAL_WAIT_TURNS` = 3 turns in), before most first contacts.
+- **What is missing:** for every civ in the game and every claim group of its formations, City-States are added from the claim list (in listed order) until the group has as many present options as it needs. Blocked types (`MajorBlocksMinor`) and types already in play are skipped, so Edinburgh only comes in when the Celts are absent.
+- **Which City-State makes way:** the one whose city is nearest the claiming civ's capital or starting plot, with a bonus for the same trait (`HISTORICAL_TRAIT_PREFERENCE` tiles). A City-State that any in-game formation refers to is never replaced. At most `HISTORICAL_MAX_PERCENT` = 50% of the City-States are replaced, and their number stays the same.
+- **How:** VP's own path for replacing a City-State at game start. `Game.ChangeMinorPlayer` sets a never-used slot's type, and `Game.DoSpawnFreeCity(city)` (not "major founding") hands it the donor's city "as if founded there" and retires the donor, whose units die with it. The mod renames the city to the new City-State's name, removes the starting Settler the engine hands out, and re-creates the donor's military units for the newcomer.
+- `HISTORICAL_CITY_STATES = 0` turns it off. A map-script approach (`AssignStartingPlots.lua` override) would place partners even more precisely, but it needs a generated copy of VP's script on every VP update. This is not planned unless the swap proves too coarse.
 
 ## Independence and fragmentation (built, v0.3)
 
@@ -223,7 +231,7 @@ Tier II proclamations also start an **8-turn golden age**. Bases were chosen so 
 - Persistent state: whether a stage is formed comes from the player having its policy. Formation turns and the original names are stored in `Modding.OpenSaveData()`. Names are re-applied on load.
 - Single-player only for now. UI-triggered state changes would desync multiplayer, which would need a network-safe path (`Network.SendLuaEvent`-style custom mission or DLL hooks).
 
-## Content (v0.3)
+## Content (v0.4)
 
 | Chain | Stage | Era window | Claims | Bonus (dummy policy) |
 |---|---|---|---|---|
@@ -238,6 +246,23 @@ Tier II proclamations also start an **8-turn golden age**. Bases were chosen so 
 
 The bonuses above are the v0.2 base. v0.3 adds unique units, economic perks and proclamation golden ages (see "Perks of formed nations").
 
-Organisations: Hanseatic League (Medieval–Renaissance), OPEC (Atomic+), Arab League (Modern+), African Union, ASEAN, Nordic Council (Atomic+), Mercosur (Information+).
+**More nations (v0.4)**, one or two claim steps each, spread across the eras:
+
+| Civ | Nation (tier) | Era window | Claims | Bonus |
+|---|---|---|---|---|
+| Babylon | Kingdom of Sumer and Akkad (II) | Ancient – Classical | `ABSORB` Ur | Capital +2 Science, +2 Food |
+| Denmark | Kalmar Union (I) | Medieval – Renaissance | `UNION` Stockholm, or Sweden as vassal | Capital +2 Production, +2 Gold |
+| Sweden | Swedish Empire (II) | Renaissance – Industrial | `ABSORB` Riga | +10% military production; capital +2 Culture |
+| Russia | Russian Empire (II) | Renaissance – Industrial | `ABSORB` Riga (competes with Sweden) | +5% Science; capital +2 Culture |
+| Spain | Iberian Union (I) | Renaissance | `UNION` Lisbon, or Portugal as vassal | +5% Gold |
+| Netherlands | United Kingdom of the Netherlands (II) | Industrial | `ABSORB` Brussels or Antwerp | +5% Production; capital +3 Gold |
+| Rome | Kingdom of Italy (II) | Industrial – Modern | `ABSORB` 2 of Florence, Milan, Genoa, Venice | +5% Culture; capital +3 Culture |
+| Mongolia | Yuan Dynasty (II) | Medieval – Renaissance | `OWN` China's capital | +5% Gold, +5% Science |
+
+Organisations: European Coal and Steel Community, European Economic Community and European Union (the European chain above), Hanseatic League (Medieval–Renaissance), OPEC (Atomic+), Arab League (Modern+), African Union, ASEAN, Nordic Council (Atomic+), Mercosur (Information+).
 
 Candidates for more nations (data only): the Arab Caliphate (Jerusalem + Levant); the Ottoman Caliphate (Jerusalem + Mecca or Thebes); Yuan (Mongolia + China's capital); Kingdom of Italy (Rome or Venice + 2 of Florence/Milan/Genoa); Swedish Empire (Riga); Russian Empire (Riga; competes with Sweden and Poland as in the Northern Wars); United Kingdom of the Netherlands (Brussels or Antwerp); Iberian Union (Spain + Portugal's capital); Kalmar Union (Denmark + Sweden's capital); Kingdom of Sumer and Akkad (Babylon + Ur); Restored Roman Empire (Byzantium + Rome's capital or Carthage's capital).
+
+## Localisation
+
+The mod ships English (`Text/FN_Text_en_US.xml`) and German (`Text/FN_Text_de_DE.xml`, table `Language_DE_DE`). The German file uses the base game's formal address ("Ihr/Euer") and terms (Einfluss, Stadtstaat, Goldenes Zeitalter, Handelsweg). Civ names a formation renames to carry the base game's grammatical forms: `_DESC` has 3 forms separated by `|`, `_ADJ` has 5, and `_SHORT` has `Plurality` (and `Gender` where feminine). The base game's sentences pick forms by index (`{1_CivAdj[3]}`). `build.py` checks that every translation has exactly the English keys and placeholders, and that these forms are complete. Other languages fall back to English while `DisableFallbackLanguageSupport = 0`.

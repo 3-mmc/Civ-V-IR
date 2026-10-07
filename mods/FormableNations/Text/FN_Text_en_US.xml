@@ -298,5 +298,63 @@
 		<Row Tag="TXT_KEY_FN_ORG_EU_TITLE"><Text>European Union</Text></Row>
 		<Row Tag="TXT_KEY_FN_ORG_EU_HELP"><Text>Open borders between member civilizations. Members cannot declare war on each other (leave first). +4 [ICON_GOLD] Gold per turn for each of your trade routes to another member. +5% [ICON_GOLD] Gold and +5% [ICON_RESEARCH] Science. +1 Delegate in the World Congress. +2 Influence per turn with each member City-State. Founded by a member of the Economic Community, which merges into it.</Text></Row>
 		<Row Tag="TXT_KEY_FN_ORG_EU_QUOTE"><Text>The Maastricht Treaty (1993) founded the European Union, adding a common foreign and security policy, cooperation in justice and home affairs, and the path to a single currency. In 2020 the United Kingdom became the first member state to leave.</Text></Row>
+		<!-- v0.4: more nations -->
+		<Row Tag="TXT_KEY_FN_GROUP_SUMER"><Text>Sumer</Text></Row>
+		<Row Tag="TXT_KEY_FN_GROUP_SWEDEN"><Text>Sweden</Text></Row>
+		<Row Tag="TXT_KEY_FN_GROUP_LIVONIA"><Text>Livonia</Text></Row>
+		<Row Tag="TXT_KEY_FN_GROUP_PORTUGAL"><Text>Portugal</Text></Row>
+		<Row Tag="TXT_KEY_FN_GROUP_SOUTHERN_NETHERLANDS"><Text>Southern Netherlands</Text></Row>
+		<Row Tag="TXT_KEY_FN_GROUP_ITALIAN_STATES"><Text>Italian states</Text></Row>
+		<Row Tag="TXT_KEY_FN_GROUP_CHINA"><Text>China</Text></Row>
+
+		<Row Tag="TXT_KEY_FN_SUMER_AKKAD_TITLE"><Text>Kingdom of Sumer and Akkad</Text></Row>
+		<Row Tag="TXT_KEY_FN_SUMER_AKKAD_DESC"><Text>Kingdom of Sumer and Akkad</Text></Row>
+		<Row Tag="TXT_KEY_FN_SUMER_AKKAD_SHORT"><Text>Sumer and Akkad</Text></Row>
+		<Row Tag="TXT_KEY_FN_SUMER_AKKAD_ADJ"><Text>Mesopotamian</Text></Row>
+		<Row Tag="TXT_KEY_FN_SUMER_AKKAD_HELP"><Text>+2 [ICON_RESEARCH] Science and +2 [ICON_FOOD] Food in the [ICON_CAPITAL] Capital.</Text></Row>
+		<Row Tag="TXT_KEY_FN_SUMER_AKKAD_QUOTE"><Text>Around 2100 BC Ur-Nammu of Ur took the title "King of Sumer and Akkad", claiming all of southern Mesopotamia. Later kings, those of Babylon among them, kept the style for well over a thousand years.</Text></Row>
+
+		<Row Tag="TXT_KEY_FN_KALMAR_TITLE"><Text>Kalmar Union</Text></Row>
+		<Row Tag="TXT_KEY_FN_KALMAR_HELP"><Text>+2 [ICON_PRODUCTION] Production and +2 [ICON_GOLD] Gold in the [ICON_CAPITAL] Capital.</Text></Row>
+		<Row Tag="TXT_KEY_FN_KALMAR_QUOTE"><Text>In 1397 Queen Margaret I had her great-nephew Eric of Pomerania crowned at Kalmar as king of Denmark, Norway and Sweden. Sweden broke away for good under Gustav Vasa in 1523.</Text></Row>
+
+		<Row Tag="TXT_KEY_FN_SWEDISH_EMPIRE_TITLE"><Text>Swedish Empire</Text></Row>
+		<Row Tag="TXT_KEY_FN_SWEDISH_EMPIRE_DESC"><Text>Swedish Empire</Text></Row>
+		<Row Tag="TXT_KEY_FN_SWEDISH_EMPIRE_SHORT"><Text>Swedish Empire</Text></Row>
+		<Row Tag="TXT_KEY_FN_SWEDISH_EMPIRE_ADJ"><Text>Swedish</Text></Row>
+		<Row Tag="TXT_KEY_FN_SWEDISH_EMPIRE_HELP"><Text>+10% [ICON_PRODUCTION] Production of military units. +2 [ICON_CULTURE] Culture in the [ICON_CAPITAL] Capital.</Text></Row>
+		<Row Tag="TXT_KEY_FN_SWEDISH_EMPIRE_QUOTE"><Text>Gustavus Adolphus took Riga in 1621. For a century Sweden was the great power of the Baltic, until the Great Northern War ended in 1721 with Livonia ceded to Russia.</Text></Row>
+
+		<Row Tag="TXT_KEY_FN_RUSSIAN_EMPIRE_TITLE"><Text>Russian Empire</Text></Row>
+		<Row Tag="TXT_KEY_FN_RUSSIAN_EMPIRE_DESC"><Text>Russian Empire</Text></Row>
+		<Row Tag="TXT_KEY_FN_RUSSIAN_EMPIRE_SHORT"><Text>Russian Empire</Text></Row>
+		<Row Tag="TXT_KEY_FN_RUSSIAN_EMPIRE_ADJ"><Text>Russian</Text></Row>
+		<Row Tag="TXT_KEY_FN_RUSSIAN_EMPIRE_HELP"><Text>+5% [ICON_RESEARCH] Science. +2 [ICON_CULTURE] Culture in the [ICON_CAPITAL] Capital.</Text></Row>
+		<Row Tag="TXT_KEY_FN_RUSSIAN_EMPIRE_QUOTE"><Text>Peter I took Riga in 1710 and, after the Treaty of Nystad brought him the Baltic coast in 1721, was proclaimed emperor of all Russia.</Text></Row>
+
+		<Row Tag="TXT_KEY_FN_IBERIAN_UNION_TITLE"><Text>Iberian Union</Text></Row>
+		<Row Tag="TXT_KEY_FN_IBERIAN_UNION_HELP"><Text>+5% [ICON_GOLD] Gold.</Text></Row>
+		<Row Tag="TXT_KEY_FN_IBERIAN_UNION_QUOTE"><Text>After King Sebastian fell in Morocco in 1578 and his successor died without heirs, Philip II of Spain claimed the Portuguese crown in 1580. Both kingdoms shared a king, but kept separate governments, until the restoration of 1640.</Text></Row>
+
+		<Row Tag="TXT_KEY_FN_UNITED_NETHERLANDS_TITLE"><Text>United Kingdom of the Netherlands</Text></Row>
+		<Row Tag="TXT_KEY_FN_UNITED_NETHERLANDS_DESC"><Text>United Kingdom of the Netherlands</Text></Row>
+		<Row Tag="TXT_KEY_FN_UNITED_NETHERLANDS_SHORT"><Text>United Netherlands</Text></Row>
+		<Row Tag="TXT_KEY_FN_UNITED_NETHERLANDS_ADJ"><Text>Netherlandish</Text></Row>
+		<Row Tag="TXT_KEY_FN_UNITED_NETHERLANDS_HELP"><Text>+5% [ICON_PRODUCTION] Production. +3 [ICON_GOLD] Gold in the [ICON_CAPITAL] Capital.</Text></Row>
+		<Row Tag="TXT_KEY_FN_UNITED_NETHERLANDS_QUOTE"><Text>The Congress of Vienna joined the northern Netherlands and the former Austrian Netherlands under King William I in 1815. The Belgian Revolution of 1830 split them again; the Netherlands recognised Belgium in 1839.</Text></Row>
+
+		<Row Tag="TXT_KEY_FN_ITALY_TITLE"><Text>Kingdom of Italy</Text></Row>
+		<Row Tag="TXT_KEY_FN_ITALY_DESC"><Text>Kingdom of Italy</Text></Row>
+		<Row Tag="TXT_KEY_FN_ITALY_SHORT"><Text>Italy</Text></Row>
+		<Row Tag="TXT_KEY_FN_ITALY_ADJ"><Text>Italian</Text></Row>
+		<Row Tag="TXT_KEY_FN_ITALY_HELP"><Text>+5% [ICON_CULTURE] Culture. +3 [ICON_CULTURE] Culture in the [ICON_CAPITAL] Capital.</Text></Row>
+		<Row Tag="TXT_KEY_FN_ITALY_QUOTE"><Text>On 17 March 1861, after the campaigns of Cavour and Garibaldi, Victor Emmanuel II was proclaimed King of Italy. Venice joined in 1866 and Rome, the capital, in 1870.</Text></Row>
+
+		<Row Tag="TXT_KEY_FN_YUAN_TITLE"><Text>Yuan Dynasty</Text></Row>
+		<Row Tag="TXT_KEY_FN_YUAN_DESC"><Text>Great Yuan</Text></Row>
+		<Row Tag="TXT_KEY_FN_YUAN_SHORT"><Text>Yuan</Text></Row>
+		<Row Tag="TXT_KEY_FN_YUAN_ADJ"><Text>Yuan</Text></Row>
+		<Row Tag="TXT_KEY_FN_YUAN_HELP"><Text>+5% [ICON_GOLD] Gold and +5% [ICON_RESEARCH] Science.</Text></Row>
+		<Row Tag="TXT_KEY_FN_YUAN_QUOTE"><Text>Kublai Khan proclaimed the Great Yuan in 1271 and completed the conquest of the Song in 1279, ruling from Khanbaliq, today's Beijing, until the Ming drove the dynasty north in 1368.</Text></Row>
 	</Language_en_US>
 </GameData>

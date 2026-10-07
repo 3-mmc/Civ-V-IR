@@ -21,9 +21,9 @@ GAME = Path("/mnt/e/SteamLibrary/steamapps/common/Sid Meier's Civilization V")
 USER = Path("/mnt/c/Users/aaron/Documents/My Games/Sid Meier's Civilization 5")
 VP_HIGHLIGHTS = GAME / "Assets/DLC/VPUI/Core/Highlights.xml"
 
-SQL = ["SQL/FN_Settings.sql", "SQL/FN_Schema.sql", "SQL/FN_Data.sql", "SQL/FN_Organisations.sql",
+SQL = ["SQL/FN_Settings.sql", "SQL/FN_Schema.sql", "SQL/FN_Data.sql", "SQL/FN_Nations.sql", "SQL/FN_Organisations.sql",
        "SQL/FN_Independence.sql", "SQL/FN_Perks.sql"]
-TEXT = ["Text/FN_Text_en_US.xml"]
+TEXT = ["Text/FN_Text_en_US.xml", "Text/FN_Text_de_DE.xml"]
 UI = ["UI/FormableNations.xml", "UI/FormableNations.lua", "UI/FN_Core.lua", "UI/FN_Cohesion.lua", "UI/FN_Organisations.lua",
       "UI/FN_Independence.lua", "UI/FN_Setup.lua"]
 
@@ -112,6 +112,28 @@ def check_text_keys(db):
     missing = sorted(used - defined)
     if missing:
         sys.exit(f"Missing text keys: {missing}")
+    check_translations(db)
+
+
+def check_translations(db):
+    """Every translation has exactly the English keys and placeholders. German civ names (the keys a formation renames
+    a civ to) carry the base game's grammatical forms: Description 3, Adjective 5, separated by |."""
+    def rows(path):
+        return dict(re.findall(r'<Row Tag="(TXT_KEY_FN_[A-Z0-9_]+)"><Text>(.*?)</Text>', (HERE / path).read_text(encoding="utf-8"), re.S))
+    en = rows(TEXT[0])
+    forms = {}
+    for desc, adj in db.execute("SELECT Description, Adjective FROM FormableNations WHERE Description IS NOT NULL"):
+        forms[desc], forms[adj] = 3, 5
+    placeholders = lambda t: sorted(set(re.findall(r"\{\d_[A-Za-z]+\}", t)))
+    for path in TEXT[1:]:
+        tr = rows(path)
+        if set(tr) != set(en):
+            sys.exit(f"{path}: keys differ from English: missing {sorted(set(en) - set(tr))}, extra {sorted(set(tr) - set(en))}")
+        for k, text in tr.items():
+            if placeholders(text) != placeholders(en[k]):
+                sys.exit(f"{path}: {k} placeholders {placeholders(text)} differ from English {placeholders(en[k])}")
+            if "de_DE" in path and k in forms and len(text.split("|")) != forms[k]:
+                sys.exit(f"{path}: {k} needs {forms[k]} forms separated by |")
 
 
 def check_settings(db):

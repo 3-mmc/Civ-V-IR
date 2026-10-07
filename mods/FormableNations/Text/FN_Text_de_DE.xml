@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- German strings for Formable Nations. Keys mirror FN_Text_en_US.xml (build.py checks keys, placeholders and forms).
+     Civ names follow the German base game: _DESC has 3 forms (strong | after the definite article | dative/genitive),
+     _ADJ has 5 (base | -en | -e | -er | -es), _SHORT carries Plurality (and Gender where feminine). -->
+<GameData>
+	<Language_DE_DE>
+		<!-- Panel -->
+		<Row Tag="TXT_KEY_FN_PANEL_TITLE"><Text>Formbare Nationen</Text></Row>
+		<Row Tag="TXT_KEY_FN_TIER_1"><Text>Union</Text></Row>
+		<Row Tag="TXT_KEY_FN_TIER_2"><Text>Staat</Text></Row>
+		<Row Tag="TXT_KEY_FN_YOUR_NATIONS"><Text>Die Wege Eurer Nation</Text></Row>
+		<Row Tag="TXT_KEY_FN_WORLD_HEADER"><Text>Anderswo auf der Welt gebildet</Text></Row>
+		<Row Tag="TXT_KEY_FN_WORLD_NONE"><Text>Keine Euch bekannte Zivilisation hat eine neue Nation gebildet.</Text></Row>
+		<Row Tag="TXT_KEY_FN_NONE_FOR_CIV"><Text>Für Eure Zivilisation gibt es in dieser Version keine formbaren Nationen.</Text></Row>
+		<Row Tag="TXT_KEY_FN_WORLD_ENTRY"><Text>{1_Leader} führt: {2_Stage} ({3_Civ}).</Text></Row>
+		<Row Tag="TXT_KEY_FN_STAGE_HEADER"><Text>{1_Stage} [COLOR_GREY]({2_Tier}, {3_MinEra} bis {4_MaxEra})[ENDCOLOR]</Text></Row>
+		<Row Tag="TXT_KEY_FN_FORM_BUTTON"><Text>Ausrufen</Text></Row>
+		<Row Tag="TXT_KEY_FN_OVERLAY_ON"><Text>Unionsgrenzen: sichtbar</Text></Row>
+		<Row Tag="TXT_KEY_FN_OVERLAY_OFF"><Text>Unionsgrenzen: ausgeblendet</Text></Row>
+		<Row Tag="TXT_KEY_FN_BONUS"><Text>[COLOR_YELLOW]Bonus:[ENDCOLOR] {1_Help}</Text></Row>
+		<Row Tag="TXT_KEY_FN_RENAME"><Text>[COLOR_YELLOW]Neuer Name:[ENDCOLOR] {1_Desc}</Text></Row>
+		<Row Tag="TXT_KEY_FN_UNION_NOTE"><Text>Die Partner behalten ihre eigenen Regierungen. Jede Bindung hat einen Zusammenhalt, der im Reiter Unionen angezeigt wird: Gemeinsame Religion, Handel und Euer Vorsprung an Einfluss stärken ihn; Rivalen, Kriege und Unzufriedenheit schwächen ihn. Geringer Zusammenhalt führt zu Autonomiekrisen und schlimmstenfalls zur Abspaltung. Krieg mit einem Partner beendet die Bindung sofort.</Text></Row>
+
+		<!-- Status -->
+		<Row Tag="TXT_KEY_FN_STATUS_FORMED"><Text>[COLOR_POSITIVE_TEXT]Ausgerufen in Runde {1_Num}.[ENDCOLOR]</Text></Row>
+		<Row Tag="TXT_KEY_FN_STATUS_READY"><Text>[COLOR_POSITIVE_TEXT]Alle Voraussetzungen sind erfüllt.[ENDCOLOR]</Text></Row>
+		<Row Tag="TXT_KEY_FN_STATUS_WAITING"><Text>Voraussetzungen noch nicht erfüllt.</Text></Row>
+		<Row Tag="TXT_KEY_FN_STATUS_IMPOSSIBLE"><Text>[COLOR_NEGATIVE_TEXT]In dieser Welt nicht möglich:[ENDCOLOR] {1_Group} gibt es in diesem Spiel nicht.</Text></Row>
+		<Row Tag="TXT_KEY_FN_STATUS_EXPIRED"><Text>[COLOR_NEGATIVE_TEXT]Die Gelegenheit ist verstrichen:[ENDCOLOR] Dies kann nur bis einschließlich {1_Era} ausgerufen werden.</Text></Row>
+		<Row Tag="TXT_KEY_FN_STATUS_SUPERSEDED"><Text>[COLOR_GREY]Von einer späteren Stufe abgelöst.[ENDCOLOR]</Text></Row>
+
+		<!-- Requirements -->
+		<Row Tag="TXT_KEY_FN_REQ_ERA"><Text>Zeitalter erreichen: {1_Era}</Text></Row>
+		<Row Tag="TXT_KEY_FN_REQ_PREREQ"><Text>{1_Stage} {2_Num} Runden lang halten (bisher {3_Held})</Text></Row>
+		<Row Tag="TXT_KEY_FN_REQ_PREREQ_MISSING"><Text>Zuerst ausrufen: {1_Stage}</Text></Row>
+		<Row Tag="TXT_KEY_FN_REQ_HAPPY"><Text>Keine Unzufriedenheit im Reich</Text></Row>
+		<Row Tag="TXT_KEY_FN_REQ_GROUP"><Text>{1_Group} ({2_Num} benötigt):</Text></Row>
+		<Row Tag="TXT_KEY_FN_REQ_GOLD"><Text>Preis der friedlichen Annexion: {1_Num} [ICON_GOLD] Gold (Ihr habt {2_Have})</Text></Row>
+
+		<!-- Claim lines: {1_Name} [{2_Mode}] - {3_State} -->
+		<Row Tag="TXT_KEY_FN_CLAIM_LINE"><Text>{1_Name} [COLOR_GREY]({2_Mode})[ENDCOLOR]: {3_State}</Text></Row>
+		<Row Tag="TXT_KEY_FN_CLAIM_CAPITAL_OF"><Text>Hauptstadt von {1_Civ}</Text></Row>
+		<Row Tag="TXT_KEY_FN_MODE_UNION"><Text>Union</Text></Row>
+		<Row Tag="TXT_KEY_FN_MODE_ALLY"><Text>Anerkennung</Text></Row>
+		<Row Tag="TXT_KEY_FN_MODE_ABSORB"><Text>Annexion</Text></Row>
+		<Row Tag="TXT_KEY_FN_MODE_OWN"><Text>Besitz</Text></Row>
+		<Row Tag="TXT_KEY_FN_CLAIM_OWNED"><Text>in Eurem Besitz</Text></Row>
+		<Row Tag="TXT_KEY_FN_CLAIM_MARRIED"><Text>durch dynastische Heirat verbunden</Text></Row>
+		<Row Tag="TXT_KEY_FN_CLAIM_ALLIED"><Text>Euer Verbündeter</Text></Row>
+		<Row Tag="TXT_KEY_FN_CLAIM_ALLIED_TURNS"><Text>Euer Verbündeter seit {1_Num} von {2_Need} Runden</Text></Row>
+		<Row Tag="TXT_KEY_FN_CLAIM_NOT_ALLIED"><Text>nicht Euer Verbündeter</Text></Row>
+		<Row Tag="TXT_KEY_FN_CLAIM_AT_WAR"><Text>im Krieg mit Euch</Text></Row>
+		<Row Tag="TXT_KEY_FN_CLAIM_VASSAL"><Text>Euer Vasall</Text></Row>
+		<Row Tag="TXT_KEY_FN_CLAIM_NOT_HELD"><Text>nicht in Eurem Besitz</Text></Row>
+		<Row Tag="TXT_KEY_FN_CLAIM_ABSENT"><Text>nicht in dieser Welt</Text></Row>
+		<Row Tag="TXT_KEY_FN_CLAIM_LOST"><Text>im Besitz einer anderen Macht</Text></Row>
+		<Row Tag="TXT_KEY_FN_CLAIM_WILL_ANNEX"><Text>wird annektiert</Text></Row>
+
+		<!-- Notifications -->
+		<Row Tag="TXT_KEY_FN_NOTIFY_FORMED"><Text>{1_Leader} hat ausgerufen: {2_Stage}.</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_FORMED_S"><Text>Ausgerufen: {1_Stage}</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_DISSOLVED"><Text>Aufgelöst: {1_Stage} unter {2_Leader}. Die Partner sind nicht mehr an die Krone gebunden.</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_DISSOLVED_S"><Text>Aufgelöst: {1_Stage}</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_AVAILABLE"><Text>Ihr könnt nun ausrufen: {1_Stage}. Öffnet Formbare Nationen über das Informationsmenü oben rechts.</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_AVAILABLE_S"><Text>Kann ausgerufen werden: {1_Stage}</Text></Row>
+
+		<!-- Claim groups -->
+		<Row Tag="TXT_KEY_FN_GROUP_LITHUANIA"><Text>Litauen</Text></Row>
+		<Row Tag="TXT_KEY_FN_GROUP_HUNGARY"><Text>Ungarn</Text></Row>
+		<Row Tag="TXT_KEY_FN_GROUP_CORONATION"><Text>Kaiserkrönung</Text></Row>
+		<Row Tag="TXT_KEY_FN_GROUP_IMPERIAL_ESTATES"><Text>Reichsstände</Text></Row>
+		<Row Tag="TXT_KEY_FN_GROUP_SAXONY"><Text>Sachsen</Text></Row>
+		<Row Tag="TXT_KEY_FN_GROUP_SCOTLAND"><Text>Schottland</Text></Row>
+
+		<!-- Poland -->
+		<Row Tag="TXT_KEY_FN_KREWO_TITLE"><Text>Union von Krewo</Text></Row>
+		<Row Tag="TXT_KEY_FN_KREWO_HELP"><Text>+2 [ICON_CULTURE] Kultur und +2 [ICON_PEACE] Glauben in der [ICON_CAPITAL] Hauptstadt.</Text></Row>
+		<Row Tag="TXT_KEY_FN_KREWO_QUOTE"><Text>1385 willigte Großfürst Jogaila von Litauen in Krewo ein, Jadwiga, die Königin von Polen, zu heiraten und mit seinem Reich die katholische Taufe anzunehmen. 1386 als Władysław II. Jagiełło gekrönt, regierte er beide Kronen als eine Dynastie, während jedes Land sein eigener Staat blieb.</Text></Row>
+		<Row Tag="TXT_KEY_FN_COMMONWEALTH_TITLE"><Text>Polnisch-Litauische Adelsrepublik</Text></Row>
+		<Row Tag="TXT_KEY_FN_COMMONWEALTH_DESC"><Text>Polnisch-Litauische Adelsrepublik|Polnisch-Litauische Adelsrepublik|Polnisch-Litauischen Adelsrepublik</Text></Row>
+		<Row Tag="TXT_KEY_FN_COMMONWEALTH_SHORT"><Text>Polen-Litauen</Text><Plurality>1</Plurality></Row>
+		<Row Tag="TXT_KEY_FN_COMMONWEALTH_ADJ"><Text>polnisch-litauisch|polnisch-litauischen|polnisch-litauische|polnisch-litauischer|polnisch-litauisches</Text></Row>
+		<Row Tag="TXT_KEY_FN_COMMONWEALTH_HELP"><Text>+1 Delegierter im Weltkongress. +5% [ICON_CULTURE] Kultur. Weizen: +1 [ICON_FOOD] Nahrung und +1 [ICON_GOLD] Gold.</Text></Row>
+		<Row Tag="TXT_KEY_FN_COMMONWEALTH_QUOTE"><Text>Die Union von Lublin (1569) machte aus der Personalunion eine einzige Republik beider Völker mit einem gewählten König und einem gemeinsamen Sejm. Die „Goldene Freiheit“ ihres Adels machte sie zu einem der Staaten mit dem breitesten Wahlrecht ihrer Zeit, bis die Teilungen sie 1795 beendeten.</Text></Row>
+
+		<!-- Austria -->
+		<Row Tag="TXT_KEY_FN_HABSBURG_TITLE"><Text>Habsburgermonarchie</Text></Row>
+		<Row Tag="TXT_KEY_FN_HABSBURG_DESC"><Text>Habsburgermonarchie|Habsburgermonarchie|Habsburgermonarchie</Text></Row>
+		<Row Tag="TXT_KEY_FN_HABSBURG_SHORT"><Text>Habsburgermonarchie</Text><Plurality>1</Plurality><Gender>feminine</Gender></Row>
+		<Row Tag="TXT_KEY_FN_HABSBURG_ADJ"><Text>habsburgisch|habsburgischen|habsburgische|habsburgischer|habsburgisches</Text></Row>
+		<Row Tag="TXT_KEY_FN_HABSBURG_HELP"><Text>+5% [ICON_GOLD] Gold. +25% Einfluss durch [ICON_GOLD] Goldgeschenke an Stadtstaaten.</Text></Row>
+		<Row Tag="TXT_KEY_FN_HABSBURG_QUOTE"><Text>Als König Ludwig II. 1526 bei Mohács fiel, wurde sein Schwager Ferdinand von Habsburg zum König von Böhmen und Ungarn gewählt. Die habsburgischen Länder blieben über drei Jahrhunderte eine zusammengesetzte Monarchie eigenständiger Königreiche unter einer Dynastie.</Text></Row>
+		<Row Tag="TXT_KEY_FN_AUSTRIA_HUNGARY_TITLE"><Text>Österreich-Ungarn</Text></Row>
+		<Row Tag="TXT_KEY_FN_AUSTRIA_HUNGARY_DESC"><Text>Österreichisch-Ungarische Monarchie|Österreichisch-Ungarische Monarchie|Österreichisch-Ungarischen Monarchie</Text></Row>
+		<Row Tag="TXT_KEY_FN_AUSTRIA_HUNGARY_SHORT"><Text>Österreich-Ungarn</Text><Plurality>1</Plurality></Row>
+		<Row Tag="TXT_KEY_FN_AUSTRIA_HUNGARY_ADJ"><Text>österreichisch-ungarisch|österreichisch-ungarischen|österreichisch-ungarische|österreichisch-ungarischer|österreichisch-ungarisches</Text></Row>
+		<Row Tag="TXT_KEY_FN_AUSTRIA_HUNGARY_HELP"><Text>+5% [ICON_PRODUCTION] Produktion und +5% [ICON_RESEARCH] Wissenschaft. Opernhäuser: +2 [ICON_CULTURE] Kultur. Ein durch dynastische Heirat mit Euch verbundener Stadtstaat erfüllt den Anspruch und behält seine eigene Regierung.</Text></Row>
+		<Row Tag="TXT_KEY_FN_AUSTRIA_HUNGARY_QUOTE"><Text>Der Ausgleich von 1867 teilte das Kaisertum Österreich in zwei Partnerstaaten unter einem Monarchen, mit gemeinsamem Heer, gemeinsamer Außenpolitik und gemeinsamen Finanzen. Die Doppelmonarchie bestand bis 1918.</Text></Row>
+
+		<!-- Germany -->
+		<Row Tag="TXT_KEY_FN_HRE_TITLE"><Text>Heiliges Römisches Reich</Text></Row>
+		<Row Tag="TXT_KEY_FN_HRE_DESC"><Text>Heiliges Römisches Reich|Heilige Römische Reich|Heiligen Römischen Reich</Text></Row>
+		<Row Tag="TXT_KEY_FN_HRE_SHORT"><Text>Heiliges Römisches Reich</Text><Plurality>1</Plurality></Row>
+		<Row Tag="TXT_KEY_FN_HRE_ADJ"><Text>kaiserlich|kaiserlichen|kaiserliche|kaiserlicher|kaiserliches</Text></Row>
+		<Row Tag="TXT_KEY_FN_HRE_HELP"><Text>+10% [ICON_PEACE] Glauben. +2 [ICON_CULTURE] Kultur in der [ICON_CAPITAL] Hauptstadt.</Text></Row>
+		<Row Tag="TXT_KEY_FN_HRE_QUOTE"><Text>962 krönte Papst Johannes XII. Otto I. in Rom zum Kaiser. Das Reich, das folgte, war kein einheitlicher Staat, sondern ein Wahlverband von Fürsten, Bistümern und freien Städten von der Nordsee bis nach Italien, und bestand bis 1806.</Text></Row>
+		<Row Tag="TXT_KEY_FN_GERMAN_EMPIRE_TITLE"><Text>Deutsches Kaiserreich</Text></Row>
+		<Row Tag="TXT_KEY_FN_GERMAN_EMPIRE_DESC"><Text>Deutsches Kaiserreich|Deutsche Kaiserreich|Deutschen Kaiserreich</Text></Row>
+		<Row Tag="TXT_KEY_FN_GERMAN_EMPIRE_SHORT"><Text>Deutschland</Text><Plurality>1</Plurality></Row>
+		<Row Tag="TXT_KEY_FN_GERMAN_EMPIRE_ADJ"><Text>deutsch|deutschen|deutsche|deutscher|deutsches</Text></Row>
+		<Row Tag="TXT_KEY_FN_GERMAN_EMPIRE_HELP"><Text>+5% [ICON_PRODUCTION] Produktion. +10% [ICON_PRODUCTION] Produktion von Militäreinheiten. +15% Erträge aus inländischen Handelswegen (der Zollverein).</Text></Row>
+		<Row Tag="TXT_KEY_FN_GERMAN_EMPIRE_QUOTE"><Text>Am 18. Januar 1871 wurde im Spiegelsaal von Versailles das Deutsche Kaiserreich ausgerufen; es vereinte Preußen mit Sachsen, Bayern und den übrigen deutschen Staaten unter dem preußischen König als Kaiser.</Text></Row>
+
+		<!-- England -->
+		<Row Tag="TXT_KEY_FN_UNION_OF_CROWNS_TITLE"><Text>Union der Kronen</Text></Row>
+		<Row Tag="TXT_KEY_FN_UNION_OF_CROWNS_HELP"><Text>+2 [ICON_CULTURE] Kultur und +2 [ICON_GOLD] Gold in der [ICON_CAPITAL] Hauptstadt.</Text></Row>
+		<Row Tag="TXT_KEY_FN_UNION_OF_CROWNS_QUOTE"><Text>1603 erbte Jakob VI. von Schottland als Jakob I. den englischen Thron. Ein Jahrhundert lang teilten beide Königreiche einen Monarchen, behielten aber ihre eigenen Parlamente, Kirchen und Gesetze.</Text></Row>
+		<Row Tag="TXT_KEY_FN_GREAT_BRITAIN_TITLE"><Text>Königreich Großbritannien</Text></Row>
+		<Row Tag="TXT_KEY_FN_GREAT_BRITAIN_DESC"><Text>Königreich Großbritannien|Königreich Großbritannien|Königreich Großbritannien</Text></Row>
+		<Row Tag="TXT_KEY_FN_GREAT_BRITAIN_SHORT"><Text>Großbritannien</Text><Plurality>1</Plurality></Row>
+		<Row Tag="TXT_KEY_FN_GREAT_BRITAIN_ADJ"><Text>britisch|britischen|britische|britischer|britisches</Text></Row>
+		<Row Tag="TXT_KEY_FN_GREAT_BRITAIN_HELP"><Text>+5% [ICON_GOLD] Gold. +1 [ICON_MOVES] Fortbewegung für eingeschiffte Einheiten. Häfen: +1 [ICON_GOLD] Gold.</Text></Row>
+		<Row Tag="TXT_KEY_FN_GREAT_BRITAIN_QUOTE"><Text>Die Unionsakte von 1707 vereinten die Königreiche England und Schottland und ihre Parlamente zum Königreich Großbritannien.</Text></Row>
+
+		<!-- Tabs -->
+		<Row Tag="TXT_KEY_FN_TAB_NATIONS"><Text>Nationen</Text></Row>
+		<Row Tag="TXT_KEY_FN_TAB_UNIONS"><Text>Unionen</Text></Row>
+		<Row Tag="TXT_KEY_FN_TAB_ORGS"><Text>Organisationen</Text></Row>
+		<Row Tag="TXT_KEY_FN_TAB_WORLD"><Text>Welt</Text></Row>
+
+		<!-- Cohesion -->
+		<Row Tag="TXT_KEY_FN_CLAIM_BOUND"><Text>Euch in Union verbunden</Text></Row>
+		<Row Tag="TXT_KEY_FN_REQ_INTEGRATED"><Text>{1_Partner}: Zusammenhalt {2_Now} (benötigt {3_Need}+ für {4_Turns} Runden; bisher {5_Held})</Text></Row>
+		<Row Tag="TXT_KEY_FN_NO_UNIONS"><Text>Ihr führt keine Union. Ruft im Reiter Nationen eine Union aus, um Partner an Eure Krone zu binden.</Text></Row>
+		<Row Tag="TXT_KEY_FN_BOND_HEADER"><Text>{1_Partner} [COLOR_GREY]in: {2_Union}[ENDCOLOR]</Text></Row>
+		<Row Tag="TXT_KEY_FN_COHESION_LINE"><Text>Zusammenhalt {1_Now}, Richtung {2_Target} {3_Trend}</Text></Row>
+		<Row Tag="TXT_KEY_FN_TREND_UP"><Text>(steigend)</Text></Row>
+		<Row Tag="TXT_KEY_FN_TREND_DOWN"><Text>(fallend)</Text></Row>
+		<Row Tag="TXT_KEY_FN_TREND_FLAT"><Text>(stabil)</Text></Row>
+		<Row Tag="TXT_KEY_FN_FORECAST"><Text>[COLOR_NEGATIVE_TEXT]Bei diesem Verlauf droht die Abspaltung in etwa {1_Num} Runden.[ENDCOLOR]</Text></Row>
+		<Row Tag="TXT_KEY_FN_SECEDING"><Text>[COLOR_NEGATIVE_TEXT]Abspaltung in {1_Num} Runden, falls sich der Zusammenhalt nicht erholt.[ENDCOLOR]</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_LEAD"><Text>Euer Vorsprung an Einfluss</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_CONTESTED"><Text>Eine andere Macht ist ihr Verbündeter</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_TREATMENT"><Text>Wie sie sich als Vasall behandelt fühlen</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_STRONGER"><Text>Ihr Militär ist Eurem überlegen</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_RELIGION"><Text>Religion</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_TRADE"><Text>Handelsweg zwischen Euch</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_NEIGHBOURS"><Text>Enge Nachbarn</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_TENURE"><Text>Gemeinsame Jahre</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_WAR"><Text>Eure Kriege</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_UNHAPPY"><Text>Unzufriedenheit in Eurem Reich</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_CONCEDE"><Text>Zugeständnisse</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_PRIVILEGE"><Text>Privilegien</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_ASSERT"><Text>Autorität der Krone</Text></Row>
+		<Row Tag="TXT_KEY_FN_CRISIS_PROMPT"><Text>[COLOR_YELLOW]Autonomiekrise.[ENDCOLOR] Zugeständnisse machen ({1_Gold} [ICON_GOLD] sofort), Privilegien gewähren (eine Zeit lang {2_Tribute} [ICON_GOLD] pro Runde) oder die Autorität der Krone durchsetzen (-{3_Influence} Einfluss bei allen anderen Stadtstaaten). Bleibt die Krise unbeantwortet, verläuft sie ohne Folgen.</Text></Row>
+		<Row Tag="TXT_KEY_FN_CRISIS_CONCEDE"><Text>Zugeständnisse</Text></Row>
+		<Row Tag="TXT_KEY_FN_CRISIS_PRIVILEGE"><Text>Privilegien gewähren</Text></Row>
+		<Row Tag="TXT_KEY_FN_CRISIS_ASSERT"><Text>Autorität durchsetzen</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_CRISIS"><Text>In {1_Partner} ({2_Union}) ist eine Autonomiekrise ausgebrochen. Reagiert im Reiter Unionen von Formbare Nationen.</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_CRISIS_S"><Text>Autonomiekrise in {1_Partner}</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_SECESSION_WARNING"><Text>{1_Partner} strebt die Loslösung von {2_Leader} an. Erholt sich die Union nicht, spaltet es sich in {3_Num} Runden ab.</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_SECESSION_WARNING_S"><Text>{1_Partner} droht mit Abspaltung</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_SECESSION_AVERTED"><Text>Die Unabhängigkeitsbewegung in {1_Partner} hat an Schwung verloren. Die Union hält.</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_SECESSION_AVERTED_S"><Text>Abspaltung von {1_Partner} abgewendet</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_SECEDED"><Text>{1_Partner} hat sich von {2_Leader} abgespalten.</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_SECEDED_S"><Text>{1_Partner} spaltet sich ab</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_JOINED_UNION"><Text>{1_Partner} ist Eurer Union beigetreten: {2_Union}.</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_JOINED_UNION_S"><Text>{1_Partner} tritt der Union bei</Text></Row>
+
+		<!-- Organisations -->
+		<Row Tag="TXT_KEY_FN_ORG_DEPTH_FUNCTIONAL"><Text>[COLOR_GREY]Funktionale Organisation: ein gemeinsamer Zweck; Mitglieder treten frei bei und aus.[ENDCOLOR]</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_DEPTH_INTERGOVERNMENTAL"><Text>[COLOR_GREY]Zwischenstaatliche Organisation: souveräne Mitglieder arbeiten auf vielen Gebieten zusammen.[ENDCOLOR]</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_ERAS"><Text>{1_Era} bis {2_Era}</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_FROM_ERA"><Text>ab {1_Era}</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_MEMBERS"><Text>Geführt von {1_Leader}. Mitglieder: {2_List}</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_INCOME"><Text>Eure Einnahmen aus der Mitgliedschaft in der letzten Runde: {1_Num} [ICON_GOLD] Gold</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_CANDIDATES"><Text>Bereitwillige Gründungsmitglieder derzeit: {1_Num} (benötigt {2_Need}, Euch eingeschlossen). Andere menschliche Spieler werden nach der Gründung eingeladen.</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_FOUND"><Text>Gründen</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_JOIN"><Text>Beitreten</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_LEAVE"><Text>Austreten</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_WHY_ACTIVE"><Text>Existiert bereits</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_WHY_INELIGIBLE"><Text>Ihr seid nicht berechtigt</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_WHY_ERA"><Text>Zeitalter erreichen: {1_Era}</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_WHY_OBSOLETE"><Text>Ihre Zeit ist vorbei</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_WHY_MEMBERS"><Text>Noch nicht genug bereitwillige Mitglieder (Stadtstaaten müssen mit Euch befreundet sein; KI-Herrscher dürfen nicht feindselig sein)</Text></Row>
+		<Row Tag="TXT_KEY_FN_WORLD_ORG"><Text>{1_Org}: {2_List}</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_ORG_FOUNDED"><Text>{1_Leader} hat gegründet: {2_Org}. Gründungsmitglieder: {3_List}.</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_ORG_FOUNDED_S"><Text>Gegründet: {1_Org}</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_ORG_JOINED"><Text>{1_Member} ist beigetreten: {2_Org}.</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_ORG_JOINED_S"><Text>Neues Mitglied: {1_Org}</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_ORG_LEFT"><Text>{1_Member} ist ausgetreten: {2_Org}.</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_ORG_LEFT_S"><Text>Ein Mitglied verlässt: {1_Org}</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_ORG_DISSOLVED"><Text>Aufgelöst: {1_Org}.</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_ORG_DISSOLVED_S"><Text>Aufgelöst: {1_Org}</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_ORG_INVITED"><Text>Ihr seid eingeladen beizutreten: {1_Org}. Nehmt die Einladung im Reiter Organisationen von Formbare Nationen an.</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_ORG_INVITED_S"><Text>Einladung: {1_Org}</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_INTERGOV_HELP"><Text>Offene Grenzen zwischen den Mitgliedszivilisationen. +2 [ICON_GOLD] Gold pro Runde für jeden Eurer Handelswege zu einem anderen Mitglied. +1 Einfluss pro Runde bei jedem Mitglieds-Stadtstaat.</Text></Row>
+
+		<Row Tag="TXT_KEY_FN_ORG_HANSE_TITLE"><Text>Hanse</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_HANSE_HELP"><Text>+3 [ICON_GOLD] Gold pro Runde für jeden Eurer Handelswege zu einem anderen Mitglied. +1 Einfluss pro Runde bei jedem Mitglieds-Stadtstaat. Mitglieder brauchen eine Hauptstadt an der Küste. Löst sich nach der Renaissance auf.</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_HANSE_QUOTE"><Text>Vom 13. bis zum 17. Jahrhundert schützten Kaufmannsgilden und Handelsstädte rund um Ost- und Nordsee unter der Führung Lübecks gemeinsam ihren Handel, mit Kontoren in Brügge, Bergen, London und Nowgorod.</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_OPEC_TITLE"><Text>Organisation erdölexportierender Länder</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_OPEC_HELP"><Text>+1 [ICON_GOLD] Gold pro Runde für jedes [ICON_RES_OIL] Öl in Eurem Besitz (bis zu 10). Offen für alle mit mindestens 2 Öl.</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_OPEC_QUOTE"><Text>1960 in Bagdad von Iran, Irak, Kuwait, Saudi-Arabien und Venezuela gegründet, um die Ölpolitik der Förderländer abzustimmen.</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_ARAB_LEAGUE_TITLE"><Text>Arabische Liga</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_ARAB_LEAGUE_QUOTE"><Text>Im März 1945 in Kairo von Ägypten, Irak, Transjordanien, Libanon, Saudi-Arabien und Syrien gegründet; der Jemen trat im Mai bei.</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_AFRICAN_UNION_TITLE"><Text>Afrikanische Union</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_AFRICAN_UNION_QUOTE"><Text>Die Organisation für Afrikanische Einheit wurde 1963 in Addis Abeba gegründet. 2002 trat die Afrikanische Union an ihre Stelle.</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_ASEAN_TITLE"><Text>Verband Südostasiatischer Nationen</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_ASEAN_QUOTE"><Text>Mit der Erklärung von Bangkok am 8. August 1967 von Indonesien, Malaysia, den Philippinen, Singapur und Thailand gegründet.</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_NORDIC_TITLE"><Text>Nordischer Rat</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_NORDIC_QUOTE"><Text>1952 von Dänemark, Island, Norwegen und Schweden gegründet; Finnland trat 1955 bei.</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_MERCOSUR_TITLE"><Text>Mercosur</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_MERCOSUR_QUOTE"><Text>Der Gemeinsame Markt des Südens wurde 1991 mit dem Vertrag von Asunción von Argentinien, Brasilien, Paraguay und Uruguay geschaffen.</Text></Row>
+		<!-- v0.3: perks -->
+		<Row Tag="TXT_KEY_FN_PERK_UNIT"><Text>[COLOR_YELLOW]Einzigartige Einheit:[ENDCOLOR] {1_Unit}, ersetzt: {2_Base}. {3_Help}</Text></Row>
+		<Row Tag="TXT_KEY_FN_PERK_GOLDEN_AGE"><Text>[COLOR_YELLOW]Bei der Ausrufung:[ENDCOLOR] ein [ICON_GOLDEN_AGE] Goldenes Zeitalter von {1_Num} Runden.</Text></Row>
+		<Row Tag="TXT_KEY_FN_UNIT_REICHSRITTER"><Text>Reichsritter</Text></Row>
+		<Row Tag="TXT_KEY_FN_UNIT_REICHSRITTER_HELP"><Text>Stärker als der Ritter (+2 [ICON_STRENGTH]) und beginnt mit Angriff. Verfügbar, solange Ihr das Heilige Römische Reich haltet.</Text></Row>
+		<Row Tag="TXT_KEY_FN_UNIT_REICHSRITTER_PEDIA"><Text>Die Reichsritter waren freie Adlige, die ihr Land unmittelbar vom Kaiser statt von einem Fürsten hielten und ihm zu Pferde dienten. Ihre Unabhängigkeit endete erst mit dem Reich selbst im Jahr 1806.</Text></Row>
+		<Row Tag="TXT_KEY_FN_UNIT_HAIDUK"><Text>Heiduck</Text></Row>
+		<Row Tag="TXT_KEY_FN_UNIT_HAIDUK_HELP"><Text>Stärker als der Musketier (+2 [ICON_RANGE_STRENGTH] Fernkampfstärke) und beginnt mit Deckung I. Verfügbar, solange Ihr die Polnisch-Litauische Adelsrepublik haltet.</Text></Row>
+		<Row Tag="TXT_KEY_FN_UNIT_HAIDUK_PEDIA"><Text>Die Heiducken, Fußsoldaten nach ungarischem Vorbild mit Luntenschlossgewehr und Säbel, wurden unter Stefan Báthory in den 1570er-Jahren zum Kern des Fußvolks der Adelsrepublik und dienten später als Garde des Königs und der Magnaten.</Text></Row>
+		<Row Tag="TXT_KEY_FN_UNIT_HIGHLANDER"><Text>Highland-Regiment</Text></Row>
+		<Row Tag="TXT_KEY_FN_UNIT_HIGHLANDER_HELP"><Text>Stärker als der Schütze (+2 [ICON_STRENGTH]) und beginnt mit Angriff. Verfügbar, solange Ihr das Königreich Großbritannien haltet.</Text></Row>
+		<Row Tag="TXT_KEY_FN_UNIT_HIGHLANDER_PEDIA"><Text>Die 1739 aufgestellte Black Watch war das erste Highland-Regiment der britischen Armee. In den schottischen Highlands rekrutiert, behielten die Regimenter ihre eigene Tracht und ihre Pfeifer und dienten in allen großen britischen Feldzügen, die folgten.</Text></Row>
+		<Row Tag="TXT_KEY_FN_UNIT_KAISERSCHUETZE"><Text>Kaiserschütze</Text></Row>
+		<Row Tag="TXT_KEY_FN_UNIT_KAISERSCHUETZE_HELP"><Text>Stärker als die Weltkriegs-Infanterie (+3 [ICON_STRENGTH]) und beginnt mit Drill I. Verfügbar, solange Ihr Österreich-Ungarn haltet.</Text></Row>
+		<Row Tag="TXT_KEY_FN_UNIT_KAISERSCHUETZE_PEDIA"><Text>Die Kaiserschützen waren die österreichisch-ungarische Gebirgsinfanterie aus Tirol und Vorarlberg. Im Ersten Weltkrieg hielten sie die Hochgebirgsfront gegen Italien und kämpften in Höhen von über 3.000 Metern.</Text></Row>
+		<Row Tag="TXT_KEY_FN_UNIT_UHLAN"><Text>Ulan</Text></Row>
+		<Row Tag="TXT_KEY_FN_UNIT_UHLAN_HELP"><Text>Stärker als der Lancier (+2 [ICON_STRENGTH]) und beginnt mit Wache (+1 Sicht). Verfügbar, solange Ihr das Deutsche Kaiserreich haltet.</Text></Row>
+		<Row Tag="TXT_KEY_FN_UNIT_UHLAN_PEDIA"><Text>Ulanen, Lanzenreiter polnisch-litauischen Ursprungs, wurden in ganz Europa übernommen. In den Kriegen des Deutschen Kaiserreichs dienten sie vor allem der Aufklärung und Abschirmung vor dem Hauptheer.</Text></Row>
+
+		<!-- v0.3: independence and fragmentation -->
+		<Row Tag="TXT_KEY_FN_TAB_PROVINCES"><Text>Provinzen</Text></Row>
+		<Row Tag="TXT_KEY_FN_PROVINCES_INTRO"><Text>Kolonien auf anderen Landmassen und Städte anderer Völker gehören noch nicht zu Eurer Nation. Jede hat einen örtlichen Zusammenhalt. Unter 35 bildet sich eine Unabhängigkeitsbewegung; unter 20 zählt die Stadt die Runden bis zur Unabhängigkeit herunter. Bleibt eine Stadt 30 Runden lang bei 75 oder mehr, wird sie dauerhaft eingegliedert. Eure Hauptstadt, Euer Kernland und friedlich angeschlossene Stadtstaaten spalten sich nie ab.</Text></Row>
+		<Row Tag="TXT_KEY_FN_NO_PROVINCES"><Text>Alle Eure Städte sind in Eure Nation eingegliedert.</Text></Row>
+		<Row Tag="TXT_KEY_FN_PROVINCE_HEADER"><Text>{1_City} [COLOR_GREY]({2_Kind})[ENDCOLOR]</Text></Row>
+		<Row Tag="TXT_KEY_FN_KIND_COLONY"><Text>Kolonie</Text></Row>
+		<Row Tag="TXT_KEY_FN_KIND_FOREIGN"><Text>anderes Volk</Text></Row>
+		<Row Tag="TXT_KEY_FN_PROVINCE_INTEGRATING"><Text>[COLOR_POSITIVE_TEXT]Wird in {1_Num} Runden eingegliedert, wenn der Zusammenhalt bei 75 oder mehr bleibt.[ENDCOLOR]</Text></Row>
+		<Row Tag="TXT_KEY_FN_PROVINCE_BREAKING"><Text>[COLOR_NEGATIVE_TEXT]Spaltet sich in {1_Num} Runden ab, falls der Zusammenhalt nicht auf 20 steigt.[ENDCOLOR]</Text></Row>
+		<Row Tag="TXT_KEY_FN_PROVINCE_HELD"><Text>[COLOR_YELLOW]Bereit zur Abspaltung, aber noch nicht möglich: zu früh in der Geschichte, oder eine andere Stadt hat sich erst vor Kurzem abgespalten.[ENDCOLOR]</Text></Row>
+		<Row Tag="TXT_KEY_FN_MOVEMENT_PROMPT"><Text>[COLOR_NEGATIVE_TEXT]Eine Unabhängigkeitsbewegung ist im Gange.[ENDCOLOR] Gewährt Autonomie ({1_Cost} [ICON_GOLD] Gold, 20 Runden lang +15), unterdrückt sie (braucht eine Garnison; 10 Runden lang +20, aber die Stadt gerät {2_Turns} Runden lang in Widerstand) oder gewährt die Unabhängigkeit: Die Stadt geht in Frieden und ist Euch anfangs freundlich gesinnt.</Text></Row>
+		<Row Tag="TXT_KEY_FN_MOVEMENT_AUTONOMY"><Text>Autonomie gewähren</Text></Row>
+		<Row Tag="TXT_KEY_FN_MOVEMENT_SUPPRESS"><Text>Unterdrücken</Text></Row>
+		<Row Tag="TXT_KEY_FN_MOVEMENT_RELEASE"><Text>Unabhängigkeit gewähren</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_CONNECTED"><Text>Mit der Hauptstadt verbunden</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_NOT_CONNECTED"><Text>Nicht mit der Hauptstadt verbunden</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_CITY_RELIGION"><Text>Religion der Stadt</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_GARRISON"><Text>Garnison</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_PUPPET"><Text>Selbstverwaltet (Marionette)</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_CITY_TENURE"><Text>Jahre unter Eurer Herrschaft</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_DISTANCE"><Text>Entfernung zur Hauptstadt</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_FOREIGN"><Text>Ein anderes Volk</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_NATIONALISM"><Text>Zeitalter des Nationalismus</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_OPINION"><Text>Unruhe wegen Eurer Ideologie</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_AUTONOMY"><Text>Autonomie gewährt</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_SUPPRESS"><Text>Bewegung unterdrückt</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_MOVEMENT"><Text>In {1_City} hat sich eine Unabhängigkeitsbewegung gebildet. Reagiert im Reiter Provinzen von Formbare Nationen.</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_MOVEMENT_S"><Text>Unabhängigkeitsbewegung in {1_City}</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_BREAKAWAY_WARNING"><Text>{1_City} wird sich in {3_Num} Runden von {2_Owner} lösen, falls sich der Zusammenhalt nicht erholt.</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_BREAKAWAY_WARNING_S"><Text>{1_City} strebt nach Unabhängigkeit</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_BREAKAWAY_AVERTED"><Text>{1_City} ist von der Unabhängigkeit abgerückt.</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_BREAKAWAY_AVERTED_S"><Text>{1_City} bleibt</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_INTEGRATED"><Text>{1_City} ist nun fester Bestandteil Eurer Nation und wird nie nach Unabhängigkeit streben.</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_INTEGRATED_S"><Text>{1_City} eingegliedert</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_INDEPENDENCE"><Text>{1_City} hat sich von {2_Owner} für unabhängig erklärt, als Stadtstaat {3_New}.</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_INDEPENDENCE_S"><Text>{1_New} erklärt die Unabhängigkeit</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_RELEASED"><Text>{2_Owner} hat {1_City} die Unabhängigkeit gewährt; die Stadt ist nun der Stadtstaat {3_New}.</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_RELEASED_S"><Text>{1_New} wird unabhängig</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_REVIVED"><Text>{1_City} hat sich gegen {2_Owner} erhoben: {3_New} ist wiedergeboren!</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_REVIVED_S"><Text>{1_New} wiedergeboren</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_RETURNED"><Text>{1_City} hat {2_Owner} verlassen und ist zu {3_New} zurückgekehrt.</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_RETURNED_S"><Text>Eine Stadt kehrt zurück zu {1_New}</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_FOLLOWERS"><Text>Unruhige Nachbarstädte schlossen sich an: {1_Num}.</Text></Row>
+		<!-- v0.4: supranational organisations -->
+		<Row Tag="TXT_KEY_FN_ORG_DEPTH_SUPRANATIONAL"><Text>[COLOR_YELLOW]Supranational:[ENDCOLOR] Gemeinsame Regeln binden die Mitglieder. Das Bekenntnis jedes Mitglieds misst sein Zusammenhalt mit der Organisation; ein Mitglied, das das Vertrauen verliert, hält ein Austrittsreferendum ab.</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_WHY_SUPERSEDED"><Text>Sie ist in ihrer Nachfolgerin aufgegangen.</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_WHY_PREREQ"><Text>Nur ein Mitglied der Organisation, aus der sie hervorgeht, kann sie gründen.</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_REFERENDUM"><Text>[COLOR_NEGATIVE_TEXT]In {1_Num} Runden findet ein Austrittsreferendum statt.[ENDCOLOR] Ausnahmeregelungen auszuhandeln ({2_Cost} [ICON_GOLD] Gold) sagt es ab und gibt 20 Runden lang +15 Zusammenhalt.</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_OPTOUT"><Text>Ausnahmen aushandeln</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_ORG_FOUNDER"><Text>Führendes Mitglied</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_ORG_IDEOLOGY"><Text>Ideologie im Vergleich zum führenden Mitglied</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_ORG_TRADE"><Text>Handel mit anderen Mitgliedern</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_ORG_FRIENDS"><Text>Freundschaftserklärung mit einem Mitglied</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_ORG_DENOUNCE"><Text>Anprangerungen zwischen Mitgliedern</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_OPTOUT"><Text>Ausnahmeregelungen ausgehandelt</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_ORG_MERGED"><Text>{1_Org} ist aufgegangen in: {2_Org}.</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_ORG_REFERENDUM"><Text>{1_Member} hält in {3_Num} Runden ein Referendum über den Austritt ab: {2_Org}.</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_ORG_REFERENDUM_S"><Text>Austrittsreferendum: {1_Member}</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_ORG_EXIT"><Text>{1_Member} hat für den Austritt gestimmt: {2_Org}.</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_ORG_EXIT_S"><Text>{1_Member} stimmt für den Austritt</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_ECSC_TITLE"><Text>Europäische Gemeinschaft für Kohle und Stahl</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_ECSC_HELP"><Text>+1 [ICON_GOLD] Gold pro Runde für jede [ICON_RES_COAL] Kohle in Eurem Besitz (bis zu 10). +3% [ICON_PRODUCTION] Produktion. Europäische Nationen mit Kohle können beitreten. Geht in der Europäischen Wirtschaftsgemeinschaft auf.</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_ECSC_QUOTE"><Text>Robert Schuman schlug sie 1950 vor, um einen Krieg zwischen Frankreich und Deutschland „nicht nur undenkbar, sondern materiell unmöglich“ zu machen. Der Vertrag von Paris (1951) legte Kohle und Stahl Frankreichs, der Bundesrepublik, Italiens und der Benelux-Länder zusammen.</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_EEC_TITLE"><Text>Europäische Wirtschaftsgemeinschaft</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_EEC_HELP"><Text>Offene Grenzen zwischen den Mitgliedszivilisationen. +3 [ICON_GOLD] Gold pro Runde für jeden Eurer Handelswege zu einem anderen Mitglied. +5% [ICON_GOLD] Gold. +1 Einfluss pro Runde bei jedem Mitglieds-Stadtstaat. Gegründet von einem Mitglied der Gemeinschaft für Kohle und Stahl, die in ihr aufgeht.</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_EEC_QUOTE"><Text>Die Römischen Verträge (1957) schufen eine Zollunion und einen gemeinsamen Markt der sechs Mitglieder der Gemeinschaft für Kohle und Stahl.</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_EU_TITLE"><Text>Europäische Union</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_EU_HELP"><Text>Offene Grenzen zwischen den Mitgliedszivilisationen. Mitglieder können einander nicht den Krieg erklären (zuerst austreten). +4 [ICON_GOLD] Gold pro Runde für jeden Eurer Handelswege zu einem anderen Mitglied. +5% [ICON_GOLD] Gold und +5% [ICON_RESEARCH] Wissenschaft. +1 Delegierter im Weltkongress. +2 Einfluss pro Runde bei jedem Mitglieds-Stadtstaat. Gegründet von einem Mitglied der Wirtschaftsgemeinschaft, die in ihr aufgeht.</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_EU_QUOTE"><Text>Der Vertrag von Maastricht (1993) gründete die Europäische Union und fügte eine gemeinsame Außen- und Sicherheitspolitik, die Zusammenarbeit in Justiz und Inneres und den Weg zu einer gemeinsamen Währung hinzu. 2020 trat das Vereinigte Königreich als erster Mitgliedstaat aus.</Text></Row>
+		<!-- v0.4: more nations -->
+		<Row Tag="TXT_KEY_FN_GROUP_SUMER"><Text>Sumer</Text></Row>
+		<Row Tag="TXT_KEY_FN_GROUP_SWEDEN"><Text>Schweden</Text></Row>
+		<Row Tag="TXT_KEY_FN_GROUP_LIVONIA"><Text>Livland</Text></Row>
+		<Row Tag="TXT_KEY_FN_GROUP_PORTUGAL"><Text>Portugal</Text></Row>
+		<Row Tag="TXT_KEY_FN_GROUP_SOUTHERN_NETHERLANDS"><Text>Südliche Niederlande</Text></Row>
+		<Row Tag="TXT_KEY_FN_GROUP_ITALIAN_STATES"><Text>Italienische Staaten</Text></Row>
+		<Row Tag="TXT_KEY_FN_GROUP_CHINA"><Text>China</Text></Row>
+
+		<Row Tag="TXT_KEY_FN_SUMER_AKKAD_TITLE"><Text>Königreich Sumer und Akkad</Text></Row>
+		<Row Tag="TXT_KEY_FN_SUMER_AKKAD_DESC"><Text>Königreich Sumer und Akkad|Königreich Sumer und Akkad|Königreich Sumer und Akkad</Text></Row>
+		<Row Tag="TXT_KEY_FN_SUMER_AKKAD_SHORT"><Text>Sumer und Akkad</Text><Plurality>1</Plurality></Row>
+		<Row Tag="TXT_KEY_FN_SUMER_AKKAD_ADJ"><Text>mesopotamisch|mesopotamischen|mesopotamische|mesopotamischer|mesopotamisches</Text></Row>
+		<Row Tag="TXT_KEY_FN_SUMER_AKKAD_HELP"><Text>+2 [ICON_RESEARCH] Wissenschaft und +2 [ICON_FOOD] Nahrung in der [ICON_CAPITAL] Hauptstadt.</Text></Row>
+		<Row Tag="TXT_KEY_FN_SUMER_AKKAD_QUOTE"><Text>Um 2100 v. Chr. nahm Ur-Nammu von Ur den Titel „König von Sumer und Akkad“ an und beanspruchte damit ganz Südmesopotamien. Spätere Könige, auch die Babylons, führten den Titel weit über tausend Jahre fort.</Text></Row>
+
+		<Row Tag="TXT_KEY_FN_KALMAR_TITLE"><Text>Kalmarer Union</Text></Row>
+		<Row Tag="TXT_KEY_FN_KALMAR_HELP"><Text>+2 [ICON_PRODUCTION] Produktion und +2 [ICON_GOLD] Gold in der [ICON_CAPITAL] Hauptstadt.</Text></Row>
+		<Row Tag="TXT_KEY_FN_KALMAR_QUOTE"><Text>1397 ließ Königin Margarethe I. ihren Großneffen Erich von Pommern in Kalmar zum König von Dänemark, Norwegen und Schweden krönen. Schweden löste sich 1523 unter Gustav Wasa endgültig.</Text></Row>
+
+		<Row Tag="TXT_KEY_FN_SWEDISH_EMPIRE_TITLE"><Text>Schwedisches Großreich</Text></Row>
+		<Row Tag="TXT_KEY_FN_SWEDISH_EMPIRE_DESC"><Text>Schwedisches Großreich|Schwedische Großreich|Schwedischen Großreich</Text></Row>
+		<Row Tag="TXT_KEY_FN_SWEDISH_EMPIRE_SHORT"><Text>Schwedisches Großreich</Text><Plurality>1</Plurality></Row>
+		<Row Tag="TXT_KEY_FN_SWEDISH_EMPIRE_ADJ"><Text>schwedisch|schwedischen|schwedische|schwedischer|schwedisches</Text></Row>
+		<Row Tag="TXT_KEY_FN_SWEDISH_EMPIRE_HELP"><Text>+10% [ICON_PRODUCTION] Produktion von Militäreinheiten. +2 [ICON_CULTURE] Kultur in der [ICON_CAPITAL] Hauptstadt.</Text></Row>
+		<Row Tag="TXT_KEY_FN_SWEDISH_EMPIRE_QUOTE"><Text>Gustav II. Adolf nahm 1621 Riga ein. Ein Jahrhundert lang war Schweden die Großmacht der Ostsee, bis der Große Nordische Krieg 1721 mit der Abtretung Livlands an Russland endete.</Text></Row>
+
+		<Row Tag="TXT_KEY_FN_RUSSIAN_EMPIRE_TITLE"><Text>Russisches Kaiserreich</Text></Row>
+		<Row Tag="TXT_KEY_FN_RUSSIAN_EMPIRE_DESC"><Text>Russisches Kaiserreich|Russische Kaiserreich|Russischen Kaiserreich</Text></Row>
+		<Row Tag="TXT_KEY_FN_RUSSIAN_EMPIRE_SHORT"><Text>Russisches Kaiserreich</Text><Plurality>1</Plurality></Row>
+		<Row Tag="TXT_KEY_FN_RUSSIAN_EMPIRE_ADJ"><Text>russisch|russischen|russische|russischer|russisches</Text></Row>
+		<Row Tag="TXT_KEY_FN_RUSSIAN_EMPIRE_HELP"><Text>+5% [ICON_RESEARCH] Wissenschaft. +2 [ICON_CULTURE] Kultur in der [ICON_CAPITAL] Hauptstadt.</Text></Row>
+		<Row Tag="TXT_KEY_FN_RUSSIAN_EMPIRE_QUOTE"><Text>Peter I. nahm 1710 Riga ein und wurde, nachdem ihm der Frieden von Nystad 1721 die Ostseeküste gebracht hatte, zum Kaiser von ganz Russland ausgerufen.</Text></Row>
+
+		<Row Tag="TXT_KEY_FN_IBERIAN_UNION_TITLE"><Text>Iberische Union</Text></Row>
+		<Row Tag="TXT_KEY_FN_IBERIAN_UNION_HELP"><Text>+5% [ICON_GOLD] Gold.</Text></Row>
+		<Row Tag="TXT_KEY_FN_IBERIAN_UNION_QUOTE"><Text>Nachdem König Sebastian 1578 in Marokko gefallen und sein Nachfolger ohne Erben gestorben war, beanspruchte Philipp II. von Spanien 1580 die portugiesische Krone. Beide Königreiche teilten bis zur Restauration von 1640 einen König, behielten aber getrennte Regierungen.</Text></Row>
+
+		<Row Tag="TXT_KEY_FN_UNITED_NETHERLANDS_TITLE"><Text>Vereinigtes Königreich der Niederlande</Text></Row>
+		<Row Tag="TXT_KEY_FN_UNITED_NETHERLANDS_DESC"><Text>Vereinigtes Königreich der Niederlande|Vereinigte Königreich der Niederlande|Vereinigten Königreich der Niederlande</Text></Row>
+		<Row Tag="TXT_KEY_FN_UNITED_NETHERLANDS_SHORT"><Text>Vereinigte Niederlande|Vereinigten Niederlanden</Text><Plurality>2</Plurality></Row>
+		<Row Tag="TXT_KEY_FN_UNITED_NETHERLANDS_ADJ"><Text>niederländisch|niederländischen|niederländische|niederländischer|niederländisches</Text></Row>
+		<Row Tag="TXT_KEY_FN_UNITED_NETHERLANDS_HELP"><Text>+5% [ICON_PRODUCTION] Produktion. +3 [ICON_GOLD] Gold in der [ICON_CAPITAL] Hauptstadt.</Text></Row>
+		<Row Tag="TXT_KEY_FN_UNITED_NETHERLANDS_QUOTE"><Text>Der Wiener Kongress vereinte 1815 die nördlichen Niederlande und die ehemals Österreichischen Niederlande unter König Wilhelm I. Die Belgische Revolution von 1830 trennte sie wieder; 1839 erkannten die Niederlande Belgien an.</Text></Row>
+
+		<Row Tag="TXT_KEY_FN_ITALY_TITLE"><Text>Königreich Italien</Text></Row>
+		<Row Tag="TXT_KEY_FN_ITALY_DESC"><Text>Königreich Italien|Königreich Italien|Königreich Italien</Text></Row>
+		<Row Tag="TXT_KEY_FN_ITALY_SHORT"><Text>Italien</Text><Plurality>1</Plurality></Row>
+		<Row Tag="TXT_KEY_FN_ITALY_ADJ"><Text>italienisch|italienischen|italienische|italienischer|italienisches</Text></Row>
+		<Row Tag="TXT_KEY_FN_ITALY_HELP"><Text>+5% [ICON_CULTURE] Kultur. +3 [ICON_CULTURE] Kultur in der [ICON_CAPITAL] Hauptstadt.</Text></Row>
+		<Row Tag="TXT_KEY_FN_ITALY_QUOTE"><Text>Am 17. März 1861 wurde Viktor Emanuel II. nach den Feldzügen Cavours und Garibaldis zum König von Italien ausgerufen. Venedig kam 1866 hinzu, Rom, die Hauptstadt, 1870.</Text></Row>
+
+		<Row Tag="TXT_KEY_FN_YUAN_TITLE"><Text>Yuan-Dynastie</Text></Row>
+		<Row Tag="TXT_KEY_FN_YUAN_DESC"><Text>Große Yuan|Große Yuan|Großen Yuan</Text></Row>
+		<Row Tag="TXT_KEY_FN_YUAN_SHORT"><Text>Yuan</Text><Plurality>1</Plurality></Row>
+		<Row Tag="TXT_KEY_FN_YUAN_ADJ"><Text>Yuan|Yuan|Yuan|Yuan|Yuan</Text></Row>
+		<Row Tag="TXT_KEY_FN_YUAN_HELP"><Text>+5% [ICON_GOLD] Gold und +5% [ICON_RESEARCH] Wissenschaft.</Text></Row>
+		<Row Tag="TXT_KEY_FN_YUAN_QUOTE"><Text>Kublai Khan rief 1271 die Große Yuan aus und vollendete 1279 die Eroberung der Song. Die Dynastie herrschte von Khanbaliq, dem heutigen Peking, aus, bis die Ming sie 1368 nach Norden vertrieben.</Text></Row>
+	</Language_DE_DE>
+</GameData>
