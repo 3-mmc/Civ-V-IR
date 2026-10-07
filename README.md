@@ -30,3 +30,15 @@ The project is backed up on GitHub as **Civ-V-IR** ("International Relations for
 - `backups/`: the stock `Expansion2.Civ5Pkg` and the original `config.ini`.
 
 Re-fetch upstream with `git clone --depth 1 --branch Release-5.4.6 https://github.com/LoneGazebo/Community-Patch-DLL upstream/Community-Patch-DLL`. The mod's offline column check reads the DLL sources from there.
+
+## Engine builds (toolchain B, portable)
+
+VP's gamecore DLL is built with the clang route VP's CI uses, set up on 2026-10-07 without any installer or admin rights. Everything lives in `D:\Toolchains` (about 1 GB):
+- `SDK70\`: the Windows SDK 7.0 headers and libraries, plus the VC9 headers and libraries. They come from the SDK 7.0 SP1 ISO (`GRMSDK_EN_DVD.iso`, archive.org copy of Microsoft's download). `WinSDK_x86.msi`, `WinSDKBuild_x86.msi` and `vc_stdx86.msi` were extracted with `msiexec /a … TARGETDIR=D:\Toolchains\SDK70`; VC9 lands in `Program Files\Microsoft Visual Studio 9.0\Vc7`.
+- `LLVM-20.1.8\`: `clang-cl`, `lld-link`, `llvm-lib`, `llvm-rc` and `lib\clang\20`, taken from the LLVM 20.1.8 Windows archive. LLVM 20 is close to what VP's CI uses; 23.x is untested with VP's C++03 code.
+- `Python312\`: the embeddable Windows Python 3.12.10.
+- `downloads\`: the original ISO and archives.
+
+Verified on 2026-10-07: unmodified VP 5.4.6 builds in about 3.5 minutes (compile 52 s, LTO link 165 s) into a 17.4 MB 32-bit `CvGameCore_Expansion2.dll` with the same single export as the shipped 17.0 MB DLL. It has not been installed: the shipped DLL stays until an engine change needs testing. The wrapper pins `-fms-compatibility-version=15.00.30729` (VC9). VP's CI gets the same result by letting clang detect VC9's `cl.exe`, which clang only recognises in a `...\VC\bin` directory; the `msiexec /a` layout is `Vc7\bin`. Without the pin the link fails on `__Init_thread_*`, sized `operator delete` and `___std_terminate`.
+
+Build from Windows with `D:\Toolchains\Python312\python.exe tools\build_dll.py --config release --version <text>`. The wrapper runs upstream's `build_vp_clang_sdk.py` with its `C:\Program Files` paths redirected, and writes `commit_id.inc` itself, because Windows git may refuse a checkout made from WSL. The output goes to `upstream\Community-Patch-DLL\clang-output\Release\CvGameCore_Expansion2.dll`.

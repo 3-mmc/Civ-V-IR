@@ -131,6 +131,47 @@ Three depths, mirroring union → state at international scale. All of them use 
   - **Member cohesion:** each major member has a cohesion score with the Union. It is raised by being the leading member (+5), sharing the leader's ideology (+10), trade with members (+8), a Declaration of Friendship with a member (+5) and years of membership. It is lowered by a rival ideology (-15), denunciations between members (-10) and unhappiness (-10). Below 25 an **exit referendum** is called and decided after 5 turns. Negotiated **opt-outs** (40 Gold x (era + 1)) call it off and add +15 for 20 turns; an AI negotiates them if it can afford twice the price. A member that votes to leave loses the benefits and may declare war again.
   - **Not yet built:** the cohesion budget (transfers to poorer members) and a common World Congress vote.
 
+## Alliances and defence pacts (built, v0.5)
+
+The game's own defensive pact is a binary switch with no terms. Alliances here are organisations of Depth `ALLIANCE`, each with a written **charter**:
+
+| Term | Options |
+|---|---|
+| Obligation | `DEFENCE`: an attack on one member is an attack on all · `FULL`: also members' own wars · `CONSULT`: a call to arms that may be refused without penalty |
+| Scope | `GLOBAL` · `REGIONAL`: only aggressors whose capital lies within `ALLIANCE_REGION_TILES` (30) of the attacked member's (like NATO's Article 6) |
+| Separate peace | allowed · forbidden while the member whose war it is still fights (`GameEvents.PlayerCanMakePeace` blocks peace treaties) |
+| Burden | none · `TARGET`: military might at least 50% of the members' average (like NATO's 2%) · `TRIBUTE`: members pay the leader each turn (the Delian League) |
+| Leadership | equals · leading power: the leader's own wars call members in, and members leave only by referendum (the Warsaw Pact) |
+| Borders | open between members, or unchanged |
+
+Members can never declare war on each other.
+
+**Calls to arms.**
+- **Queue:** `GameEvents.DeclareWar` fires inside the engine's declaration, before the war state is set. The mod therefore queues the declaration and resolves obligations in the next player's turn processing.
+- **AI members:** an AI answers if its cohesion with the alliance is at least 40, and joins as a defensive-pact war (`Team:DeclareWar(team, true, player)`).
+- **Human members:** you get a call on the Organisations tab and have 5 turns to honour or decline it; silence counts as refusal.
+- **City-State members:** they always answer binding calls.
+- **Credibility:** honouring a binding call gives +10 credibility and refusing gives -15. Credibility fades by 1 a turn, and enters cohesion as a term between -20 and +10.
+
+**Cohesion.** Alliances reuse the supranational cohesion system: ideology, friendships, denunciations, unhappiness, tenure and exit referendums. They add three terms:
+- credibility;
+- a common **threat**: +10 when a stronger outside power's capital lies within 25 tiles;
+- **burden**: the defence target met (+5) or missed (-10), or tribute paid (-5).
+
+AI civs join an alliance on a Declaration of Friendship, a shared ideology or faith, or a common threat. City-States join if they're Friends.
+
+**Historical alliances:**
+- **Delian League:** Classical; defence, regional, tribute, leading power.
+- **Lombard League:** Medieval; defence, regional, no separate peace.
+- **Holy League:** Renaissance; full alliance.
+- **Triple Alliance:** Industrial–Modern; defence.
+- **Triple Entente:** Industrial–Modern; consultation only, since Britain's obligations to France were never written down.
+- **NATO:** Atomic+; defence, regional, defence target.
+- **Warsaw Pact:** Atomic+; defence, regional, no separate peace, leading power.
+- **Covenant Chain:** Renaissance–Industrial; the Haudenosaunee and the English colonies.
+
+**Player-drafted pacts.** There are three slots (`ORG_PACT_1..3`, from the Medieval era). The Organisations tab opens a charter window with a name field and one button per term. The name and terms are stored in save data (`PN_`, `PT_` keys). Because the mod controls everywhere the name is shown, a typed name works without engine text; markup characters are stripped.
+
 ## City-state pool and civ : city-state ratios
 
 - **Facts.** The number of city-states comes from map size or setup. VP's selection keeps the ratio between city-state trait types. `MajorBlocksMinor` removes homeland city-states while their civ plays.
@@ -245,6 +286,27 @@ Tier II proclamations also start an **8-turn golden age**. Bases were chosen so 
 | England | Great Britain (II) | Renaissance – Industrial | Union of the Crowns partners integrated 10 turns; `ABSORB` Edinburgh, or own the Celtic capital / Celts as vassal | +5% Gold; +1 movement for embarked units |
 
 The bonuses above are the v0.2 base. v0.3 adds unique units, economic perks and proclamation golden ages (see "Perks of formed nations").
+
+**More nations (v0.5)**, for civilizations that had none. Where a civ's homeland City-State is blocked while it plays, the claim pairs that City-State with the civ's capital:
+
+| Civ | Nation (tier) | Era window | Claims |
+|---|---|---|---|
+| Arabia | Abbasid Caliphate (II) | Medieval – Renaissance | `ABSORB` 2 of Sidon, Tyre, Byblos |
+| Assyria | Neo-Assyrian Empire (II) | Ancient – Classical | `ABSORB` 1 of Sidon, Tyre, Byblos |
+| Persia | Achaemenid Empire (II) | Ancient – Classical | `ABSORB` Ur, or `OWN` Babylon's capital |
+| Carthage | Covenant of Melqart (I) | Ancient – Classical | `UNION` 1 of Tyre, Sidon, Byblos |
+| Byzantium | Renovatio Imperii (II) | Classical – Medieval | Palatium or Rome's capital; Utica or Carthage's capital |
+| France | Grand Empire (I) | Renaissance – Industrial | `UNION` 2 of Wittenberg, Milan, Zurich, Geneva, Brussels, Warsaw |
+| Portugal / Brazil | United Kingdom of Portugal, Brazil and the Algarves (I) | Renaissance – Industrial | the other: its City-State (Rio / Lisbon) or its civ as vassal |
+| Indonesia | Majapahit Mandala (I) | Medieval – Renaissance | `UNION` 2 of Malacca, Singapore, Kuala Lumpur, Manila |
+| Siam | Ayutthaya Mandala (I) | Medieval – Renaissance | `UNION` 2 of Malacca, Kuala Lumpur, Singapore (competes with Majapahit) |
+| Morocco | Saadi Sultanate (II) | Renaissance | `ABSORB` Djenne, or `OWN` Songhai's capital |
+| Ottomans | Kayser-i Rum (II) | Medieval – Renaissance | `OWN` Byzantium's capital, or `ABSORB` Perge |
+| Venice | Stato da Mar (I) | Medieval – Renaissance | `UNION` 2 of Ragusa, Tyre, Sidon, Valletta (unions only: VP's Venice cannot annex) |
+
+New organisations: the Tributary System (functional, Classical–Industrial; only China can found it, via `FounderCivilization`), the Non-Aligned Movement (intergovernmental, Atomic+) and the Covenant Chain (alliance).
+
+**Historical City-States and the cap.** With many formations, the swap cap (50% of City-States) must be shared. Human players' formations come first; AI civs then get one swap each per round.
 
 **More nations (v0.4)**, one or two claim steps each, spread across the eras:
 
