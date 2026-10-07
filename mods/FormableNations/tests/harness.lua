@@ -275,7 +275,7 @@ local oilRes = GameInfoTypes.RESOURCE_OIL
 local germany = NewPlayer(5, { civ = CIV("GERMANY"), name = "Otto", era = 0 })
 germany.cities[1] = NewCity(5, 200, 10, "Aachen"); germany.origCap = germany.cities[1]
 local DONORS = {}
-for i, sType in ipairs({ "KABUL", "SIDON", "BYBLOS", "TYRE", "ALMATY", "MOGADISHU" }) do
+for i, sType in ipairs({ "KABUL", "ALMATY", "MOGADISHU", "KYZYL", "ANTANANARIVO", "LA_VENTA" }) do
 	local d = NewPlayer(23 + i, { minor = MINOR(sType) })
 	d.cities[1] = NewCity(23 + i, 200 + i * 3, 20, "CS" .. i); d.origCap = d.cities[1]
 	d:AddUnit({ combat = true, type = 7, x = 200 + i * 3, y = 21 })

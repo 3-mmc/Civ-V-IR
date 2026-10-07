@@ -27,7 +27,8 @@ CREATE TABLE IF NOT EXISTS FormableNation_Organisations (
 	NoSeparatePeace boolean NOT NULL DEFAULT 0,   -- no peace with the enemy while the member who was attacked still fights
 	Burden text,                                  -- NONE, TARGET (members keep their military near the alliance average), TRIBUTE (members pay the leader)
 	Hegemonic boolean NOT NULL DEFAULT 0,         -- the leader's own wars call members in; members leave only by referendum
-	Custom boolean NOT NULL DEFAULT 0             -- a slot for a player-drafted pact: name and terms chosen at founding
+	Custom boolean NOT NULL DEFAULT 0,            -- a slot for a player-drafted pact: name and terms chosen at founding
+	FounderCivilization text REFERENCES Civilizations(Type) -- only this civilization may found it (e.g. China's tributary system)
 );
 
 -- Eligible peoples. No CivilizationType rows: every major civ may join. No MinorCivType rows: no City-State may join,
@@ -145,3 +146,45 @@ INSERT INTO FormableNation_OrganisationMembers (OrganisationType, CivilizationTy
 	('ORG_MERCOSUR', 'CIVILIZATION_BRAZIL', NULL),
 	('ORG_MERCOSUR', NULL, 'MINOR_CIV_BUENOS_AIRES'), ('ORG_MERCOSUR', NULL, 'MINOR_CIV_RIO_DE_JANEIRO'),
 	('ORG_MERCOSUR', NULL, 'MINOR_CIV_BOGOTA');
+
+-- v0.5: organisations for civilizations better served by them than by a formation.
+INSERT INTO FormableNation_Organisations
+	(Type, Depth, Title, Help, Quote, MinEra, MaxEra, MinMembers, TradeRouteGold, MinorInfluence, OpenBorders, FounderCivilization)
+VALUES
+	('ORG_TRIBUTARY_SYSTEM', 'FUNCTIONAL', 'TXT_KEY_FN_ORG_TRIBUTARY_TITLE', 'TXT_KEY_FN_ORG_TRIBUTARY_HELP', 'TXT_KEY_FN_ORG_TRIBUTARY_QUOTE',
+		'ERA_CLASSICAL', 'ERA_INDUSTRIAL', 3, 2, 2, 0, 'CIVILIZATION_CHINA'),
+	('ORG_NON_ALIGNED', 'INTERGOVERNMENTAL', 'TXT_KEY_FN_ORG_NON_ALIGNED_TITLE', 'TXT_KEY_FN_ORG_INTERGOV_HELP', 'TXT_KEY_FN_ORG_NON_ALIGNED_QUOTE',
+		'ERA_POSTMODERN', NULL, 3, 2, 1, 1, NULL);
+INSERT INTO FormableNation_Organisations
+	(Type, Depth, Title, Help, Quote, MinEra, MaxEra, MinMembers, OpenBorders, MemberCohesion, NoWarBetweenMembers,
+	 Obligation, Scope, NoSeparatePeace, Burden, Hegemonic, Custom)
+VALUES
+	('ORG_COVENANT_CHAIN', 'ALLIANCE', 'TXT_KEY_FN_ORG_COVENANT_CHAIN_TITLE', NULL, 'TXT_KEY_FN_ORG_COVENANT_CHAIN_QUOTE',
+		'ERA_RENAISSANCE', 'ERA_INDUSTRIAL', 2, 0, 1, 1, 'DEFENCE', 'REGIONAL', 0, 'NONE', 0, 0);
+
+CREATE TEMP TABLE FN_MoreMembers (OrganisationType text, CivilizationType text, MinorCivType text);
+INSERT INTO FN_MoreMembers VALUES
+	-- Tributary system: China at the centre (only China may found it), tributaries around it
+	('ORG_TRIBUTARY_SYSTEM', 'CIVILIZATION_CHINA', NULL), ('ORG_TRIBUTARY_SYSTEM', 'CIVILIZATION_KOREA', NULL),
+	('ORG_TRIBUTARY_SYSTEM', 'CIVILIZATION_SIAM', NULL), ('ORG_TRIBUTARY_SYSTEM', 'CIVILIZATION_JAPAN', NULL),
+	('ORG_TRIBUTARY_SYSTEM', NULL, 'MINOR_CIV_HANOI'), ('ORG_TRIBUTARY_SYSTEM', NULL, 'MINOR_CIV_MALACCA'),
+	('ORG_TRIBUTARY_SYSTEM', NULL, 'MINOR_CIV_MANILA'), ('ORG_TRIBUTARY_SYSTEM', NULL, 'MINOR_CIV_SEOUL'),
+	('ORG_TRIBUTARY_SYSTEM', NULL, 'MINOR_CIV_COLOMBO'), ('ORG_TRIBUTARY_SYSTEM', NULL, 'MINOR_CIV_KATHMANDU'),
+	('ORG_TRIBUTARY_SYSTEM', NULL, 'MINOR_CIV_SAMARKAND'), ('ORG_TRIBUTARY_SYSTEM', NULL, 'MINOR_CIV_YAMATAI'),
+	-- Non-Aligned Movement (Belgrade, 1961)
+	('ORG_NON_ALIGNED', 'CIVILIZATION_INDIA', NULL), ('ORG_NON_ALIGNED', 'CIVILIZATION_INDONESIA', NULL),
+	('ORG_NON_ALIGNED', 'CIVILIZATION_EGYPT', NULL), ('ORG_NON_ALIGNED', 'CIVILIZATION_ETHIOPIA', NULL),
+	('ORG_NON_ALIGNED', 'CIVILIZATION_MOROCCO', NULL), ('ORG_NON_ALIGNED', 'CIVILIZATION_SONGHAI', NULL),
+	('ORG_NON_ALIGNED', NULL, 'MINOR_CIV_BELGRADE'), ('ORG_NON_ALIGNED', NULL, 'MINOR_CIV_HANOI'),
+	('ORG_NON_ALIGNED', NULL, 'MINOR_CIV_COLOMBO'), ('ORG_NON_ALIGNED', NULL, 'MINOR_CIV_KATHMANDU'),
+	('ORG_NON_ALIGNED', NULL, 'MINOR_CIV_KABUL'), ('ORG_NON_ALIGNED', NULL, 'MINOR_CIV_JAKARTA'),
+	('ORG_NON_ALIGNED', NULL, 'MINOR_CIV_KUMASI'), ('ORG_NON_ALIGNED', NULL, 'MINOR_CIV_MBANZA_KONGO'),
+	-- Covenant Chain (1677): the Haudenosaunee and the English colonies
+	('ORG_COVENANT_CHAIN', 'CIVILIZATION_IROQUOIS', NULL), ('ORG_COVENANT_CHAIN', 'CIVILIZATION_ENGLAND', NULL),
+	('ORG_COVENANT_CHAIN', 'CIVILIZATION_AMERICA', NULL), ('ORG_COVENANT_CHAIN', 'CIVILIZATION_SHOSHONE', NULL),
+	('ORG_COVENANT_CHAIN', NULL, 'MINOR_CIV_ONONDAGA'), ('ORG_COVENANT_CHAIN', NULL, 'MINOR_CIV_SALEM'),
+	('ORG_COVENANT_CHAIN', NULL, 'MINOR_CIV_CAHOKIA');
+INSERT INTO FormableNation_OrganisationMembers (OrganisationType, CivilizationType, MinorCivType)
+	SELECT OrganisationType, CivilizationType, MinorCivType FROM FN_MoreMembers
+	WHERE CivilizationType IN (SELECT Type FROM Civilizations) OR MinorCivType IN (SELECT Type FROM MinorCivilizations);
+DROP TABLE FN_MoreMembers;

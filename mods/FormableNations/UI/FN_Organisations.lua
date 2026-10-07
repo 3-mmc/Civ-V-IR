@@ -26,6 +26,7 @@ for row in GameInfo.FormableNation_Organisations() do
 		NoSeparatePeace = (row.NoSeparatePeace == true or row.NoSeparatePeace == 1),
 		Hegemonic = (row.Hegemonic == true or row.Hegemonic == 1),
 		Custom = (row.Custom == true or row.Custom == 1),
+		FounderCiv = row.FounderCivilization and GameInfoTypes[row.FounderCivilization],
 		Civs = {}, Minors = {}, HasCivList = false, HasMinorList = false,
 	}
 	table.insert(FN.Orgs, o)
@@ -125,6 +126,7 @@ function FN.CanFound(o, pLeader)
 	if FN.OrgActive(o) then return false, "ACTIVE" end
 	if FN.GetN("OSUP_" .. o.Type) > 0 then return false, "SUPERSEDED" end -- merged into its successor for good
 	if pLeader:IsMinorCiv() or not FN.OrgEligible(o, pLeader) then return false, "INELIGIBLE" end
+	if o.FounderCiv and pLeader:GetCivilizationType() ~= o.FounderCiv then return false, "INELIGIBLE" end
 	if pLeader:GetCurrentEra() < o.MinEra then return false, "ERA" end
 	if o.MaxEra and pLeader:GetCurrentEra() > o.MaxEra then return false, "OBSOLETE" end
 	if o.PrereqType and not FN.IsMember(FN.OrgByType[o.PrereqType], pLeader:GetID()) then return false, "PREREQ" end
