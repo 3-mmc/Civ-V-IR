@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Plain ASCII hyphens in game strings: the in-game fonts are not guaranteed to carry typographic dashes. -->
+<GameData>
+	<Language_en_US>
+		<!-- Panel -->
+		<Row Tag="TXT_KEY_FN_PANEL_TITLE"><Text>Formable Nations</Text></Row>
+		<Row Tag="TXT_KEY_FN_TIER_1"><Text>Union</Text></Row>
+		<Row Tag="TXT_KEY_FN_TIER_2"><Text>State</Text></Row>
+		<Row Tag="TXT_KEY_FN_YOUR_NATIONS"><Text>Your nation's paths</Text></Row>
+		<Row Tag="TXT_KEY_FN_WORLD_HEADER"><Text>Formed elsewhere in the world</Text></Row>
+		<Row Tag="TXT_KEY_FN_WORLD_NONE"><Text>No other civilization you know of has formed a new nation.</Text></Row>
+		<Row Tag="TXT_KEY_FN_NONE_FOR_CIV"><Text>Your civilization has no formable nations in this version.</Text></Row>
+		<Row Tag="TXT_KEY_FN_WORLD_ENTRY"><Text>{1_Leader} leads the {2_Stage} ({3_Civ}).</Text></Row>
+		<Row Tag="TXT_KEY_FN_STAGE_HEADER"><Text>{1_Stage} [COLOR_GREY]({2_Tier}, {3_MinEra} to {4_MaxEra})[ENDCOLOR]</Text></Row>
+		<Row Tag="TXT_KEY_FN_FORM_BUTTON"><Text>Proclaim</Text></Row>
+		<Row Tag="TXT_KEY_FN_OVERLAY_ON"><Text>Union outlines: shown</Text></Row>
+		<Row Tag="TXT_KEY_FN_OVERLAY_OFF"><Text>Union outlines: hidden</Text></Row>
+		<Row Tag="TXT_KEY_FN_BONUS"><Text>[COLOR_YELLOW]Bonus:[ENDCOLOR] {1_Help}</Text></Row>
+		<Row Tag="TXT_KEY_FN_RENAME"><Text>[COLOR_YELLOW]New name:[ENDCOLOR] {1_Desc}</Text></Row>
+		<Row Tag="TXT_KEY_FN_UNION_NOTE"><Text>Partners keep their own governments. Each bond has a cohesion score shown on the Unions tab: shared religion, trade and your Influence lead strengthen it; rivals, wars and unhappiness erode it. Low cohesion brings autonomy crises and, at worst, secession. War with a partner ends the bond at once.</Text></Row>
+
+		<!-- Status -->
+		<Row Tag="TXT_KEY_FN_STATUS_FORMED"><Text>[COLOR_POSITIVE_TEXT]Proclaimed on turn {1_Num}.[ENDCOLOR]</Text></Row>
+		<Row Tag="TXT_KEY_FN_STATUS_READY"><Text>[COLOR_POSITIVE_TEXT]All requirements are met.[ENDCOLOR]</Text></Row>
+		<Row Tag="TXT_KEY_FN_STATUS_WAITING"><Text>Requirements not yet met.</Text></Row>
+		<Row Tag="TXT_KEY_FN_STATUS_IMPOSSIBLE"><Text>[COLOR_NEGATIVE_TEXT]Not possible in this world:[ENDCOLOR] {1_Group} does not exist in this game.</Text></Row>
+		<Row Tag="TXT_KEY_FN_STATUS_EXPIRED"><Text>[COLOR_NEGATIVE_TEXT]The moment has passed:[ENDCOLOR] this can only be proclaimed up to the {1_Era}.</Text></Row>
+		<Row Tag="TXT_KEY_FN_STATUS_SUPERSEDED"><Text>[COLOR_GREY]Superseded by a later stage.[ENDCOLOR]</Text></Row>
+
+		<!-- Requirements -->
+		<Row Tag="TXT_KEY_FN_REQ_ERA"><Text>Reach the {1_Era}</Text></Row>
+		<Row Tag="TXT_KEY_FN_REQ_PREREQ"><Text>Hold the {1_Stage} for {2_Num} turns ({3_Held} so far)</Text></Row>
+		<Row Tag="TXT_KEY_FN_REQ_PREREQ_MISSING"><Text>First proclaim the {1_Stage}</Text></Row>
+		<Row Tag="TXT_KEY_FN_REQ_HAPPY"><Text>No empire-wide unhappiness</Text></Row>
+		<Row Tag="TXT_KEY_FN_REQ_GROUP"><Text>{1_Group} ({2_Num} needed):</Text></Row>
+		<Row Tag="TXT_KEY_FN_REQ_GOLD"><Text>Price of peaceful annexation: {1_Num} [ICON_GOLD] Gold (you have {2_Have})</Text></Row>
+
+		<!-- Claim lines: {1_Name} [{2_Mode}] - {3_State} -->
+		<Row Tag="TXT_KEY_FN_CLAIM_LINE"><Text>{1_Name} [COLOR_GREY]({2_Mode})[ENDCOLOR]: {3_State}</Text></Row>
+		<Row Tag="TXT_KEY_FN_CLAIM_CAPITAL_OF"><Text>{1_Civ} capital</Text></Row>
+		<Row Tag="TXT_KEY_FN_MODE_UNION"><Text>union</Text></Row>
+		<Row Tag="TXT_KEY_FN_MODE_ALLY"><Text>recognition</Text></Row>
+		<Row Tag="TXT_KEY_FN_MODE_ABSORB"><Text>annexation</Text></Row>
+		<Row Tag="TXT_KEY_FN_MODE_OWN"><Text>possession</Text></Row>
+		<Row Tag="TXT_KEY_FN_CLAIM_OWNED"><Text>held by you</Text></Row>
+		<Row Tag="TXT_KEY_FN_CLAIM_MARRIED"><Text>joined by dynastic marriage</Text></Row>
+		<Row Tag="TXT_KEY_FN_CLAIM_ALLIED"><Text>your ally</Text></Row>
+		<Row Tag="TXT_KEY_FN_CLAIM_ALLIED_TURNS"><Text>your ally for {1_Num} of {2_Need} turns</Text></Row>
+		<Row Tag="TXT_KEY_FN_CLAIM_NOT_ALLIED"><Text>not your ally</Text></Row>
+		<Row Tag="TXT_KEY_FN_CLAIM_AT_WAR"><Text>at war with you</Text></Row>
+		<Row Tag="TXT_KEY_FN_CLAIM_VASSAL"><Text>your vassal</Text></Row>
+		<Row Tag="TXT_KEY_FN_CLAIM_NOT_HELD"><Text>not held by you</Text></Row>
+		<Row Tag="TXT_KEY_FN_CLAIM_ABSENT"><Text>not in this world</Text></Row>
+		<Row Tag="TXT_KEY_FN_CLAIM_LOST"><Text>held by another power</Text></Row>
+		<Row Tag="TXT_KEY_FN_CLAIM_WILL_ANNEX"><Text>will be annexed</Text></Row>
+
+		<!-- Notifications -->
+		<Row Tag="TXT_KEY_FN_NOTIFY_FORMED"><Text>{1_Leader} has proclaimed the {2_Stage}.</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_FORMED_S"><Text>{1_Stage} proclaimed</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_DISSOLVED"><Text>The {1_Stage} of {2_Leader} has dissolved: its partners are no longer bound to the crown.</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_DISSOLVED_S"><Text>{1_Stage} dissolved</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_AVAILABLE"><Text>You can now proclaim the {1_Stage}. Open Formable Nations from the information menu at the top right.</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_AVAILABLE_S"><Text>{1_Stage} can be proclaimed</Text></Row>
+
+		<!-- Claim groups -->
+		<Row Tag="TXT_KEY_FN_GROUP_LITHUANIA"><Text>Lithuania</Text></Row>
+		<Row Tag="TXT_KEY_FN_GROUP_HUNGARY"><Text>Hungary</Text></Row>
+		<Row Tag="TXT_KEY_FN_GROUP_CORONATION"><Text>Imperial coronation</Text></Row>
+		<Row Tag="TXT_KEY_FN_GROUP_IMPERIAL_ESTATES"><Text>Imperial estates</Text></Row>
+		<Row Tag="TXT_KEY_FN_GROUP_SAXONY"><Text>Saxony</Text></Row>
+		<Row Tag="TXT_KEY_FN_GROUP_SCOTLAND"><Text>Scotland</Text></Row>
+
+		<!-- Poland -->
+		<Row Tag="TXT_KEY_FN_KREWO_TITLE"><Text>Union of Krewo</Text></Row>
+		<Row Tag="TXT_KEY_FN_KREWO_HELP"><Text>+2 [ICON_CULTURE] Culture and +2 [ICON_PEACE] Faith in the [ICON_CAPITAL] Capital.</Text></Row>
+		<Row Tag="TXT_KEY_FN_KREWO_QUOTE"><Text>In 1385 Grand Duke Jogaila of Lithuania agreed at Krewo to marry Jadwiga, Queen of Poland, and to accept Catholic baptism for himself and his realm. Crowned Wladyslaw II Jagiello in 1386, he ruled both crowns as one dynasty while each kept its own state.</Text></Row>
+		<Row Tag="TXT_KEY_FN_COMMONWEALTH_TITLE"><Text>Polish-Lithuanian Commonwealth</Text></Row>
+		<Row Tag="TXT_KEY_FN_COMMONWEALTH_DESC"><Text>Polish-Lithuanian Commonwealth</Text></Row>
+		<Row Tag="TXT_KEY_FN_COMMONWEALTH_SHORT"><Text>Poland-Lithuania</Text></Row>
+		<Row Tag="TXT_KEY_FN_COMMONWEALTH_ADJ"><Text>Polish-Lithuanian</Text></Row>
+		<Row Tag="TXT_KEY_FN_COMMONWEALTH_HELP"><Text>+1 Delegate in the World Congress. +5% [ICON_CULTURE] Culture. Wheat: +1 [ICON_FOOD] Food and +1 [ICON_GOLD] Gold.</Text></Row>
+		<Row Tag="TXT_KEY_FN_COMMONWEALTH_QUOTE"><Text>The Union of Lublin (1569) turned the dynastic union into a single Commonwealth of Both Nations, with an elected king and a common Sejm. Its nobility's "Golden Liberty" made it one of the most widely enfranchised states of its age, until the partitions ended it in 1795.</Text></Row>
+
+		<!-- Austria -->
+		<Row Tag="TXT_KEY_FN_HABSBURG_TITLE"><Text>Habsburg Monarchy</Text></Row>
+		<Row Tag="TXT_KEY_FN_HABSBURG_DESC"><Text>Habsburg Monarchy</Text></Row>
+		<Row Tag="TXT_KEY_FN_HABSBURG_SHORT"><Text>Habsburg Monarchy</Text></Row>
+		<Row Tag="TXT_KEY_FN_HABSBURG_ADJ"><Text>Habsburg</Text></Row>
+		<Row Tag="TXT_KEY_FN_HABSBURG_HELP"><Text>+5% [ICON_GOLD] Gold. +25% Influence from gifts of [ICON_GOLD] Gold to City-States.</Text></Row>
+		<Row Tag="TXT_KEY_FN_HABSBURG_QUOTE"><Text>When King Louis II fell at Mohacs in 1526, his brother-in-law Ferdinand of Habsburg was elected to the crowns of Bohemia and Hungary. The Habsburg lands remained a composite monarchy of separate kingdoms bound by one dynasty for more than three centuries.</Text></Row>
+		<Row Tag="TXT_KEY_FN_AUSTRIA_HUNGARY_TITLE"><Text>Austria-Hungary</Text></Row>
+		<Row Tag="TXT_KEY_FN_AUSTRIA_HUNGARY_DESC"><Text>Austro-Hungarian Monarchy</Text></Row>
+		<Row Tag="TXT_KEY_FN_AUSTRIA_HUNGARY_SHORT"><Text>Austria-Hungary</Text></Row>
+		<Row Tag="TXT_KEY_FN_AUSTRIA_HUNGARY_ADJ"><Text>Austro-Hungarian</Text></Row>
+		<Row Tag="TXT_KEY_FN_AUSTRIA_HUNGARY_HELP"><Text>+5% [ICON_PRODUCTION] Production and +5% [ICON_RESEARCH] Science. Opera Houses: +2 [ICON_CULTURE] Culture. A City-State joined to you by dynastic marriage satisfies the claim and keeps its own government.</Text></Row>
+		<Row Tag="TXT_KEY_FN_AUSTRIA_HUNGARY_QUOTE"><Text>The Compromise of 1867 split the Austrian Empire into two partner states under one monarch, sharing an army, foreign policy and finance. The Dual Monarchy lasted until 1918.</Text></Row>
+
+		<!-- Germany -->
+		<Row Tag="TXT_KEY_FN_HRE_TITLE"><Text>Holy Roman Empire</Text></Row>
+		<Row Tag="TXT_KEY_FN_HRE_DESC"><Text>Holy Roman Empire</Text></Row>
+		<Row Tag="TXT_KEY_FN_HRE_SHORT"><Text>Holy Roman Empire</Text></Row>
+		<Row Tag="TXT_KEY_FN_HRE_ADJ"><Text>Imperial</Text></Row>
+		<Row Tag="TXT_KEY_FN_HRE_HELP"><Text>+10% [ICON_PEACE] Faith. +2 [ICON_CULTURE] Culture in the [ICON_CAPITAL] Capital.</Text></Row>
+		<Row Tag="TXT_KEY_FN_HRE_QUOTE"><Text>In 962 Pope John XII crowned Otto I emperor in Rome. The Empire that followed was no single state but an elective union of princes, bishoprics and free cities from the North Sea to the Italian peninsula, and endured until 1806.</Text></Row>
+		<Row Tag="TXT_KEY_FN_GERMAN_EMPIRE_TITLE"><Text>German Empire</Text></Row>
+		<Row Tag="TXT_KEY_FN_GERMAN_EMPIRE_DESC"><Text>German Empire</Text></Row>
+		<Row Tag="TXT_KEY_FN_GERMAN_EMPIRE_SHORT"><Text>Germany</Text></Row>
+		<Row Tag="TXT_KEY_FN_GERMAN_EMPIRE_ADJ"><Text>German</Text></Row>
+		<Row Tag="TXT_KEY_FN_GERMAN_EMPIRE_HELP"><Text>+5% [ICON_PRODUCTION] Production. +10% [ICON_PRODUCTION] Production of military units. +15% yields from internal trade routes (the Zollverein).</Text></Row>
+		<Row Tag="TXT_KEY_FN_GERMAN_EMPIRE_QUOTE"><Text>On 18 January 1871 the German Empire was proclaimed in the Hall of Mirrors at Versailles, uniting Prussia with Saxony, Bavaria and the other German states under the Prussian king as emperor.</Text></Row>
+
+		<!-- England -->
+		<Row Tag="TXT_KEY_FN_UNION_OF_CROWNS_TITLE"><Text>Union of the Crowns</Text></Row>
+		<Row Tag="TXT_KEY_FN_UNION_OF_CROWNS_HELP"><Text>+2 [ICON_CULTURE] Culture and +2 [ICON_GOLD] Gold in the [ICON_CAPITAL] Capital.</Text></Row>
+		<Row Tag="TXT_KEY_FN_UNION_OF_CROWNS_QUOTE"><Text>In 1603 James VI of Scotland inherited the throne of England as James I. For a century the two kingdoms shared a monarch but kept their own parliaments, churches and laws.</Text></Row>
+		<Row Tag="TXT_KEY_FN_GREAT_BRITAIN_TITLE"><Text>Kingdom of Great Britain</Text></Row>
+		<Row Tag="TXT_KEY_FN_GREAT_BRITAIN_DESC"><Text>Kingdom of Great Britain</Text></Row>
+		<Row Tag="TXT_KEY_FN_GREAT_BRITAIN_SHORT"><Text>Great Britain</Text></Row>
+		<Row Tag="TXT_KEY_FN_GREAT_BRITAIN_ADJ"><Text>British</Text></Row>
+		<Row Tag="TXT_KEY_FN_GREAT_BRITAIN_HELP"><Text>+5% [ICON_GOLD] Gold. +1 [ICON_MOVES] Movement for embarked units. Harbors: +1 [ICON_GOLD] Gold.</Text></Row>
+		<Row Tag="TXT_KEY_FN_GREAT_BRITAIN_QUOTE"><Text>The Acts of Union of 1707 merged the kingdoms of England and Scotland, and their parliaments, into the single Kingdom of Great Britain.</Text></Row>
+
+		<!-- Tabs -->
+		<Row Tag="TXT_KEY_FN_TAB_NATIONS"><Text>Nations</Text></Row>
+		<Row Tag="TXT_KEY_FN_TAB_UNIONS"><Text>Unions</Text></Row>
+		<Row Tag="TXT_KEY_FN_TAB_ORGS"><Text>Organisations</Text></Row>
+		<Row Tag="TXT_KEY_FN_TAB_WORLD"><Text>World</Text></Row>
+
+		<!-- Cohesion -->
+		<Row Tag="TXT_KEY_FN_CLAIM_BOUND"><Text>bound to you in union</Text></Row>
+		<Row Tag="TXT_KEY_FN_REQ_INTEGRATED"><Text>{1_Partner}: cohesion {2_Now} (needs {3_Need}+ for {4_Turns} turns; {5_Held} so far)</Text></Row>
+		<Row Tag="TXT_KEY_FN_NO_UNIONS"><Text>You lead no union. Proclaim a union on the Nations tab to bind partners to your crown.</Text></Row>
+		<Row Tag="TXT_KEY_FN_BOND_HEADER"><Text>{1_Partner} [COLOR_GREY]in the {2_Union}[ENDCOLOR]</Text></Row>
+		<Row Tag="TXT_KEY_FN_COHESION_LINE"><Text>Cohesion {1_Now}, moving toward {2_Target} {3_Trend}</Text></Row>
+		<Row Tag="TXT_KEY_FN_TREND_UP"><Text>(rising)</Text></Row>
+		<Row Tag="TXT_KEY_FN_TREND_DOWN"><Text>(falling)</Text></Row>
+		<Row Tag="TXT_KEY_FN_TREND_FLAT"><Text>(steady)</Text></Row>
+		<Row Tag="TXT_KEY_FN_FORECAST"><Text>[COLOR_NEGATIVE_TEXT]At this rate, secession risk in about {1_Num} turns.[ENDCOLOR]</Text></Row>
+		<Row Tag="TXT_KEY_FN_SECEDING"><Text>[COLOR_NEGATIVE_TEXT]Secession in {1_Num} turns unless cohesion recovers.[ENDCOLOR]</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_LEAD"><Text>Your Influence lead</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_CONTESTED"><Text>Another power is their ally</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_TREATMENT"><Text>How they feel treated as a vassal</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_STRONGER"><Text>Their military outmatches yours</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_RELIGION"><Text>Religion</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_TRADE"><Text>Trade route between you</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_NEIGHBOURS"><Text>Close neighbours</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_TENURE"><Text>Years together</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_WAR"><Text>Your wars</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_UNHAPPY"><Text>Unhappiness in your empire</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_CONCEDE"><Text>Concessions</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_PRIVILEGE"><Text>Privileges</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_ASSERT"><Text>Crown authority</Text></Row>
+		<Row Tag="TXT_KEY_FN_CRISIS_PROMPT"><Text>[COLOR_YELLOW]Autonomy crisis.[ENDCOLOR] Concede ({1_Gold} [ICON_GOLD] now), grant privileges ({2_Tribute} [ICON_GOLD] per turn for a while), or assert crown authority (-{3_Influence} Influence with every other City-State). Unanswered, the crisis lapses with no effect.</Text></Row>
+		<Row Tag="TXT_KEY_FN_CRISIS_CONCEDE"><Text>Concede</Text></Row>
+		<Row Tag="TXT_KEY_FN_CRISIS_PRIVILEGE"><Text>Grant privileges</Text></Row>
+		<Row Tag="TXT_KEY_FN_CRISIS_ASSERT"><Text>Assert authority</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_CRISIS"><Text>An autonomy crisis has broken out in {1_Partner}, part of your {2_Union}. Respond on the Unions tab of Formable Nations.</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_CRISIS_S"><Text>Autonomy crisis in {1_Partner}</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_SECESSION_WARNING"><Text>{1_Partner} is moving to break away from {2_Leader}. Unless the union recovers, it will secede in {3_Num} turns.</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_SECESSION_WARNING_S"><Text>{1_Partner} threatens secession</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_SECESSION_AVERTED"><Text>The independence movement in {1_Partner} has lost momentum. The union holds.</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_SECESSION_AVERTED_S"><Text>Secession averted in {1_Partner}</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_SECEDED"><Text>{1_Partner} has seceded from {2_Leader}.</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_SECEDED_S"><Text>{1_Partner} secedes</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_JOINED_UNION"><Text>{1_Partner} has joined your {2_Union}.</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_JOINED_UNION_S"><Text>{1_Partner} joins the union</Text></Row>
+
+		<!-- Organisations -->
+		<Row Tag="TXT_KEY_FN_ORG_DEPTH_FUNCTIONAL"><Text>[COLOR_GREY]Functional organisation: one shared purpose; members join and leave freely.[ENDCOLOR]</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_DEPTH_INTERGOVERNMENTAL"><Text>[COLOR_GREY]Intergovernmental organisation: sovereign members cooperating on many fronts.[ENDCOLOR]</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_ERAS"><Text>{1_Era} to {2_Era}</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_FROM_ERA"><Text>from the {1_Era}</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_MEMBERS"><Text>Led by {1_Leader}. Members: {2_List}</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_INCOME"><Text>Your income from membership last turn: {1_Num} [ICON_GOLD] Gold</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_CANDIDATES"><Text>Willing founding members now: {1_Num} (needs {2_Need}, including you). Other human players are invited after founding.</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_FOUND"><Text>Found</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_JOIN"><Text>Join</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_LEAVE"><Text>Leave</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_WHY_ACTIVE"><Text>Already exists</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_WHY_INELIGIBLE"><Text>You are not eligible</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_WHY_ERA"><Text>Reach the {1_Era}</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_WHY_OBSOLETE"><Text>Its time has passed</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_WHY_MEMBERS"><Text>Not enough willing members yet (City-States must be your Friends; AI leaders must not be hostile)</Text></Row>
+		<Row Tag="TXT_KEY_FN_WORLD_ORG"><Text>{1_Org}: {2_List}</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_ORG_FOUNDED"><Text>{1_Leader} has founded the {2_Org}. Founding members: {3_List}.</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_ORG_FOUNDED_S"><Text>{1_Org} founded</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_ORG_JOINED"><Text>{1_Member} has joined the {2_Org}.</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_ORG_JOINED_S"><Text>New member of the {1_Org}</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_ORG_LEFT"><Text>{1_Member} has left the {2_Org}.</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_ORG_LEFT_S"><Text>A member leaves the {1_Org}</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_ORG_DISSOLVED"><Text>The {1_Org} has been dissolved.</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_ORG_DISSOLVED_S"><Text>{1_Org} dissolved</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_ORG_INVITED"><Text>You are invited to join the {1_Org}. Accept on the Organisations tab of Formable Nations.</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_ORG_INVITED_S"><Text>Invitation: {1_Org}</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_INTERGOV_HELP"><Text>Open borders between member civilizations. +2 [ICON_GOLD] Gold per turn for each of your trade routes to another member. +1 Influence per turn with each member City-State.</Text></Row>
+
+		<Row Tag="TXT_KEY_FN_ORG_HANSE_TITLE"><Text>Hanseatic League</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_HANSE_HELP"><Text>+3 [ICON_GOLD] Gold per turn for each of your trade routes to another member. +1 Influence per turn with each member City-State. Members need a coastal capital. Dissolves after the Renaissance.</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_HANSE_QUOTE"><Text>From the 13th to the 17th century, merchant guilds and market towns around the Baltic and North Sea, led by Luebeck, protected their trade together, with foreign offices (Kontore) in Bruges, Bergen, London and Novgorod.</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_OPEC_TITLE"><Text>Organization of the Petroleum Exporting Countries</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_OPEC_HELP"><Text>+1 [ICON_GOLD] Gold per turn for each [ICON_RES_OIL] Oil you own (up to 10). Open to anyone owning at least 2 Oil.</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_OPEC_QUOTE"><Text>Founded in Baghdad in 1960 by Iran, Iraq, Kuwait, Saudi Arabia and Venezuela to coordinate oil policy among producing countries.</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_ARAB_LEAGUE_TITLE"><Text>Arab League</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_ARAB_LEAGUE_QUOTE"><Text>Founded in Cairo in March 1945 by Egypt, Iraq, Transjordan, Lebanon, Saudi Arabia and Syria, with Yemen joining that May.</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_AFRICAN_UNION_TITLE"><Text>African Union</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_AFRICAN_UNION_QUOTE"><Text>The Organisation of African Unity was founded in Addis Ababa in 1963. It was replaced by the African Union in 2002.</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_ASEAN_TITLE"><Text>Association of Southeast Asian Nations</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_ASEAN_QUOTE"><Text>Founded with the Bangkok Declaration of 8 August 1967 by Indonesia, Malaysia, the Philippines, Singapore and Thailand.</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_NORDIC_TITLE"><Text>Nordic Council</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_NORDIC_QUOTE"><Text>Founded in 1952 by Denmark, Iceland, Norway and Sweden; Finland joined in 1955.</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_MERCOSUR_TITLE"><Text>Mercosur</Text></Row>
+		<Row Tag="TXT_KEY_FN_ORG_MERCOSUR_QUOTE"><Text>The Southern Common Market was created by the Treaty of Asuncion in 1991 by Argentina, Brazil, Paraguay and Uruguay.</Text></Row>
+		<!-- v0.3: perks -->
+		<Row Tag="TXT_KEY_FN_PERK_UNIT"><Text>[COLOR_YELLOW]Unique unit:[ENDCOLOR] {1_Unit}, replacing the {2_Base}. {3_Help}</Text></Row>
+		<Row Tag="TXT_KEY_FN_PERK_GOLDEN_AGE"><Text>[COLOR_YELLOW]On proclamation:[ENDCOLOR] a [ICON_GOLDEN_AGE] Golden Age of {1_Num} turns.</Text></Row>
+		<Row Tag="TXT_KEY_FN_UNIT_REICHSRITTER"><Text>Imperial Knight</Text></Row>
+		<Row Tag="TXT_KEY_FN_UNIT_REICHSRITTER_HELP"><Text>Stronger than the Knight (+2 [ICON_STRENGTH]) and starts with Charge. Available while you hold the Holy Roman Empire.</Text></Row>
+		<Row Tag="TXT_KEY_FN_UNIT_REICHSRITTER_PEDIA"><Text>The Imperial Knights (Reichsritter) were free nobles who held their lands directly from the emperor rather than from any prince, and owed him service in the saddle. Their independence lasted until the Empire itself ended in 1806.</Text></Row>
+		<Row Tag="TXT_KEY_FN_UNIT_HAIDUK"><Text>Haiduk</Text></Row>
+		<Row Tag="TXT_KEY_FN_UNIT_HAIDUK_HELP"><Text>Stronger than the Musketman (+2 [ICON_STRENGTH]) and starts with Cover I. Available while you hold the Polish-Lithuanian Commonwealth.</Text></Row>
+		<Row Tag="TXT_KEY_FN_UNIT_HAIDUK_PEDIA"><Text>Hungarian-style infantry with matchlocks and sabres, the haiduks became the core of the Commonwealth's foot soldiers under Stefan Batory in the 1570s and later served as guards of the king and the great magnates.</Text></Row>
+		<Row Tag="TXT_KEY_FN_UNIT_HIGHLANDER"><Text>Highland Regiment</Text></Row>
+		<Row Tag="TXT_KEY_FN_UNIT_HIGHLANDER_HELP"><Text>Stronger than the Rifleman (+2 [ICON_STRENGTH]) and starts with Charge. Available while you hold the Kingdom of Great Britain.</Text></Row>
+		<Row Tag="TXT_KEY_FN_UNIT_HIGHLANDER_PEDIA"><Text>The Black Watch, raised in 1739, was the first of the Highland regiments of the British Army. Recruited from the Scottish Highlands, they kept their own dress and pipers and served in every major British campaign that followed.</Text></Row>
+		<Row Tag="TXT_KEY_FN_UNIT_KAISERSCHUETZE"><Text>Kaiserschuetze</Text></Row>
+		<Row Tag="TXT_KEY_FN_UNIT_KAISERSCHUETZE_HELP"><Text>Stronger than the Great War Infantry (+3 [ICON_STRENGTH]) and starts with Drill I. Available while you hold Austria-Hungary.</Text></Row>
+		<Row Tag="TXT_KEY_FN_UNIT_KAISERSCHUETZE_PEDIA"><Text>The Imperial Rifles (Kaiserschuetzen) were the Austro-Hungarian mountain infantry of Tyrol and Vorarlberg. In the First World War they held the high Alpine front against Italy, fighting at altitudes of over 3,000 metres.</Text></Row>
+		<Row Tag="TXT_KEY_FN_UNIT_UHLAN"><Text>Uhlan</Text></Row>
+		<Row Tag="TXT_KEY_FN_UNIT_UHLAN_HELP"><Text>Stronger than Cavalry (+2 [ICON_STRENGTH]) and starts with Sentry (+1 Sight). Available while you hold the German Empire.</Text></Row>
+		<Row Tag="TXT_KEY_FN_UNIT_UHLAN_PEDIA"><Text>Lancer regiments of Polish-Lithuanian origin, uhlans were adopted across Europe. In the German Empire's wars they were used above all for scouting and screening ahead of the main army.</Text></Row>
+
+		<!-- v0.3: independence and fragmentation -->
+		<Row Tag="TXT_KEY_FN_TAB_PROVINCES"><Text>Provinces</Text></Row>
+		<Row Tag="TXT_KEY_FN_PROVINCES_INTRO"><Text>Colonies on other landmasses and cities of other peoples are not yet part of your nation. Each has a local cohesion score. Below 35 an independence movement forms; below 20 the city counts down to independence. Held at 75 or more for 30 turns, a city integrates for good. Your capital, your home landmass and City-States joined peacefully never break away.</Text></Row>
+		<Row Tag="TXT_KEY_FN_NO_PROVINCES"><Text>All your cities are integrated into your nation.</Text></Row>
+		<Row Tag="TXT_KEY_FN_PROVINCE_HEADER"><Text>{1_City} [COLOR_GREY]({2_Kind})[ENDCOLOR]</Text></Row>
+		<Row Tag="TXT_KEY_FN_KIND_COLONY"><Text>colony</Text></Row>
+		<Row Tag="TXT_KEY_FN_KIND_FOREIGN"><Text>another people</Text></Row>
+		<Row Tag="TXT_KEY_FN_PROVINCE_INTEGRATING"><Text>[COLOR_POSITIVE_TEXT]Integrates in {1_Num} turns if cohesion stays at 75 or more.[ENDCOLOR]</Text></Row>
+		<Row Tag="TXT_KEY_FN_PROVINCE_BREAKING"><Text>[COLOR_NEGATIVE_TEXT]Breaks away in {1_Num} turns unless cohesion rises to 20.[ENDCOLOR]</Text></Row>
+		<Row Tag="TXT_KEY_FN_PROVINCE_HELD"><Text>[COLOR_YELLOW]Ready to break away, but it cannot yet: too early in history, or another city broke away recently.[ENDCOLOR]</Text></Row>
+		<Row Tag="TXT_KEY_FN_MOVEMENT_PROMPT"><Text>[COLOR_NEGATIVE_TEXT]An independence movement is under way.[ENDCOLOR] Grant autonomy ({1_Cost} [ICON_GOLD] Gold, +15 for 20 turns), suppress it (needs a garrison; +20 for 10 turns, but the city falls into resistance for {2_Turns} turns), or grant independence: the city goes in peace and starts friendly toward you.</Text></Row>
+		<Row Tag="TXT_KEY_FN_MOVEMENT_AUTONOMY"><Text>Grant autonomy</Text></Row>
+		<Row Tag="TXT_KEY_FN_MOVEMENT_SUPPRESS"><Text>Suppress</Text></Row>
+		<Row Tag="TXT_KEY_FN_MOVEMENT_RELEASE"><Text>Grant independence</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_CONNECTED"><Text>Connected to the capital</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_NOT_CONNECTED"><Text>Not connected to the capital</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_CITY_RELIGION"><Text>Religion of the city</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_GARRISON"><Text>Garrison</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_PUPPET"><Text>Self-governing (puppet)</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_CITY_TENURE"><Text>Years under your rule</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_DISTANCE"><Text>Distance from the capital</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_FOREIGN"><Text>A different people</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_NATIONALISM"><Text>Age of nationalism</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_OPINION"><Text>Unrest over your ideology</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_AUTONOMY"><Text>Autonomy granted</Text></Row>
+		<Row Tag="TXT_KEY_FN_TERM_SUPPRESS"><Text>Movement suppressed</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_MOVEMENT"><Text>An independence movement has formed in {1_City}. Respond on the Provinces tab of Formable Nations.</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_MOVEMENT_S"><Text>Independence movement in {1_City}</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_BREAKAWAY_WARNING"><Text>{1_City} will break away from {2_Owner} in {3_Num} turns unless its cohesion recovers.</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_BREAKAWAY_WARNING_S"><Text>{1_City} moves toward independence</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_BREAKAWAY_AVERTED"><Text>{1_City} has stepped back from independence.</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_BREAKAWAY_AVERTED_S"><Text>{1_City} stays</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_INTEGRATED"><Text>{1_City} is now an integral part of your nation and will never seek independence.</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_INTEGRATED_S"><Text>{1_City} integrated</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_INDEPENDENCE"><Text>{1_City} has declared independence from {2_Owner} as the City-State of {3_New}.</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_INDEPENDENCE_S"><Text>{1_New} declares independence</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_RELEASED"><Text>{2_Owner} has granted independence to {1_City}, now the City-State of {3_New}.</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_RELEASED_S"><Text>{1_New} becomes independent</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_REVIVED"><Text>{1_City} has risen against {2_Owner}: {3_New} is reborn!</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_REVIVED_S"><Text>{1_New} reborn</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_RETURNED"><Text>{1_City} has left {2_Owner} and returned to {3_New}.</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_RETURNED_S"><Text>A city returns to {1_New}</Text></Row>
+		<Row Tag="TXT_KEY_FN_NOTIFY_FOLLOWERS"><Text>Restless neighbouring cities went with it: {1_Num}.</Text></Row>
+	</Language_en_US>
+</GameData>

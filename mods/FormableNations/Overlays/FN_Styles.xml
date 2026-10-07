@@ -1,0 +1,10 @@
+<!-- Union outline styles, merged into VP's Highlights.xml by build.py (the game loads a single Highlights.xml).
+     One style per slot so neighbouring unions keep separate outlines; the colour is passed at draw time. -->
+<style name="FN_Union1" type="SplineBorder" width="9" texture="spline_border_contour2.dds" color="255,255,255,230"/>
+<style name="FN_Union2" type="SplineBorder" width="9" texture="spline_border_contour2.dds" color="255,255,255,230"/>
+<style name="FN_Union3" type="SplineBorder" width="9" texture="spline_border_contour2.dds" color="255,255,255,230"/>
+<style name="FN_Union4" type="SplineBorder" width="9" texture="spline_border_contour2.dds" color="255,255,255,230"/>
+<style name="FN_Union5" type="SplineBorder" width="9" texture="spline_border_contour2.dds" color="255,255,255,230"/>
+<style name="FN_Union6" type="SplineBorder" width="9" texture="spline_border_contour2.dds" color="255,255,255,230"/>
+<style name="FN_Union7" type="SplineBorder" width="9" texture="spline_border_contour2.dds" color="255,255,255,230"/>
+<style name="FN_Union8" type="SplineBorder" width="9" texture="spline_border_contour2.dds" color="255,255,255,230"/>

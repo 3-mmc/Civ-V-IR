@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "foundation": "full-vox-populi",
+  "repository": "https://github.com/LoneGazebo/Community-Patch-DLL.git",
+  "release": "5.4.6",
+  "tag": "Release-5.4.6",
+  "commit": "dcb33a654cd9e8efb038a0733b4025e19cbcd8ba",
+  "source_directory": "upstream/Community-Patch-DLL",
+  "checkout": "shallow-sparse",
+  "sparse_directories": [
+    "CvGameCoreDLLUtil",
+    "CvGameCoreDLL_Expansion2",
+    "CvGameDatabase",
+    "CvLocalization",
+    "CvWorldBuilderMap",
+    "FirePlace",
+    "LuaCATS",
+    "ThirdPartyLibs",
+    "docs"
+  ],
+  "optional_mods": [],
+  "compiled": false,
+  "installed": true,
+  "install": {
+    "date": "2026-10-06",
+    "method": "manual replay of the official Vox.Populi.5.4.6.exe 'FullEUI' component (innoextract + copy)",
+    "installer_sha256": "31679423e55d7f64ba9693d8252d9e29f824fd9f8da043af547470068f98ba8a",
+    "manifest": "install-manifest-vp-5.4.6.sha256",
+    "stock_backup": "backups/stock/Expansion2.Civ5Pkg"
+  }
+}

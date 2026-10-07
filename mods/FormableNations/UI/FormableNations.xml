@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Context Font="TwCenMT18" FontStyle="Shadow" ColorSet="Beige_Black_Alpha" Hidden="1">
+	<Box Style="BGBlock_ClearTopBar" ID="BGBlock"/>
+	<Grid Size="860,700" Anchor="C,C" Offset="0,36" Padding="0,0" Style="Grid9DetailFive140" ConsumeMouse="1">
+		<Box Style="MenuLeftSideTreatment"/>
+		<Box Style="MenuRightSideTreatment"/>
+		<Label Style="MenuTitleCaption" String="TXT_KEY_FN_PANEL_TITLE"/>
+
+		<Stack ID="TabStack" Anchor="C,T" Offset="0,46" StackGrowth="Right" Padding="8">
+			<GridButton ID="TabNations" Style="BaseButton" Size="150,32">
+				<Label Anchor="C,C" String="TXT_KEY_FN_TAB_NATIONS" ColorSet="Beige_Black" Font="TwCenMT20" FontStyle="Shadow"/>
+			</GridButton>
+			<GridButton ID="TabUnions" Style="BaseButton" Size="150,32">
+				<Label Anchor="C,C" String="TXT_KEY_FN_TAB_UNIONS" ColorSet="Beige_Black" Font="TwCenMT20" FontStyle="Shadow"/>
+			</GridButton>
+			<GridButton ID="TabOrgs" Style="BaseButton" Size="150,32">
+				<Label Anchor="C,C" String="TXT_KEY_FN_TAB_ORGS" ColorSet="Beige_Black" Font="TwCenMT20" FontStyle="Shadow"/>
+			</GridButton>
+			<GridButton ID="TabProvinces" Style="BaseButton" Size="150,32">
+				<Label Anchor="C,C" String="TXT_KEY_FN_TAB_PROVINCES" ColorSet="Beige_Black" Font="TwCenMT20" FontStyle="Shadow"/>
+			</GridButton>
+			<GridButton ID="TabWorld" Style="BaseButton" Size="150,32">
+				<Label Anchor="C,C" String="TXT_KEY_FN_TAB_WORLD" ColorSet="Beige_Black" Font="TwCenMT20" FontStyle="Shadow"/>
+			</GridButton>
+		</Stack>
+
+		<ScrollPanel ID="ScrollPanel" Offset="24,88" Size="796,532" Vertical="1" AutoScrollBar="1">
+			<ScrollBar Style="VertSlider" Length="496" Offset="0,18" Anchor="R,T" AnchorSide="O,I"/>
+			<UpButton Style="ScrollBarUp" Anchor="R,T" AnchorSide="O,I"/>
+			<DownButton Style="ScrollBarDown" Anchor="R,B" AnchorSide="O,I"/>
+			<Stack ID="MainStack" Anchor="L,T" StackGrowth="Bottom" Padding="10"/>
+		</ScrollPanel>
+
+		<GridButton ID="OverlayButton" Style="BaseButton" Size="280,36" Anchor="L,B" Offset="40,24">
+			<Label ID="OverlayLabel" Anchor="C,C" ColorSet="Beige_Black" Font="TwCenMT20" FontStyle="Shadow"/>
+		</GridButton>
+		<GridButton ID="CloseButton" Style="BaseButton" Size="200,36" Anchor="R,B" Offset="40,24">
+			<Label Anchor="C,C" String="TXT_KEY_CLOSE" ColorSet="Beige_Black" Font="TwCenMT20" FontStyle="Shadow"/>
+		</GridButton>
+	</Grid>
+
+	<!-- One card: header, optional quote, body, up to three action buttons, separator. -->
+	<Instance Name="CardInstance">
+		<Stack ID="Root" StackGrowth="Bottom" Padding="4">
+			<Label ID="Header" Font="TwCenMT22" FontStyle="Shadow" ColorSet="Beige_Black_Alpha" WrapWidth="770"/>
+			<Label ID="Quote" Font="TwCenMT16" FontStyle="Shadow" Color="200,200,180,255" WrapWidth="770"/>
+			<Label ID="Body" Font="TwCenMT18" FontStyle="Shadow" ColorSet="Beige_Black_Alpha" WrapWidth="770"/>
+			<Stack ID="Buttons" StackGrowth="Right" Padding="8">
+				<GridButton ID="Button1" Style="BaseButton" Size="230,32">
+					<Label ID="Label1" Anchor="C,C" ColorSet="Beige_Black" Font="TwCenMT18" FontStyle="Shadow"/>
+				</GridButton>
+				<GridButton ID="Button2" Style="BaseButton" Size="230,32">
+					<Label ID="Label2" Anchor="C,C" ColorSet="Beige_Black" Font="TwCenMT18" FontStyle="Shadow"/>
+				</GridButton>
+				<GridButton ID="Button3" Style="BaseButton" Size="230,32">
+					<Label ID="Label3" Anchor="C,C" ColorSet="Beige_Black" Font="TwCenMT18" FontStyle="Shadow"/>
+				</GridButton>
+			</Stack>
+			<Box Size="770,1" Color="200,180,120,96"/>
+		</Stack>
+	</Instance>
+</Context>

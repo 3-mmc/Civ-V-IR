@@ -1,0 +1,9 @@
+# Large or third-party material that is not ours to publish; see README for how each is obtained.
+/Game Files/
+/downloads/
+/upstream/
+/backups/
+# Build output and generated test data
+build/
+mods/FormableNations/tests/gameinfo_data.lua
+__pycache__/
