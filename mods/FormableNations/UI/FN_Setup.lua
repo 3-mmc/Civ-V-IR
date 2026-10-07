@@ -87,7 +87,8 @@ end
 
 function FN.SetupHistoricalCityStates()
 	if FN.GetN("SETUP_DONE") > 0 then return end
-	if S.HISTORICAL_CITY_STATES ~= 1 then FN.Set("SETUP_DONE", 1); return end
+	-- Only at the start of a game: a save from before this feature, or a game already under way, is left alone.
+	if S.HISTORICAL_CITY_STATES ~= 1 or Game.GetElapsedGameTurns() > S.HISTORICAL_WAIT_TURNS then FN.Set("SETUP_DONE", 1); return end
 
 	local tDonors, iCityStates, bAllFounded = {}, 0, true
 	for i = FN.MAX_MAJOR, FN.MAX_CIV - 1 do

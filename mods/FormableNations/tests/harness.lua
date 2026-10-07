@@ -289,6 +289,10 @@ Check(not DONORS[1].alive and not DONORS[2].alive and not DONORS[3].alive and DO
 Check(vatican and vatican.cities[1].name == "Vatican City", "the city takes its new City-State's name")
 Check(vatican and #vatican.units == 1 and not vatican.units[1].found, "the starting Settler is removed and the garrison carried over")
 Check(Present("VILNIUS") and FN.GetN("SETUP_DONE") > 0, "Vilnius was already there; setup ran once")
+local savedTurn = TURN
+TURN = 20; FN.Set("SETUP_DONE", 0); FN.SetupHistoricalCityStates()
+Check(DONORS[4].alive and FN.GetN("SETUP_DONE") == 1, "a game already under way (or an older save) is left alone")
+TURN = savedTurn
 
 print("Scenario 1: Union of Krewo forms after a long alliance")
 vilnius.influence[0] = 90
