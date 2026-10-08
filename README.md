@@ -1,4 +1,4 @@
-# CivVNeo
+# International Relations for Civilisation V
 
 A personal Civilization V package built on full Vox Populi, with selected community mods, original features, and measured optimizations.
 
